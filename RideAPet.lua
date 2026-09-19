@@ -1862,11 +1862,15 @@ end)
 _G.SelectedEggTarget = "Easter Egg" 
 
 local eggChoicesList = {
-    "Easter Egg", 
-    "Skull Egg", 
+    
+    
+    "Cherub Egg",
+"Solaris Egg",
     "Blackhole Egg", 
     "Galaxy Egg", 
     "Sinister Egg", 
+    "Easter Egg", 
+    "Skull Egg", 
     "Aurora Egg", 
     "Diamond Egg", 
     "Dominus Egg", 
@@ -1874,7 +1878,7 @@ local eggChoicesList = {
     "Glass Egg", 
     "Cracked Egg", 
     "Flower Egg",
-    "Cherub Egg",
+    
     "Soul Egg",
     "Leaf Egg" ,
     " Mushroom Egg",
@@ -2169,11 +2173,13 @@ end)
 local Workspace = game:GetService("Workspace")
 
 local eggChoicesList = {
-    "Easter Egg", 
-    "Skull Egg", 
+    "Cherub Egg",
+"Solaris Egg",
     "Blackhole Egg", 
     "Galaxy Egg", 
     "Sinister Egg", 
+    "Easter Egg", 
+    "Skull Egg", 
     "Aurora Egg", 
     "Diamond Egg", 
     "Dominus Egg", 
@@ -2181,13 +2187,15 @@ local eggChoicesList = {
     "Glass Egg", 
     "Cracked Egg", 
     "Flower Egg",
-    "Cherub Egg",
+    
     "Soul Egg",
     "Leaf Egg" ,
     " Mushroom Egg",
     "Stone Egg",
     "Slime Egg", 
     "Crystal Egg"
+    
+
 }
 
 local miscGroup = createDropdownSection("Misc", "ESP Eggs")
