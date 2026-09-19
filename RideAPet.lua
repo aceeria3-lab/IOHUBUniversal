@@ -7,7 +7,7 @@ local localPlayer = players.LocalPlayer or players:GetPropertyChangedSignal("Loc
 
 
 -- Palitan ang pangalan ng file dito
-local configFileName = "IOHUB_HazeSeas.json" 
+local configFileName = "IOHUB_RideAPet.json" 
 
 local currentConfigData = {
     toggles = {},
