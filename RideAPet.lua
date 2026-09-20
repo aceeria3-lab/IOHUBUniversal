@@ -2821,19 +2821,13 @@ local flyConnection = nil
 local flyKeyDown, flyKeyUp = nil, nil
 
 -- Dito nakaimbak ang adjustable flight speed (Default ay 14)
-local flightSpeed = 14 
+local flightSpeed = 0 
 
 -- 1. Slider para sa Fly Speed (1 hanggang 200 range)
-createSlider("Players", "Fly Speed", "Ayusin ang bilis ng paglipad", 1, 200, 14, function(value)
+createSlider("Players", "Fly Speed", "Ayusin ang bilis ng paglipad", 0, 1000, 0, function(value)
     flightSpeed = value
     
-    pcall(function()
-        StarterGui:SetCore("SendNotification", {
-            Title = "Fly Speed Updated";
-            Text = "Bilis: " .. tostring(value);
-            Duration = 1;
-        })
-    end)
+    
 end)
 
 -- 2. Toggle para sa Fly
