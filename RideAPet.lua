@@ -1892,7 +1892,7 @@ local playGroup = createDropdownSection("Main", "Auto Collect Egg")
 
 
 
-createSingledropdown2(playGroup, "Select Quest Weapon", eggChoicesList, function(selectedOption)
+createSingledropdown2(playGroup, "Select Egg Target", eggChoicesList, function(selectedOption)
     _G.SelectedEggTarget = selectedOption
 end)
 
