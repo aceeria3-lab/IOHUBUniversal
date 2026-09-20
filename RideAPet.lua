@@ -1803,13 +1803,13 @@ createSidebarTab("Settings", "rbxassetid://10723345479", 6)
 ----------------------------------------------------
 
 -- 1. I-set ang global variables para sa speed at Heartbeat connection
-_G.WalkSpeedTarget = 16 -- Default walk speed
+_G.WalkSpeedTarget = 0 -- Default walk speed (0 para di agad naka-set)
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local tpwalkingConnection = nil
 
 -- 2. Slider Setup (0 hanggang 1000 range)
-createSlider("Players", "Walk Speed", "Adjust the Walkspeed", 0, 1000, 16, function(value)
+createSlider("Players", "Walk Speed", "Adjust the Walkspeed", 0, 1000, 0, function(value) -- ← default = 0
     _G.WalkSpeedTarget = value
     
     -- Kung ang value ay 0 o mas mababa, puwede nating i-reset sa default o patigilin
@@ -1852,8 +1852,6 @@ tpwalkingConnection = RunService.Heartbeat:Connect(function(delta)
         end
     end
 end)
-
-
 
 
 
