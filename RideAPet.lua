@@ -678,7 +678,7 @@ local givePlayerDropdown = nil
 givePlayerDropdown = Tabs.MainTab:Dropdown({
     Title = "Give Egg To Player Plot",
     Desc = "Choose Player then Give Egg to Them",
-    
+    Flag = "GiveTargetPlayer",
     Values = getAllPlayers(),
     Value = "",
     AllowNone = true,
@@ -691,11 +691,13 @@ givePlayerDropdown = Tabs.MainTab:Dropdown({
     end,
 })
 
+
+
 -- 2. MULTI-SELECT Dropdown: Egg Targets
 Tabs.MainTab:Dropdown({
     Title = "Eggs to Collect & Give",
     Desc = "Choose Egg",
-    
+    Flag = "GiveTargetEggs",
     Values = eggChoicesList,
     Value = {},
     AllowNone = true,
@@ -1009,7 +1011,7 @@ Tabs.MainTab:Button({
                 return true
             end
 
-            -- ===== HELPER: Volcanic Sequence (FIXED — no HOME_CFRAME step) =====
+            -- ===== HELPER: Volcanic Sequence =====
             local function volcanicSequence(hrp, prompt)
                 local character = player.Character
                 local volcano = Workspace:FindFirstChild("Volcano")
@@ -1052,8 +1054,6 @@ Tabs.MainTab:Button({
                 -- Step 5: Tween to Spot 1 (NOCLIP OFF via stableTween)
                 stableTween(hrp, SPOT_1, 1.5)
                 task.wait(0.3)
-
-                -- ✅ DITO NA NATAPOS — outer code bahala sa target plot + BasketDrop
 
                 return true
             end
@@ -1130,7 +1130,7 @@ Tabs.MainTab:Button({
                 if targetEggName == "Volcanic Egg" then
                     volcanicSequence(hrp, foundPrompt)
 
-                    -- ✅ Teleport to target plot + fire BasketDrop (same as normal egg)
+                    -- ✅ Teleport to target plot + fire BasketDrop
                     local targetPlot = getPlotByPlayerName(_G.GiveTargetPlayer)
                     local targetPlotCenter = getPlotCenterCFrame(targetPlot)
 
@@ -1147,7 +1147,7 @@ Tabs.MainTab:Button({
                         warn("[Collect & Give] Target plot not found for: " .. tostring(_G.GiveTargetPlayer))
                     end
 
-                    -- ✅ OFF FLY + NOCLIP pagkatapos ng lahat
+                    -- ✅ OFF FLY + NOCLIP
                     disableFly()
                     disableNoclip()
                     task.wait(0.3)
@@ -1203,15 +1203,39 @@ Tabs.MainTab:Button({
                 })
             end
 
-            -- ✅ AUTO-STOP pagkatapos ng one-shot
+            -- ✅ AUTO-STOP
             _G.GiveEnabled = false
         end)
     end,
 })
 
 
+-- ===== REFRESH BUTTON: I-update yung player list =====
+Tabs.MainTab:Button({
+    Title = "Refresh Player List",
+    Desc = "I-update yung listahan ng players sa dropdown",
+    Callback = function()
+        local newList = getAllPlayers()
 
+        if givePlayerDropdown and givePlayerDropdown.Refresh then
+            givePlayerDropdown:Refresh(newList)
 
+            WindUI:Notify({
+                Title = "Refreshed",
+                Content = "Naka-" .. tostring(#newList) .. " players sa listahan",
+                Icon = "solar:refresh-bold",
+                Duration = 3,
+            })
+        else
+            WindUI:Notify({
+                Title = "Note",
+                Content = "Restart script para ma-refresh yung listahan",
+                Icon = "solar:info-circle-bold",
+                Duration = 3,
+            })
+        end
+    end,
+}) -- end refresh player
 
 
 local Tabs = {
