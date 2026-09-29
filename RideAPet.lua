@@ -33,16 +33,6 @@ local Window = WindUI:CreateWindow({
     Icon = "rbxassetid://139934599708171",
     IconSize = 35,
     
---[[
-    Size = UDim2.fromOffset(580, 460), 
-    MinSize = Vector2.new(560, 350), 
-     MaxSize = Vector2.new(850, 560), 
-   BackgroundImageTransparency = 0.42, 
-    Background = "rbxassetid://139934599708171", 
-]]
-
-
-    
     NewElements = true,
     HideSearchBar = false,
 
@@ -67,14 +57,6 @@ local Window = WindUI:CreateWindow({
 
 
 
-
-
-
-
-
-
-
-
 -- */  Colors  /* --
 local Purple = Color3.fromHex("#7775F2")
 local Yellow = Color3.fromHex("#ECA201")
@@ -92,9 +74,17 @@ MainTab = Window:Tab({
    }),
 }
 
+-- this is for auto select tab 
+-- when script is loaded if not
+-- the right panel is empty
+task.defer(function()
+	Tabs.MainTab:Select()
+end)
 
 
-Tabs.MainTab:Select()
+
+
+
 
 --------------------------------------------------
 -- AUTO COLLECT EGG (MAIN TAB) - WITH VOLCANIC SEQUENCE
@@ -651,7 +641,6 @@ Tabs.MainTab:Toggle({
         end
     end,
 })
-
 
 
 Tabs.MainTab:Space()
@@ -1219,6 +1208,7 @@ Tabs.MainTab:Button({
         end)
     end,
 })
+
 
 
 
@@ -1871,6 +1861,14 @@ Tabs.EventTab:Toggle({
         end
     end,
 })
+
+
+
+
+
+
+
+
 
 
 
@@ -3576,7 +3574,7 @@ Tabs.SettingTab:Button({
         else
             WindUI:Notify({
                 Title = "Save Failed",
-                Content = "Hindi ma-save ang config.",
+                Content = "Failed to Save.",
                 Icon = "solar:danger-bold",
                 Duration = 3,
             })
@@ -3601,7 +3599,7 @@ Tabs.SettingTab:Button({
         else
             WindUI:Notify({
                 Title = "Delete Failed",
-                Content = "Walang nahanap na config na '" .. CONFIG_NAME .. "'",
+                Content = "Config Not Found '" .. CONFIG_NAME .. "'",
                 Icon = "solar:danger-bold",
                 Duration = 3,
             })
@@ -3631,4 +3629,3 @@ end)
 
 
 Tabs.SettingTab:Space()
-
