@@ -100,6 +100,8 @@ local eggChoicesList = {
     "Blackhole Egg",
     "Volcanic Egg",
     "Galaxy Egg",
+      "Tidal Egg",
+        "Bloom Egg",
     "Sinister Egg",
     "Easter Egg",
     "Skull Egg",
@@ -1213,7 +1215,7 @@ Tabs.MainTab:Button({
 -- ===== REFRESH BUTTON: I-update yung player list =====
 Tabs.MainTab:Button({
     Title = "Refresh Player List",
-    Desc = "I-update yung listahan ng players sa dropdown",
+    Desc = "Update the Drop-down List",
     Callback = function()
         local newList = getAllPlayers()
 
@@ -1915,12 +1917,22 @@ MiscTab = Window:Tab({
 
 
 
+
+----------------------------------------------------
+
+-- 1. EGG LISTAHAN AT MULTI-SELECT ESP SETUP (FIXED)
+
+----------------------------------------------------
+
+local Workspace = game:GetService("Workspace")
+
+
+
 -- Global variables
 
 local selectedEggsMap = {} -- Dictionary para mabilis ang check
 
 local isEggEspOn = false
-
 
 
 -- Multi-select Dropdown
