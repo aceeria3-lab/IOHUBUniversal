@@ -1,3 +1,26 @@
+local Players = game:GetService("Players")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local LocalPlayer = Players.LocalPlayer
+
+-- Built-in Anti-AFK
+local antiAfkConnection = LocalPlayer.Idled:Connect(function()
+    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+    task.wait(0.2)
+    VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+end)
+
+print("Anti-AFK ✅")
+
+
+
+
+
+
+
+
+
+
+
 local RunService = game:GetService("RunService")
 
 local cloneref = (cloneref or clonereference or function(instance)
@@ -3467,48 +3490,7 @@ Tabs.SettingTab:Toggle({
 
 
 
-local antiAfkConnection = nil
 
-
-
-Tabs.SettingTab:Toggle({
-
-    Title = "Anti-AFK",
-
-    Desc = "Prevents you from being kicked for being idle",
-
-    Flag = "AntiAFK",
-    Value = false,
-
-    Callback = function(state)
-
-        if state then
-
-            antiAfkConnection = LocalPlayer.Idled:Connect(function()
-
-                VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
-
-                task.wait(0.2)
-
-                VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
-
-            end)
-
-        else
-
-            if antiAfkConnection then
-
-                antiAfkConnection:Disconnect()
-
-                antiAfkConnection = nil
-
-            end
-
-        end
-
-    end,
-
-})
 
 
 
