@@ -3567,13 +3567,232 @@ end)
 
 
 
-
-
-
-
-
-
-
-
-
 Tabs.SettingTab:Space()
+
+
+
+--------------------------------------------------
+-- SERVER HOP (SETTING TAB)
+--------------------------------------------------
+
+-- Storage ng recent servers (para iwasan)
+local RECENT_FILE = "IOHUB2_recent_servers.json"
+local MAX_RECENT = 5
+
+-- Helper: Kunin yung recent servers list
+local function getRecentServers()
+    local HttpService = game:GetService("HttpService")
+    local recent = {}
+
+    pcall(function()
+        if isfile(RECENT_FILE) then
+            local data = HttpService:JSONDecode(readfile(RECENT_FILE))
+            if type(data) == "table" then
+                recent = data
+            end
+        end
+    end)
+
+    return recent
+end
+
+-- Helper: I-save yung recent servers list
+local function saveRecentServers(list)
+    local HttpService = game:GetService("HttpService")
+    pcall(function()
+        writefile(RECENT_FILE, HttpService:JSONEncode(list))
+    end)
+end
+
+-- Helper: Idagdag yung current server sa recent list
+local function addRecentServer(jobId)
+    if not jobId or jobId == "" then return end
+
+    local recent = getRecentServers()
+
+    for i, id in ipairs(recent) do
+        if id == jobId then
+            table.remove(recent, i)
+            break
+        end
+    end
+
+    table.insert(recent, 1, jobId)
+
+    while #recent > MAX_RECENT do
+        table.remove(recent)
+    end
+
+    saveRecentServers(recent)
+end
+
+-- Helper: Kunin yung server list via Roblox API
+local function fetchServerList(placeId)
+    local HttpService = game:GetService("HttpService")
+
+    local url = string.format(
+        "https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Asc&limit=100",
+        placeId
+    )
+
+    local success, response = pcall(function()
+        return HttpService:RequestAsync({
+            Url = url,
+            Method = "GET",
+        })
+    end)
+
+    if not success or not response or not response.Success then
+        return nil
+    end
+
+    local ok, decoded = pcall(function()
+        return HttpService:JSONDecode(response.Body)
+    end)
+
+    if not ok or not decoded or not decoded.data then
+        return nil
+    end
+
+    return decoded.data
+end
+
+-- ===== BUTTON: Server Hop =====
+Tabs.SettingTab:Button({
+    Title = "Server Hop",
+    Desc = "Leave and Rejoin to Different Server",
+    Callback = function()
+        local TeleportService = game:GetService("TeleportService")
+        local Players = game:GetService("Players")
+        local player = Players.LocalPlayer
+
+        local currentJobId = game.JobId
+        local placeId = game.PlaceId
+
+        if not currentJobId or currentJobId == "" then
+            WindUI:Notify({
+                Title = "Error",
+                Content = "Walang JobId (baka sa Studio ka nagte-test).",
+                Icon = "solar:danger-bold",
+                Duration = 3,
+            })
+            return
+        end
+
+        WindUI:Notify({
+            Title = "Server Hop",
+            Content = "Naghahanap ng bagong server...",
+            Icon = "solar:refresh-bold",
+            Duration = 3,
+        })
+
+        task.spawn(function()
+            -- Idagdag yung current server sa recent list
+            addRecentServer(currentJobId)
+
+            -- Kunin lahat ng recent servers
+            local recentServers = getRecentServers()
+            local recentSet = {}
+            for _, id in ipairs(recentServers) do
+                recentSet[id] = true
+            end
+
+            -- Kunin yung server list
+            local servers = fetchServerList(placeId)
+
+            if not servers or #servers == 0 then
+                WindUI:Notify({
+                    Title = "Fallback",
+                    Content = "Walang server list, random join.",
+                    Icon = "solar:danger-bold",
+                    Duration = 3,
+                })
+
+                pcall(function()
+                    TeleportService:Teleport(placeId, player)
+                end)
+                return
+            end
+
+            -- Filter: alisin yung recent at current
+            local validServers = {}
+            for _, server in ipairs(servers) do
+                local serverId = server.id
+                local playerCount = server.playing or 0
+                local maxPlayers = server.maxPlayers or 0
+
+                if serverId 
+                   and serverId ~= currentJobId 
+                   and not recentSet[serverId] 
+                   and playerCount < maxPlayers then
+                    table.insert(validServers, server)
+                end
+            end
+
+            -- Kung walang valid, alisin na lang yung recent filter
+            if #validServers == 0 then
+                for _, server in ipairs(servers) do
+                    local serverId = server.id
+                    local playerCount = server.playing or 0
+                    local maxPlayers = server.maxPlayers or 0
+
+                    if serverId 
+                       and serverId ~= currentJobId 
+                       and playerCount < maxPlayers then
+                        table.insert(validServers, server)
+                    end
+                end
+            end
+
+            if #validServers == 0 then
+                WindUI:Notify({
+                    Title = "Fallback",
+                    Content = "Walang available, random join.",
+                    Icon = "solar:danger-bold",
+                    Duration = 3,
+                })
+
+                pcall(function()
+                    TeleportService:Teleport(placeId, player)
+                end)
+                return
+            end
+
+            -- Pumili ng random server
+            local chosen = validServers[math.random(1, #validServers)]
+
+            WindUI:Notify({
+                Title = "Joining Server",
+                Content = string.format("Players: %d/%d", 
+                    chosen.playing or 0,
+                    chosen.maxPlayers or 0),
+                Icon = "solar:login-bold",
+                Duration = 3,
+            })
+
+            task.wait(1)
+
+            local success, err = pcall(function()
+                TeleportService:TeleportToPlaceInstance(placeId, chosen.id, player)
+            end)
+
+            if not success then
+                WindUI:Notify({
+                    Title = "Teleport Failed",
+                    Content = tostring(err),
+                    Icon = "solar:danger-bold",
+                    Duration = 5,
+                })
+            end
+        end)
+    end,
+})
+
+
+
+
+
+
+
+
+
