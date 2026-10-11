@@ -2929,6 +2929,405 @@ EventTab = Window:Tab({
 
 
 
+Tabs.EventTab:Toggle({
+    Title = "Auto Collect Candy",
+    Desc = "Auto collect candy at i-drop sa CandyDropOff",
+    Flag = "AutoCandyToggle",
+    Value = false,
+    Callback = function(state)
+        _G.AutoCandyEnabled = state
+        if not state then return end
+
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local Workspace = game:GetService("Workspace")
+            local RunService = game:GetService("RunService")
+            local TweenService = game:GetService("TweenService")
+            local player = Players.LocalPlayer
+
+            local SPOT_COOLDOWN = 6
+            local SPOT_FAIL_COOLDOWN = 30
+            local PROMPT_WAIT = 0.5
+            local CANDY_WAIT = 1.5
+            local RETURN_SPEED = 2000
+            local DROPOFF_WAIT = 1
+
+            local function getHRP()
+                local c = player.Character
+                return c and c:FindFirstChild("HumanoidRootPart")
+            end
+
+            local noclipConn = nil
+            local function enableNoclip()
+                if noclipConn then return end
+                noclipConn = RunService.Stepped:Connect(function()
+                    local c = player.Character
+                    if c then
+                        for _, p in ipairs(c:GetDescendants()) do
+                            if p:IsA("BasePart") and p.CanCollide then p.CanCollide = false end
+                        end
+                    end
+                end)
+            end
+            local function disableNoclip()
+                if noclipConn then noclipConn:Disconnect(); noclipConn = nil end
+            end
+
+            local lockedCFrame, lockConn = nil, nil
+            local function startLock(cf)
+                lockedCFrame = cf
+                if lockConn then lockConn:Disconnect() end
+                lockConn = RunService.RenderStepped:Connect(function()
+                    local hrp = getHRP()
+                    if hrp and lockedCFrame then
+                        hrp.CFrame = lockedCFrame
+                        hrp.AssemblyLinearVelocity = Vector3.zero
+                        hrp.AssemblyAngularVelocity = Vector3.zero
+                    end
+                end)
+            end
+            local function stopLock()
+                lockedCFrame = nil
+                if lockConn then lockConn:Disconnect(); lockConn = nil end
+            end
+
+            local function tweenHome(hrp, targetCF, speed)
+                if not hrp or not targetCF then return end
+                local distance = (targetCF.Position - hrp.Position).Magnitude
+                local duration = distance / speed
+                if duration < 0.05 then hrp.CFrame = targetCF; return end
+                stopLock()
+                local tw = TweenService:Create(hrp,
+                    TweenInfo.new(duration, Enum.EasingStyle.Linear), {CFrame = targetCF})
+                tw:Play()
+                tw.Completed:Wait()
+            end
+
+            local function findFolder(name)
+                local direct = Workspace:FindFirstChild(name)
+                if direct then return direct end
+                local ha = Workspace:FindFirstChild("HalloweenArea")
+                if ha then return ha:FindFirstChild(name) end
+                return nil
+            end
+
+            local function getCFrameOf(inst)
+                if not inst then return nil end
+                if inst:IsA("BasePart") then return inst.CFrame end
+                if inst:IsA("Model") then
+                    if inst.PrimaryPart then return inst.PrimaryPart.CFrame end
+                    local p = inst:FindFirstChildWhichIsA("BasePart", true)
+                    if p then return p.CFrame end
+                    local ok, pv = pcall(function() return inst:GetPivot() end)
+                    if ok and pv then return pv end
+                end
+                local p = inst:FindFirstChildWhichIsA("BasePart", true)
+                return p and p.CFrame or nil
+            end
+
+            local function getPromptFromSpot(spot)
+                if not spot then return nil end
+                local pk = spot:FindFirstChild("Pickup")
+                if pk and (pk:IsA("ProximityPrompt") or pk:IsA("ClickDetector")) then return pk end
+                local p = spot:FindFirstChildWhichIsA("ProximityPrompt", true)
+                if p then return p end
+                return spot:FindFirstChildWhichIsA("ClickDetector", true)
+            end
+
+            local function firePrompt(prompt)
+                if not prompt then return false end
+                if prompt:IsA("ProximityPrompt") then
+                    return pcall(function() fireproximityprompt(prompt) end)
+                elseif prompt:IsA("ClickDetector") then
+                    return pcall(function() fireclickdetector(prompt) end)
+                end
+                return false
+            end
+
+            local cooldowns, blacklist = {}, {}
+
+            while _G.AutoCandyEnabled do
+                task.wait(0.2)
+
+                local hrp = getHRP()
+                if not hrp then task.wait(0.5); continue end
+
+                local candySpawns = findFolder("CandySpawns")
+                local candyFolder = findFolder("HalloweenCandy")
+                local dropOff = Workspace:FindFirstChild("CandyDropOff")
+
+                if not candySpawns or not candyFolder or not dropOff then
+                    task.wait(1); continue
+                end
+
+                -- Cache candies
+                local candyList = {}
+                for _, candy in ipairs(candyFolder:GetChildren()) do
+                    local cf = getCFrameOf(candy)
+                    if cf then table.insert(candyList, {candy = candy, cf = cf}) end
+                end
+
+                if #candyList == 0 then task.wait(0.3); continue end
+
+                -- Build candy → nearest marker map
+                local markers = {}
+                for _, spot in ipairs(candySpawns:GetChildren()) do
+                    local cf = getCFrameOf(spot)
+                    if cf then table.insert(markers, {spot = spot, cf = cf}) end
+                end
+
+                local candyMap = {}
+                for _, ce in ipairs(candyList) do
+                    local bestMarker, bestDist = nil, math.huge
+                    for _, m in ipairs(markers) do
+                        local d = (m.cf.Position - ce.cf.Position).Magnitude
+                        if d < bestDist then bestMarker = m.spot; bestDist = d end
+                    end
+                    if bestMarker then
+                        candyMap[bestMarker.Name] = {candy = ce.candy, cf = ce.cf, marker = bestMarker}
+                    end
+                end
+
+                -- Pick nearest to player
+                local target, targetName, bestPlayerDist = nil, nil, math.huge
+                for name, entry in pairs(candyMap) do
+                    if (cooldowns[name] or 0) > tick() then continue end
+                    if blacklist[name] and blacklist[name] > tick() then continue end
+                    local d = (entry.cf.Position - hrp.Position).Magnitude
+                    if d < bestPlayerDist then
+                        bestPlayerDist = d
+                        target = entry
+                        targetName = name
+                    end
+                end
+
+                if not target then task.wait(0.3); continue end
+
+                enableNoclip()
+                startLock(target.cf + Vector3.new(0, 3, 0))
+                task.wait(PROMPT_WAIT)
+
+                local prompt = getPromptFromSpot(target.marker)
+                if not prompt then
+                    blacklist[targetName] = tick() + SPOT_FAIL_COOLDOWN
+                    stopLock()
+                    continue
+                end
+
+                local fired = false
+                for i = 1, 8 do
+                    if not _G.AutoCandyEnabled then break end
+                    firePrompt(prompt)
+                    task.wait(0.12)
+                    if not prompt.Parent or not prompt.Enabled then fired = true; break end
+                end
+
+                if fired then
+                    cooldowns[targetName] = tick() + SPOT_COOLDOWN
+                    local dropCF = getCFrameOf(dropOff)
+                    if dropCF then tweenHome(hrp, dropCF + Vector3.new(0, 3, 0), RETURN_SPEED) end
+                    task.wait(DROPOFF_WAIT)
+                else
+                    blacklist[targetName] = tick() + SPOT_FAIL_COOLDOWN
+                end
+
+                stopLock()
+                task.wait(0.1)
+            end
+
+            stopLock()
+            disableNoclip()
+        end)
+    end,
+})
+
+
+
+
+
+-- ===== Toggle para sa Auto Buy Halloween Egg =====
+Tabs.EventTab:Toggle({
+    Title = "Auto Buy Halloween Egg",
+    Desc = "Bumili ng Halloween Egg kapag may 350+ tokens",
+    Flag = "AutoBuyHalloweenEgg",
+    Value = false,
+    Callback = function(state)
+        _G.AutoBuyHalloweenEgg = state
+
+        if state then
+            task.spawn(function()
+                local Players = game:GetService("Players")
+                local Workspace = game:GetService("Workspace")
+                local ReplicatedStorage = game:GetService("ReplicatedStorage")
+                local player = Players.LocalPlayer
+
+                -- ===== CONFIG =====
+                local TOKEN_THRESHOLD = 350
+                local CHECK_INTERVAL = 1
+                local TELEPORT_WAIT = 0.8
+                local BUY_COOLDOWN = 2
+
+                -- ===== TELEPORT =====
+                local function teleportTo(cf)
+                    local char = player.Character
+                    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+                    if not hrp then return false end
+                    pcall(function() hrp.CFrame = cf end)
+                    return true
+                end
+
+                -- ===== GET TOKEN COUNT =====
+                local function getTokenCount()
+                    local ok, num, raw = pcall(function()
+                        local pg = player.PlayerGui
+                        if not pg then return nil, nil end
+                        local main = pg:FindFirstChild("Main")
+                        if not main then return nil, nil end
+
+                        local currency = main:FindFirstChild("Currency")
+                        if not currency then
+                            currency = main:FindFirstChild("CurrencyMobile")
+                        end
+
+                        if currency then
+                            local ht = currency:FindFirstChild("HalloweenTokens")
+                            if ht then
+                                local c = ht:FindFirstChild("Count")
+                                if c and c:IsA("TextLabel") then
+                                    local text = c.Text or ""
+                                    local parsed = tonumber((text:gsub("[^%d%.%-]", "")))
+                                    if parsed then return parsed, text end
+                                end
+                            end
+                        end
+
+                        -- Fallback: deep search
+                        for _, d in ipairs(pg:GetDescendants()) do
+                            if d.Name == "HalloweenTokens" then
+                                local c = d:FindFirstChild("Count")
+                                if c and c:IsA("TextLabel") then
+                                    local text = c.Text or ""
+                                    local parsed = tonumber((text:gsub("[^%d%.%-]", "")))
+                                    if parsed then return parsed, text end
+                                end
+                            end
+                        end
+
+                        return nil, nil
+                    end)
+
+                    if ok then return num, raw end
+                    return nil, nil
+                end
+
+                -- ===== GET CFrame =====
+                local function getCFrameOf(inst)
+                    if not inst then return nil end
+                    if inst:IsA("BasePart") then return inst.CFrame end
+                    if inst:IsA("Model") then
+                        if inst.PrimaryPart then return inst.PrimaryPart.CFrame end
+                        local part = inst:FindFirstChildWhichIsA("BasePart", true)
+                        if part then return part.CFrame end
+                        local ok, pivot = pcall(function() return inst:GetPivot() end)
+                        if ok and pivot then return pivot end
+                    end
+                    local part = inst:FindFirstChildWhichIsA("BasePart", true)
+                    return part and part.CFrame or nil
+                end
+
+                -- ===== FIRE BUY =====
+                local function fireBuy()
+                    local remotes = ReplicatedStorage:FindFirstChild("Remotes")
+                    local gameRemotes = remotes and remotes:FindFirstChild("Game")
+                    local buyRemote = gameRemotes and gameRemotes:FindFirstChild("BuyHalloweenEgg")
+
+                    if not buyRemote then
+                        warn("[AutoBuyEgg] Hindi mahanap ang 'BuyHalloweenEgg' remote!")
+                        return false
+                    end
+
+                    local ok = pcall(function()
+                        if buyRemote:IsA("RemoteFunction") then
+                            buyRemote:InvokeServer("Halloween Egg")
+                        elseif buyRemote:IsA("RemoteEvent") then
+                            buyRemote:FireServer("Halloween Egg")
+                        end
+                    end)
+
+                    if not ok then
+                        warn("[AutoBuyEgg] Failed to fire BuyHalloweenEgg!")
+                    end
+                    return ok
+                end
+
+                -- ===== MAIN LOOP =====
+                print("[AutoBuyEgg] 🎃 Started — threshold:", TOKEN_THRESHOLD)
+                local lastBuy = 0
+
+                while _G.AutoBuyHalloweenEgg do
+                    task.wait(CHECK_INTERVAL)
+
+                    if tick() - lastBuy < BUY_COOLDOWN then
+                        continue
+                    end
+
+                    -- ===== 1. CHECK TOKENS =====
+                    local tokens, rawText = getTokenCount()
+
+                    if not tokens then
+                        warn("[AutoBuyEgg] Hindi ma-read yung HalloweenTokens.Count — check path!")
+                        task.wait(1)
+                        continue
+                    end
+
+                    -- ===== 2. IF ENOUGH → BUY =====
+                    if tokens >= TOKEN_THRESHOLD then
+                        local shopGuy = Workspace:FindFirstChild("ShopGuy")
+                        if not shopGuy then
+                            warn("[AutoBuyEgg] Hindi mahanap ang 'ShopGuy'!")
+                            task.wait(2)
+                            continue
+                        end
+
+                        local shopCF = getCFrameOf(shopGuy)
+                        if not shopCF then
+                            warn("[AutoBuyEgg] Walang ShopGuy CFrame!")
+                            task.wait(2)
+                            continue
+                        end
+
+                        print(string.format("[AutoBuyEgg] ✅ Tokens: %s — TP to ShopGuy...", tostring(rawText)))
+                        teleportTo(shopCF + Vector3.new(0, 3, 0))
+                        task.wait(TELEPORT_WAIT)
+
+                        print("[AutoBuyEgg] 🛒 Firing BuyHalloweenEgg...")
+                        local success = fireBuy()
+                        task.wait(0.5)
+
+                        if not success then
+                            print("[AutoBuyEgg] Retry buy...")
+                            fireBuy()
+                            task.wait(0.5)
+                        end
+
+                        lastBuy = tick()
+                        print("[AutoBuyEgg] Buy attempt complete. Cooldown...")
+                    else
+                        print(string.format("[AutoBuyEgg] ⏳ Kulang pa: %d/%d",
+                            math.floor(tokens), TOKEN_THRESHOLD))
+                    end
+                end
+
+                print("[AutoBuyEgg] Stopped 🛑")
+            end)
+        end
+    end,
+})
+
+
+
+Tabs.EventTab:Space()
+
 
 --------------------------------------------------
 
