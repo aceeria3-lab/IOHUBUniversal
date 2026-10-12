@@ -1,26 +1,76 @@
+
+
+
+
 local Players = game:GetService("Players")
 
+
+
 local VirtualInputManager = game:GetService("VirtualInputManager")
+
+
 
 local LocalPlayer = Players.LocalPlayer
 
 
 
+
+
+
+
 -- Built-in Anti-AFK
+
+
 
 local antiAfkConnection = LocalPlayer.Idled:Connect(function()
 
+
+
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 0)
+
+
 
     task.wait(0.2)
 
+
+
     VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 0)
+
+
 
 end)
 
 
 
-print("Anti-AFK ✅")
+
+
+
+
+print("Anti-AFK âœ…")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -48,15 +98,31 @@ local RunService = game:GetService("RunService")
 
 
 
+
+
+
+
 local cloneref = (cloneref or clonereference or function(instance)
+
+
 
 	return instance
 
+
+
 end)
+
+
 
 local ReplicatedStorage = cloneref(game:GetService("ReplicatedStorage"))
 
+
+
 local HttpService = cloneref(game:GetService("HttpService"))
+
+
+
+
 
 
 
@@ -64,37 +130,79 @@ local WindUI
 
 
 
+
+
+
+
 do
+
+
 
 	local ok, result = pcall(function()
 
+
+
 		return require("./src/Init")
+
+
 
 	end)
 
 
 
+
+
+
+
 	if ok then
+
+
 
 		WindUI = result
 
+
+
 	else
+
+
 
 		if cloneref(game:GetService("RunService")):IsStudio() then
 
+
+
 			WindUI = require(cloneref(ReplicatedStorage:WaitForChild("WindUI"):WaitForChild("Init")))
+
+
 
 		else
 
+
+
 			WindUI =
+
+
 
 				loadstring(game:HttpGet("https://raw.githubusercontent.com/aceeria3-lab/WINDUIIOHUB/refs/heads/main/dist/main2.lua"))()
 
+
+
 		end
+
+
 
 	end
 
+
+
 end
+
+
+
+
+
+
+
+
 
 
 
@@ -104,55 +212,107 @@ end
 
 local Window = WindUI:CreateWindow({
 
+
+
     Title = "IOHUB",
+
+
 
     Folder = "IOHUB",
 
+
+
     Icon = "rbxassetid://139934599708171",
+
+
 
     IconSize = 35,
 
+
+
     
 
+
+
     NewElements = true,
+
+
 
     HideSearchBar = false,
 
 
 
+
+
+
+
     OpenButton = {
+
+
 
         Title = "IOHUB",
 
+
+
         CornerRadius = UDim.new(1, 0),
+
+
 
         StrokeThickness = 3,
 
+
+
         Enabled = true,
+
+
 
         Draggable = true,
 
+
+
         OnlyMobile = false,
+
+
 
         Scale = 0.8,
 
+
+
         Color = ColorSequence.new(
+
+
 
             Color3.fromHex("#30FF6A"),
 
+
+
             Color3.fromHex("#e7ff2f")
+
+
 
         ),
 
+
+
     },
+
+
 
     Topbar = {
 
+
+
         Height = 44,
+
+
 
         ButtonsType = "Mac",
 
+
+
     },
+
+
 
 })
 
@@ -162,17 +322,37 @@ local Window = WindUI:CreateWindow({
 
 
 
+
+
+
+
+
+
+
+
 -- */  Colors  /* --
+
+
 
 local Purple = Color3.fromHex("#7775F2")
 
+
+
 local Yellow = Color3.fromHex("#ECA201")
+
+
 
 local Green = Color3.fromHex("#10C550")
 
+
+
 local Grey = Color3.fromHex("#83889E")
 
+
+
 local Blue = Color3.fromHex("#257AF7")
+
+
 
 local Red = Color3.fromHex("#EF4F1D")
 
@@ -180,31 +360,63 @@ local Red = Color3.fromHex("#EF4F1D")
 
 
 
+
+
+
+
+
+
 local Tabs = {
+
+
 
 MainTab = Window:Tab({
 
+
+
        Title = "Main",
+
+
 
      Icon = "egg",
 
+
+
     Border = true,
 
+
+
    }),
+
+
 
 }
 
 
 
+
+
+
+
 -- this is for auto select tab 
+
+
 
 -- when script is loaded if not
 
+
+
 -- the right panel is empty
+
+
 
 task.defer(function()
 
+
+
 	Tabs.MainTab:Select()
+
+
 
 end)
 
@@ -220,141 +432,290 @@ end)
 
 
 
+
+
+
+
+
+
+
 --------------------------------------------------
+
+
 
 -- AUTO COLLECT EGG (MAIN TAB) - WITH VOLCANIC SEQUENCE
 
+
+
 --------------------------------------------------
+
+
+
+
 
 
 
 _G.SelectedEggTargets = {}
 
+
+
 _G.AutoEggEnabled = false
+
+
 
 _G.AutoDipEnabled = false
 
 
 
+
+
+
+
 local eggChoicesList = {
+
+
 
     "Cherub Egg",
 
+
+
     "Solaris Egg",
+
+
 
     "Blackhole Egg",
 
+
+
     "Volcanic Egg",
+
+
 
     "Galaxy Egg",
 
+
+
       "Tidal Egg",
+
+
 
         "Bloom Egg",
 
+
+
     "Sinister Egg",
+
+
 
     "Easter Egg",
 
+
+
     "Skull Egg",
+
+
 
     "Aurora Egg",
 
+
+
     "Diamond Egg",
+
+
 
     "Dominus Egg",
 
+
+
     "Flaming Egg",
+
+
 
     "Glass Egg",
 
+
+
     "Cracked Egg",
+
+
 
     "Flower Egg",
 
+
+
     "Soul Egg",
+
+
 
     "Leaf Egg",
 
+
+
     "Mushroom Egg",
+
+
 
     "Stone Egg",
 
+
+
     "Slime Egg",
 
+
+
     "Crystal Egg",
+
+
 
 }
 
 
 
+
+
+
+
 -- 1. MULTI-SELECT Dropdown
+
+
 
 Tabs.MainTab:Dropdown({
 
+
+
     Title = "Select Egg Target",
+
+
 
     Desc = "Choose One or Multi Eggs to Collect",
 
+
+
     Flag = "SelectEggTarget",
+
+
 
     Values = eggChoicesList,
 
+
+
     Value = {},
+
+
 
     AllowNone = true,
 
+
+
     Multi = true,
 
+
+
     Callback = function(selectedTable)
+
+
 
         _G.SelectedEggTargets = {}
 
 
 
+
+
+
+
         if type(selectedTable) == "table" then
+
+
 
             for key, value in pairs(selectedTable) do
 
+
+
                 if type(key) == "number" and type(value) == "string" then
+
+
 
                     _G.SelectedEggTargets[value] = true
 
+
+
                 elseif type(key) == "string" and value == true then
+
+
 
                     _G.SelectedEggTargets[key] = true
 
+
+
                 end
+
+
 
             end
 
+
+
         end
+
+
 
     end,
 
+
+
 })
+
+
+
+
 
 
 
 -- 2. Toggle para sa Auto Dip
 
+
+
 Tabs.MainTab:Toggle({
+
+
 
     Title = "Auto Dip",
 
+
+
     Desc = "Teleport to Drop Location, Fire Dip, Wait 10s, then Return to Plot. If OFF, diretso sa Plot.",
+
+
 
     Flag = "AutoDip",
 
+
+
     Value = false,
+
+
 
     Callback = function(state)
 
+
+
         _G.AutoDipEnabled = state
+
+
 
     end,
 
+
+
 })
+
+
+
+
+
+
+
+
 
 
 
@@ -364,397 +725,793 @@ Tabs.MainTab:Toggle({
 
 -- 3. Toggle para sa Auto Collect Egg
 
+
+
 Tabs.MainTab:Toggle({
+
+
 
     Title = "Auto Collect Egg",
 
+
+
     Desc = "Automatically Collect the Selected Egg when Spawned",
+
+
 
     Flag = "AutoCollectEgg",
 
+
+
     Value = false,
 
-    Callback = function(state)
-
-        _G.AutoEggEnabled = state
 
 
+Callback = function(state)
+    _G.AutoEggEnabled = state
+    
+    if not state then
+        -- ✅ RESET FLAGS PAGKA-OFF
+        _G.EggCollecting = false
+        _G.ExitingHalloween = false
+        _G.LocationMismatchCount = 0
+        print("[AutoEgg] OFF 🛑")
+        return
+    end
+    
+    print("[AutoEgg] ON 🥚")
+    
+    if state then                        -- ✅ ITO YUNG WRAPPER
+        task.spawn(function()
+            -- ... rest ng code
 
-        if state then
 
-            task.spawn(function()
 
                 local Players = game:GetService("Players")
 
+
+
                 local Workspace = game:GetService("Workspace")
+
+
 
                 local TweenService = game:GetService("TweenService")
 
+
+
                 local RunService = game:GetService("RunService")
 
+
+
                 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+
 
                 local player = Players.LocalPlayer
 
 
 
+
+
+
+
                 -- ===== SPOT COORDINATES (Volcanic) =====
+
+
 
                 local SPOT_1 = CFrame.new(-4926.280, 41288.426, -3695.847)  -- Entrance
 
+
+
                 local SPOT_2 = CFrame.new(-5050.522, 41267.402, -3511.556)  -- Validate
+
+
 
                 local SPOT_3 = CFrame.new(-5329.609, 40912.852, -3581.365)  -- Egg location
 
 
 
+
+
+
+
                 -- ===== DROP LOCATION =====
+
+
 
                 local DROP_CFRAME = CFrame.new(-5102.84277, 41405.6289, -3489.11401)
 
 
 
+
+
+
+
                 -- ===== FIRE VOLCANO DIP EVENT (Cobalt) =====
+
+
 
                 local function fireVolcanoDip()
 
+
+
                     local ok, remote = pcall(function()
+
+
 
                         return ReplicatedStorage
 
+
+
                             :FindFirstChild("packages")
+
+
 
                             :FindFirstChild("Net")
 
+
+
                             :FindFirstChild("RE/VolcanoDip")
 
+
+
                     end)
+
+
+
+
 
 
 
                     if not ok or not remote then
 
+
+
                         warn("[AutoCollect] Hindi mahanap ang 'RE/VolcanoDip' remote!")
+
+
 
                         return false
 
+
+
                     end
+
+
+
+
 
 
 
                     local success = pcall(function()
 
+
+
                         remote:FireServer()
 
+
+
                     end)
+
+
+
+
 
 
 
                     if not success then
 
+
+
                         warn("[AutoCollect] Failed to fire VolcanoDip!")
 
+
+
                     end
+
+
+
+
 
 
 
                     return success
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Kunin ang plot mo =====
 
+
+
                 local function getMyPlot()
 
+
+
                     local plots = Workspace:FindFirstChild("Plots")
+
+
 
                     if not plots then return nil end
 
 
 
+
+
+
+
                     for _, plot in ipairs(plots:GetChildren()) do
 
+
+
                         local data = plot:FindFirstChild("Data")
+
+
 
                         local owner = data and data:FindFirstChild("Owner")
 
 
 
+
+
+
+
                         if owner then
+
+
 
                             if owner:IsA("ObjectValue") then
 
+
+
                                 if owner.Value == player then return plot end
+
+
 
                             elseif owner:IsA("StringValue") then
 
+
+
                                 if owner.Value == player.Name or owner.Value == player.DisplayName then
+
+
 
                                     return plot
 
+
+
                                 end
+
+
 
                             end
 
+
+
                         end
+
+
 
                     end
 
+
+
                     return nil
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Plot center CFrame =====
 
+
+
                 local function getPlotCenterCFrame(plot)
 
+
+
                     if not plot then return nil end
+
+
 
                     if plot.PrimaryPart then return plot.PrimaryPart.CFrame end
 
 
 
+
+
+
+
                     local hrp = plot:FindFirstChild("HumanoidRootPart", true)
+
+
 
                     if hrp then return hrp.CFrame end
 
 
 
+
+
+
+
                     for _, partName in ipairs({"Spawn", "Base", "Center", "Home"}) do
+
+
 
                         local part = plot:FindFirstChild(partName, true)
 
+
+
                         if part and part:IsA("BasePart") then
+
+
 
                             return part.CFrame
 
+
+
                         end
 
+
+
                     end
+
+
+
+
 
 
 
                     local ok, pivot = pcall(function() return plot:GetPivot() end)
 
+
+
                     if ok and pivot then return pivot end
+
+
+
+
 
 
 
                     for _, desc in ipairs(plot:GetDescendants()) do
 
+
+
                         if desc:IsA("BasePart") then
+
+
 
                             return desc.CFrame
 
+
+
                         end
 
+
+
                     end
+
+
+
+
 
 
 
                     return nil
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Generic tween sa CFrame =====
 
+
+
                 local function tweenTo(hrp, targetCFrame, duration, offsetY)
+
+
 
                     if not targetCFrame then return false end
 
 
 
+
+
+
+
                     local finalCFrame = targetCFrame + Vector3.new(0, offsetY or 3, 0)
+
+
 
                     local tweenInfo = TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
+
+
                     local tween = TweenService:Create(hrp, tweenInfo, {CFrame = finalCFrame})
+
+
 
                     tween:Play()
 
 
 
+
+
+
+
                     local completed = false
+
+
 
                     pcall(function()
 
+
+
                         tween.Completed:Wait()
+
+
 
                         completed = true
 
+
+
                     end)
+
+
+
+
 
 
 
                     task.wait(0.2)
 
+
+
                     return completed
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Tween pabalik sa plot =====
 
+
+
                 local function returnToPlot(hrp)
 
+
+
                     local myPlot = getMyPlot()
+
+
 
                     local plotCenter = getPlotCenterCFrame(myPlot)
 
 
 
+
+
+
+
                     if not plotCenter then
+
+
 
                         warn("[AutoCollect] Plot not found!")
 
+
+
                         return
 
+
+
                     end
+
+
+
+
 
 
 
                     tweenTo(hrp, plotCenter, 1.5, 5)
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Noclip ON/OFF =====
 
+
+
                 local noclipConnection = nil
+
+
+
+
 
 
 
                 local function enableNoclip()
 
+
+
                     if noclipConnection then return end
+
+
+
+
 
 
 
                     noclipConnection = RunService.Stepped:Connect(function()
 
+
+
                         local character = player.Character
+
+
 
                         if character then
 
+
+
                             for _, part in ipairs(character:GetDescendants()) do
+
+
 
                                 if part:IsA("BasePart") and part.CanCollide then
 
+
+
                                     part.CanCollide = false
+
+
 
                                 end
 
+
+
                             end
+
+
 
                         end
 
+
+
                     end)
 
+
+
                 end
+
+
+
+
 
 
 
                 local function disableNoclip()
 
+
+
                     if noclipConnection then
+
+
 
                         noclipConnection:Disconnect()
 
+
+
                         noclipConnection = nil
 
+
+
                     end
+
+
+
+
 
 
 
                     local character = player.Character
 
+
+
                     if character then
+
+
 
                         for _, part in ipairs(character:GetDescendants()) do
 
+
+
                             if part:IsA("BasePart") then
+
+
 
                                 part.CanCollide = true
 
+
+
                             end
+
+
 
                         end
 
+
+
                     end
+
+
 
                 end
 
 
 
+
+
+
+
                 -- ===== HELPER: FLY MODE ON/OFF =====
+
+
 
                 local flyConnection = nil
 
+
+
                 local flyVelocity = nil
+
+
 
                 local flyGyro = nil
 
 
 
+
+
+
+
                 local function enableFly()
 
+
+
                     local character = player.Character
+
+
 
                     if not character then return end
 
 
 
+
+
+
+
                     local hrp = character:FindFirstChild("HumanoidRootPart")
 
+
+
                     local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+
 
                     if not hrp or not humanoid then return end
 
 
 
+
+
+
+
                     if hrp:FindFirstChild("DemoFlyVelocity") then hrp.DemoFlyVelocity:Destroy() end
+
+
 
                     if hrp:FindFirstChild("DemoFlyGyro") then hrp.DemoFlyGyro:Destroy() end
 
 
 
+
+
+
+
                     local bv = Instance.new("BodyVelocity")
+
+
 
                     bv.Name = "DemoFlyVelocity"
 
+
+
                     bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+
+
 
                     bv.Velocity = Vector3.new(0, 0, 0)
 
+
+
                     bv.Parent = hrp
+
+
 
                     flyVelocity = bv
 
 
 
+
+
+
+
                     local bg = Instance.new("BodyGyro")
+
+
 
                     bg.Name = "DemoFlyGyro"
 
+
+
                     bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+
+
 
                     bg.P = 10000
 
+
+
                     bg.D = 100
+
+
 
                     bg.CFrame = hrp.CFrame
 
+
+
                     bg.Parent = hrp
 
+
+
                     flyGyro = bg
+
+
+
+
 
 
 
@@ -762,89 +1519,179 @@ Tabs.MainTab:Toggle({
 
 
 
+
+
+
+
                     flyConnection = RunService.RenderStepped:Connect(function()
+
+
 
                         if flyGyro and flyGyro.Parent and hrp then
 
+
+
                             flyGyro.CFrame = hrp.CFrame
+
+
 
                         end
 
+
+
                     end)
 
+
+
                 end
+
+
+
+
 
 
 
                 local function disableFly()
 
+
+
                     if flyConnection then
+
+
 
                         flyConnection:Disconnect()
 
+
+
                         flyConnection = nil
 
+
+
                     end
+
+
+
+
 
 
 
                     local character = player.Character
 
+
+
                     if character then
 
+
+
                         local hrp = character:FindFirstChild("HumanoidRootPart")
+
+
 
                         local humanoid = character:FindFirstChildOfClass("Humanoid")
 
 
 
+
+
+
+
                         if hrp then
+
+
 
                             if hrp:FindFirstChild("DemoFlyVelocity") then hrp.DemoFlyVelocity:Destroy() end
 
+
+
                             if hrp:FindFirstChild("DemoFlyGyro") then hrp.DemoFlyGyro:Destroy() end
 
+
+
                         end
+
+
+
+
 
 
 
                         if humanoid then
 
+
+
                             humanoid.PlatformStand = false
+
+
 
                         end
 
+
+
                     end
+
+
+
+
 
 
 
                     flyVelocity = nil
 
+
+
                     flyGyro = nil
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Instant Teleport (NOCLIP ON during teleport) =====
 
+
+
                 local function teleportTo(hrp, targetCFrame)
+
+
 
                     if not targetCFrame or not hrp then return false end
 
 
 
+
+
+
+
                     enableNoclip()
 
+
+
                     task.wait(0.1)
+
+
+
+
 
 
 
                     pcall(function()
 
+
+
                         hrp.CFrame = targetCFrame
 
+
+
                     end)
+
+
+
+
 
 
 
@@ -852,200 +1699,404 @@ Tabs.MainTab:Toggle({
 
 
 
+
+
+
+
                     disableNoclip()
+
+
+
+
 
 
 
                     return true
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Stable Tween (NOCLIP OFF during tween) =====
 
+
+
                 local function stableTween(hrp, targetCFrame, duration)
+
+
 
                     if not targetCFrame then return false end
 
 
 
+
+
+
+
                     disableNoclip()
+
+
 
                     task.wait(0.1)
 
 
 
+
+
+
+
                     local tweenInfo = TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 
+
+
                     local tween = TweenService:Create(hrp, tweenInfo, {CFrame = targetCFrame})
+
+
 
                     tween:Play()
 
 
 
+
+
+
+
                     local completed = false
+
+
 
                     pcall(function()
 
+
+
                         tween.Completed:Wait()
+
+
 
                         completed = true
 
+
+
                     end)
+
+
+
+
 
 
 
                     task.wait(0.2)
 
+
+
                     return completed
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Instant Fire Prompt =====
 
+
+
                 local function firePrompt(prompt)
+
+
 
                     if not prompt or not prompt:IsA("ProximityPrompt") then return false end
 
 
 
+
+
+
+
                     local success = pcall(function()
+
+
 
                         fireproximityprompt(prompt)
 
+
+
                     end)
+
+
+
+
 
 
 
                     return success
 
+
+
                 end
+
+
+
+
 
 
 
                 -- ===== HELPER: Manual Touched Trigger =====
 
+
+
                 local function triggerTouched(part, character)
+
+
 
                     if not part or not part:IsA("BasePart") then return end
 
 
 
+
+
+
+
                     local hrp = character and character:FindFirstChild("HumanoidRootPart")
+
+
 
                     if not hrp then return end
 
 
 
+
+
+
+
                     pcall(function()
 
+
+
                         part.Touched:Fire(hrp)
+
+
 
                     end)
 
 
 
+
+
+
+
                     for _, desc in ipairs(part:GetDescendants()) do
+
+
 
                         if desc:IsA("BasePart") then
 
+
+
                             pcall(function()
+
+
 
                                 desc.Touched:Fire(hrp)
 
+
+
                             end)
+
+
 
                         end
 
+
+
                     end
 
+
+
                 end
+
                 
+
 -- ===== HELPER: Hanapin ang Model ancestor ng isang instance =====
+
 local function getOwningModelName(inst)
+
     local cur = inst
+
     while cur and cur ~= Workspace do
+
         if cur:IsA("Model") then
+
             return cur.Name
+
         end
+
         cur = cur.Parent
+
     end
+
     return nil
+
 end
+
+
 
 -- ===== HELPER: Match ba ang model name sa target egg? =====
+
 local function modelMatchesTarget(modelName, targetEggName)
+
     if not modelName or not targetEggName then return false end
 
+
+
     local a = string.lower(modelName)
+
     local b = string.lower(targetEggName)
 
+
+
     -- Exact match o substring (para sa "Egg (2)", "Egg - Copy", etc.)
+
     return a == b or string.find(a, b, 1, true) ~= nil
+
 end                
+
                 
+
                 
+
+
 
 -- ===== HELPER: Nearest "Pickup" prompt NA PASOK SA TARGET EGG =====
+
 local function findNearestPickupPrompt(hrp, maxDist, targetEggName)
+
     if not hrp then return nil, nil end
 
+
+
     local nearest, nearestDist = nil, math.huge
+
     local debugCount = 0
 
+
+
     local ok, descendants = pcall(function()
+
         return Workspace:GetDescendants()
+
     end)
+
     if not ok or not descendants then return nil, nil end
 
+
+
     for _, desc in ipairs(descendants) do
+
         if desc:IsA("ProximityPrompt") and desc.Enabled then
+
             local txt = string.lower(desc.ActionText or "")
 
+
+
             if string.find(txt, "pick") or string.find(txt, "claim") or string.find(txt, "collect") then
+
                 debugCount = debugCount + 1
 
-                -- ✅ VERIFICATION: Yung owning Model ba ay target egg?
+
+
+                -- âœ… VERIFICATION: Yung owning Model ba ay target egg?
+
                 local ownerModel = getOwningModelName(desc)
 
+
+
                 if targetEggName and not modelMatchesTarget(ownerModel, targetEggName) then
-                    -- Skip — hindi ito yung hinahanap nating egg
+
+                    -- Skip â€” hindi ito yung hinahanap nating egg
+
                     continue
+
                 end
+
+
 
                 local parent = desc.Parent
+
                 local pos = nil
 
+
+
                 if parent then
+
                     if parent:IsA("BasePart") then
+
                         pos = parent.Position
+
                     elseif parent:IsA("Model") then
+
                         local okPivot, pivot = pcall(function() return parent:GetPivot() end)
+
                         if okPivot and pivot then pos = pivot.Position end
+
                     end
+
                 end
+
+
 
                 if pos then
+
                     local dist = (pos - hrp.Position).Magnitude
+
                     if dist < nearestDist and dist <= (maxDist or math.huge) then
+
                         nearestDist = dist
+
                         nearest = desc
+
                     end
+
                 end
+
             end
+
         end
+
     end
+
+
 
     if debugCount > 0 and not nearest then
+
         print(string.format("[AutoCollect] Nakita %d pickup prompts pero walang match sa '%s'",
+
             debugCount, tostring(targetEggName)))
+
     end
 
+
+
     return nearest, nearestDist
+
 end
+
+
+
+
+
+
+
 
 
 
@@ -1053,25 +2104,305 @@ end
 
 
 -- ===== FIRE BASKET DROP / CLAIM EVENT =====
+
 local function fireBasketDrop()
+
     local remotes = ReplicatedStorage:FindFirstChild("Remotes")
+
     local gameRemote = remotes and remotes:FindFirstChild("Game")
+
     local remote = gameRemote and gameRemote:FindFirstChild("BasketDrop")
 
+
+
     if not remote then
+
         warn("[AutoCollect] Hindi mahanap ang 'BasketDrop' remote!")
+
         return false
+
     end
+
+
 
     local ok = pcall(function()
+
         remote:FireServer()
+
     end)
 
+
+
     if not ok then
+
         warn("[AutoCollect] Failed to fire BasketDrop!")
+
     end
 
+
+
     return ok
+
+end
+
+
+
+
+
+
+-- ===== HELPER: Tween with arc (SLOW, matching recording) =====
+local function arcTween(hrp, targetCF, peakHeight, speed)
+    if not hrp or not targetCF then return false end
+    peakHeight = peakHeight or 240
+    speed = speed or 300  -- âš ï¸ BAGAL: 300 studs/sec (recording speed)
+    
+    enableNoclip()
+    task.wait(0.05)
+    
+    local startPos = hrp.Position
+    local endPos = targetCF.Position
+    
+    -- Peak position
+    local midPos = Vector3.new(
+        (startPos.X + endPos.X) / 2,
+        math.max(startPos.Y, endPos.Y) + peakHeight,
+        (startPos.Z + endPos.Z) / 2
+    )
+    
+    -- Step 1: Tween pataas papuntang peak (SLOW)
+    local dist1 = (midPos - startPos).Magnitude
+    local dur1 = math.max(dist1 / speed, 0.1)
+    
+    print(string.format("[Arc] Up: %.0f studs / %.2fs", dist1, dur1))
+    
+    local tween1 = TweenService:Create(
+        hrp,
+        TweenInfo.new(dur1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+        { CFrame = CFrame.new(midPos, endPos) }
+    )
+    tween1:Play()
+    
+    pcall(function()
+        tween1.Completed:Wait()
+    end)
+    task.wait(0.05)
+    
+    -- Step 2: Tween pababa papuntang target (SLOW)
+    local dist2 = (endPos - midPos).Magnitude
+    local dur2 = math.max(dist2 / speed, 0.1)
+    
+    print(string.format("[Arc] Down: %.0f studs / %.2fs", dist2, dur2))
+    
+    local tween2 = TweenService:Create(
+        hrp,
+        TweenInfo.new(dur2, Enum.EasingStyle.Linear, Enum.EasingDirection.In),
+        { CFrame = targetCF }
+    )
+    tween2:Play()
+    
+    pcall(function()
+        tween2.Completed:Wait()
+    end)
+    task.wait(0.1)
+    
+    return true
+end
+
+
+
+
+local function tweenSpeed(hrp, targetCF, speed)
+    if not hrp or not targetCF then return false end
+    speed = speed or 200
+
+    enableNoclip()
+    task.wait(0.05)
+
+    local distance = (targetCF.Position - hrp.Position).Magnitude
+    local duration = math.max(distance / speed, 0.1)
+
+    local tweenInfo = TweenInfo.new(
+        duration,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.Out
+    )
+
+    local tween = TweenService:Create(hrp, tweenInfo, { CFrame = targetCF })
+    tween:Play()
+
+    local done = false
+    pcall(function()
+        tween.Completed:Wait()
+        done = true
+    end)
+
+    task.wait(0.1)
+    return done
+end
+
+
+-- ===== HELPER: Walk with Y-axis bob (umaakyat-bumababa habang naglalakad) =====
+local function walkWithBob(hrp, targetCF, speed, bobHeight, bobDelay)
+    if not hrp or not targetCF then return false end
+    speed = speed or 3000
+    bobHeight = bobHeight or 8      -- Taas ng bob (studs)
+    bobDelay = bobDelay or 0.15     -- Pause per bob step
+
+    enableNoclip()
+    task.wait(0.05)
+
+    local startPos = hrp.Position
+    local endPos = targetCF.Position
+    local totalDist = (endPos - startPos).Magnitude
+
+    -- Hatiin sa chunks â€” bawat chunk may up-down
+    local CHUNKS = 5
+    for i = 1, CHUNKS do
+        local progress = i / CHUNKS
+        local basePos = startPos:Lerp(endPos, progress)
+
+        -- Up position (taas)
+        local upPos = basePos + Vector3.new(0, bobHeight, 0)
+        tweenSpeed(hrp, CFrame.new(upPos, endPos), speed)
+        task.wait(bobDelay)
+
+        -- Down position (baba) â€” same basePos
+        tweenSpeed(hrp, CFrame.new(basePos, endPos), speed)
+        task.wait(bobDelay)
+    end
+
+    -- Final: tween sa exact target
+    tweenSpeed(hrp, targetCF, speed)
+    return true
+end
+
+
+-- ===== HELPER: Bob up-down (parang nag-ccount) =====
+local function bobUpDown(hrp, baseCF, times, speedPerBob)
+    times = times or 3
+    speedPerBob = speedPerBob or 4000
+
+    local upCF = baseCF + Vector3.new(0, 8, 0)  -- Taas ng bob
+
+    for i = 1, times do
+        tweenSpeed(hrp, upCF, speedPerBob)
+        task.wait(0.05)
+        tweenSpeed(hrp, baseCF, speedPerBob)
+        task.wait(0.05)
+    end
+end
+
+
+-- ===== HELPER: Check if player is in Halloween Area =====
+local function isInHalloweenArea(hrp)
+    if not hrp then return false end
+    
+    local halloween = Workspace:FindFirstChild("HalloweenArea")
+    if not halloween then return false end
+    
+    -- Method 1: Bounding box check (pinaka-accurate)
+    local ok, cf, size = pcall(function()
+        return halloween:GetBoundingBox()
+    end)
+    
+    if ok and cf and size then
+        -- Expand para siguradong kasama yung player
+        local expandedSize = size + Vector3.new(100, 100, 100)
+        local relativePos = cf:PointToObjectSpace(hrp.Position)
+        local halfSize = expandedSize / 2
+        
+        if math.abs(relativePos.X) <= halfSize.X
+           and math.abs(relativePos.Y) <= halfSize.Y
+           and math.abs(relativePos.Z) <= halfSize.Z then
+            return true
+        end
+    end
+    
+    -- Method 2: Distance sa nearest part
+    local minDist = math.huge
+    for _, part in ipairs(halloween:GetDescendants()) do
+        if part:IsA("BasePart") then
+            local d = (hrp.Position - part.Position).Magnitude
+            if d < minDist then minDist = d end
+            -- Early exit kung malapit na
+            if minDist < 300 then return true end
+        end
+    end
+    
+    -- Method 3: Distance sa pivot (fallback)
+    if minDist == math.huge then
+        local ok2, pivot = pcall(function() return halloween:GetPivot() end)
+        if ok2 and pivot then
+            local d = (hrp.Position - pivot.Position).Magnitude
+            return d < 1000
+        end
+    end
+    
+    return minDist < 500
+end
+
+-- ===== HELPER: Fire Halloween Portal (going TO halloween) =====
+local function fireHalloweenPortalToHalloween()
+    local ok, prompt = pcall(function()
+        return Workspace.HalloweenArea
+            .Portal.Model.Model
+            .Part.HalloweenPromptAnchor.HalloweenPortalPrompt
+    end)
+    
+    if not ok or not prompt then
+        warn("[Location] Hindi mahanap ang halloween portal prompt (to halloween)!")
+        return false
+    end
+    
+    -- Teleport near portal muna
+    local portal = Workspace.HalloweenArea.Portal.Model.Model:FindFirstChild("portal")
+    if portal and portal:IsA("BasePart") then
+        -- tweenSpeed(hrp, portal.CFrame + Vector3.new(0, 5, 0), 20000)
+        -- â†‘ gagamitin natin sa caller, para may access sa hrp
+    end
+    
+    local success = pcall(function()
+        fireproximityprompt(prompt)
+    end)
+    
+    print("[Location] Fired halloween portal (to halloween):", success)
+    return success
+end
+
+-- ===== HELPER: Fire Portal to Main Map (going back) =====
+local function firePortalToMainMap(hrp)
+    local ok, portalModel = pcall(function()
+        return Workspace.Map.Portal.Model:GetChildren()[7]
+    end)
+    
+    if not ok or not portalModel then
+        warn("[Location] Hindi mahanap ang main map portal!")
+        return false
+    end
+    
+    -- Teleport to portal muna
+    local portalPart = portalModel:FindFirstChild("portal")
+    if portalPart and portalPart:IsA("BasePart") and hrp then
+        tweenSpeed(hrp, portalPart.CFrame + Vector3.new(0, 5, 0), 20000)
+        task.wait(0.3)
+    end
+    
+    -- Fire prompt
+    local promptOk, prompt = pcall(function()
+        return portalModel.Part.HalloweenPromptAnchor.HalloweenPortalPrompt
+    end)
+    
+    if not promptOk or not prompt then
+        warn("[Location] Hindi mahanap ang main map portal prompt!")
+        return false
+    end
+    
+    local success = pcall(function()
+        fireproximityprompt(prompt)
+    end)
+    
+    print("[Location] Fired main map portal:", success)
+    return success
 end
 
 
@@ -1080,22 +2411,21 @@ end
 
 
 
-
--- ===== HELPER: Post-drop flow (FAST) =====
+-- ===== HELPER: Post-drop flow (arc pattern) =====
 local function postDropFlow(hrp, targetEggName)
     -- ===== AUTO DIP =====
     if _G.AutoDipEnabled then
-        teleportTo(hrp, DROP_CFRAME)
+        tweenSpeed(hrp, DROP_CFRAME, 5000)
         task.wait(0.1)
 
         fireVolcanoDip()
         task.wait(0.1)
 
-        print("[AutoCollect] Auto Dip ON — Waiting 10 seconds...")
+        print("[AutoCollect] Auto Dip ON â€” Waiting 10 seconds...")
         task.wait(10)
     end
 
-    -- ===== TELEPORT AWAY FROM HOME =====
+    -- ===== GET HOME POSITION =====
     local myPlot = getMyPlot()
     local plotCenter = getPlotCenterCFrame(myPlot)
 
@@ -1104,87 +2434,90 @@ local function postDropFlow(hrp, targetEggName)
         return
     end
 
-    local AWAY_DISTANCE = 75
+    local homeCF = plotCenter + Vector3.new(0, 5, 0)
 
-    local awayCFrame = CFrame.new(
-        plotCenter.Position + Vector3.new(AWAY_DISTANCE, 5, 0),
-        plotCenter.Position
+    -- ===== ðŸŽ¯ WAITING AREA (side ng home) =====
+    local SIDE_DISTANCE = 200
+    local waitCF = CFrame.new(
+        homeCF.Position + Vector3.new(SIDE_DISTANCE, 0, 0),
+        homeCF.Position
     )
 
-    teleportTo(hrp, awayCFrame)
-    task.wait(0.05)  -- minimal lang
+    -- ===== ðŸŽ¬ STEP 1: ARC TWEEN PAPUNTANG WAITING AREA (MABAGAL) =====
+print("[AutoCollect] Arc flying SLOW to waiting area...")
+arcTween(hrp, waitCF, 240, 800)  -- âš ï¸ 300 studs/sec
+task.wait(0.1)
 
-    -- ===== 🔥 FIRE DROP =====
-    fireBasketDrop()
+    -- ===== â±ï¸ STEP 2: WAIT SA WAITING AREA =====
+    print("[AutoCollect] Waiting at side...")
+    task.wait(5)
 
-    -- ===== CLAIM — fast retry loop =====
-    local pickupPrompt, dist = nil, nil
-    local MAX_ATTEMPTS = 12
-    local INTERVAL = 0.15
-
-    for attempt = 1, MAX_ATTEMPTS do
-        pickupPrompt, dist = findNearestPickupPrompt(hrp, 500, targetEggName)
-
-        if pickupPrompt then
-            print(string.format("[AutoCollect] Found prompt (attempt %d, dist: %d)",
-                attempt, math.floor(dist or 0)))
-            break
-        end
-
-        task.wait(INTERVAL)
-    end
-
-    if pickupPrompt then
-        -- Fire agad — noclip na tayo, hindi kailangan ng extra teleport
-        for i = 1, 5 do
-            firePrompt(pickupPrompt)
-            task.wait(0.1)
-
-            if not pickupPrompt.Parent or not pickupPrompt.Enabled then
-                print("[AutoCollect] Prompt consumed ✅")
-                break
-            end
-        end
-    else
-        warn("[AutoCollect] ❌ Walang matching pickup prompt.")
-    end
-
-    -- ===== Diretso sa HOME =====
-    teleportTo(hrp, plotCenter + Vector3.new(0, 5, 0))
-    task.wait(0.1)  -- minimal lang bago mag-return
+    -- ===== ðŸŽ¬ STEP 3: TWEEN SA HOME BASE =====
+    print("[AutoCollect] Going home...")
+    tweenSpeed(hrp, homeCF, 5000)
 end
 
-                
+
 
 
 
                 -- ===== HELPER: Volcanic Egg sequence =====
 
+
+
                 local function volcanicSequence(hrp, prompt)
+
+
 
                     local character = player.Character
 
+
+
                     local volcano = Workspace:FindFirstChild("Volcano")
+
+
 
                     if not volcano then
 
+
+
                         warn("[AutoCollect] Walang 'Volcano' folder sa Workspace!")
 
+
+
                         return false
+
+
 
                     end
 
 
 
+
+
+
+
                     local entrance = volcano:FindFirstChild("VolcanoEntrance")
+
+
 
                     local validate = volcano:FindFirstChild("VolcanoValidate")
 
 
 
+
+
+
+
                     enableFly()
 
+
+
                     task.wait(0.5)
+
+
+
+
 
 
 
@@ -1192,59 +2525,110 @@ end
 
 
 
-                    -- Step 1: TELEPORT → SPOT 1 (Entrance)
+
+
+
+
+                    -- Step 1: TELEPORT â†’ SPOT 1 (Entrance)
+
+
 
                     teleportTo(hrp, SPOT_1)
 
+
+
                     task.wait(0.3)
+
+
+
+
 
 
 
                     if entrance then
 
+
+
                         triggerTouched(entrance, character)
 
+
+
                     end
+
+
 
                     task.wait(0.5)
 
 
 
-                    -- Step 2: TWEEN → SPOT 2 (Validate)
+
+
+
+
+                    -- Step 2: TWEEN â†’ SPOT 2 (Validate)
+
+
 
                     stableTween(hrp, SPOT_2, 1.5)
+
+
 
                     task.wait(0.3)
 
 
 
+
+
+
+
                     if validate then
+
+
 
                         triggerTouched(validate, character)
 
+
+
                     end
 
+
+
                     task.wait(0.5)
 
 
 
-                    -- Step 3: TELEPORT → SPOT 3 (Egg)
 
-                    teleportTo(hrp, SPOT_3)
 
-                    task.wait(0.5)
+
+
+    tweenSpeed(hrp, SPOT_3, 3000)
+task.wait(0.3)
+
+
 
 
 
                     -- Step 4: Instant fire prompt
 
+
+
                     if prompt then
+
+
 
                         firePrompt(prompt)
 
+
+
                         task.wait(0.5)
 
+
+
                     end
+
+
+
+
 
 
 
@@ -1252,1429 +2636,232 @@ end
 
 
 
-                    -- Step 5: TELEPORT → SPOT 2 (Validate)
-
-                    teleportTo(hrp, SPOT_2)
-
-                    task.wait(0.3)
 
 
 
-                    -- Step 6: TWEEN → SPOT 1 (Entrance)
+
+                  -- Step 5: ðŸŽ¬ TWEEN â†’ SPOT 2 (Validate)
+tweenSpeed(hrp, SPOT_2, 3000)
+task.wait(0.3)
+
+
+
+
+
+
+
+                    -- Step 6: TWEEN â†’ SPOT 1 (Entrance)
+
+
 
                     stableTween(hrp, SPOT_1, 1.5)
 
+
+
                     task.wait(0.5)
+
+
+
+
 
 
 
                     -- Step 7+: Post-drop flow (Dip toggle dependent)
 
+
+
                     -- dati:
+
 -- postDropFlow(hrp)
 
+
+
 -- gawin:
+
+-- Step 7+: Post-drop flow
 postDropFlow(hrp, "Volcanic Egg")
 
+-- ✅ FLY OFF + NOCLIP OFF
+task.wait(0.5)
+disableFly()
+disableNoclip()
+
+-- ✅✅✅ RESET FLAG PAGKA-TAPOS NG VOLCANIC
+_G.EggCollecting = false
+print("[AutoEgg] 🔓 EggCollecting = false (volcanic done)")
+
+return true
 
 
-                    -- ✅ FLY OFF + NOCLIP OFF
-
-                    task.wait(0.5)
-
-                    disableFly()
-
-                    disableNoclip()
-
-
-
-                    return true
 
                 end
 
 
 
-                -- ===== MAIN LOOP =====
 
-                while _G.AutoEggEnabled do
-
-                    task.wait(0.5)
-
-
-
-                    if next(_G.SelectedEggTargets) == nil then
-
-                        continue
-
-                    end
-
-
-
-                    local character = player.Character
-
-                    local hrp = character and character:FindFirstChild("HumanoidRootPart")
-
-
-
-                    if not hrp then
-
-                        task.wait(1)
-
-                        continue
-
-                    end
-
-
-
-                    local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
-
-                    if not renderedEggs then
-
-                        task.wait(1)
-
-                        continue
-
-                    end
-
-
-
-                    local targetCFrame = nil
-
-                    local foundPrompt = nil
-
-                    local targetEggName = nil
-
-
-
-                    -- Hanapin ang egg
-
-                    for _, eggModel in ipairs(renderedEggs:GetChildren()) do
-
-                        if _G.SelectedEggTargets[eggModel.Name] then
-
-                            local pickup = eggModel:FindFirstChild("Pickup", true)
-
-
-
-                            if pickup then
-
-                                local targetPart = pickup
-
-                                if pickup:IsA("ProximityPrompt") then
-
-                                    foundPrompt = pickup
-
-                                    targetPart = pickup.Parent
-
-                                elseif not pickup:IsA("BasePart") and not pickup:IsA("Model") then
-
-                                    targetPart = pickup.Parent
-
-                                    foundPrompt = targetPart:FindFirstChildOfClass("ProximityPrompt")
-
-                                else
-
-                                    foundPrompt = eggModel:FindFirstChildOfClass("ProximityPrompt", true)
-
-                                end
-
-
-
-                                if targetPart:IsA("Model") then
-
-                                    targetCFrame = targetPart.PrimaryPart and targetPart.PrimaryPart.CFrame or targetPart:GetPivot()
-
-                                elseif targetPart:IsA("BasePart") then
-
-                                    targetCFrame = targetPart.CFrame
-
-                                end
-
-
-
-                                if targetCFrame then
-
-                                    targetEggName = eggModel.Name
-
-                                    break
-
-                                end
-
-                            end
-
-                        end
-
-                    end
-
-
-
-                    -- ✅ KUNG MAY NAHANAP
-
-                    if targetCFrame then
-
-
-
-                        -- ===== VOLCANIC EGG SPECIAL SEQUENCE =====
-
-                        if targetEggName == "Volcanic Egg" then
-
-                            volcanicSequence(hrp, foundPrompt)
-
-                            task.wait(0.5)
-
-                            continue
-
-                        end
-
-                        -- ===== END VOLCANIC SEQUENCE =====
-
-
-
-                        -- ===== NORMAL EGG SEQUENCE =====
-
-                        enableFly()
-
-                        task.wait(0.3)
-
-
-
-                        -- Step 1: TELEPORT → EGG
-
-                        teleportTo(hrp, targetCFrame + Vector3.new(0, 3, 0))
-
-                        task.wait(0.3)
-
-
-
-                        if foundPrompt and foundPrompt:IsA("ProximityPrompt") then
-
-                            -- Step 2: Fire Egg Prompt
-
-                            firePrompt(foundPrompt)
-
-                            task.wait(0.3)
-
-
-
-                            -- Step 3+: Post-drop flow (Dip toggle dependent)
-
-                            -- dati:
--- postDropFlow(hrp)
-
--- gawin:
-postDropFlow(hrp, targetEggName)
-
-                        end
-
-
-
-                        disableFly()
-
-                        disableNoclip()
-
-                    end
-
-                    -- ❌ KUNG WALANG NAHANAP: free walk lang
-
-                end
-
-            end)
-
-        end
-
-    end,
-
-})
-
-
-
-
-
-Tabs.MainTab:Space()
-
-
-
---------------------------------------------------
-
--- COLLECT & GIVE (MAIN TAB)
-
---------------------------------------------------
-
-
-
-_G.GiveTargetPlayer = nil
-
-_G.GiveTargetEggs = {}
-
-_G.GiveEnabled = false
-
-
-
--- ===== HELPER: Kunin lahat ng existing players =====
-
-local function getAllPlayers()
-
-    local list = {}
-
-    local Players = game:GetService("Players")
-
-
-
-    for _, p in ipairs(Players:GetPlayers()) do
-
-        if p ~= Players.LocalPlayer then
-
-            table.insert(list, p.Name)
-
-        end
-
-    end
-
-
-
-    if #list == 0 then
-
-        table.insert(list, "(no players)")
-
-    end
-
-
-
-    return list
-
+-- ===== CHECK KUNG EGG AY NASA HALLOWEEN =====
+local function isEggInHalloween(eggModel)
+    if not eggModel then return false end
+    local ha = Workspace:FindFirstChild("HalloweenArea")
+    if not ha then return false end
+    return eggModel:IsDescendantOf(ha)
 end
 
 
+-- ===== CHECK KUNG NASA HALLOWEEN AREA =====
+local function isInHalloweenArea(hrp)
+    if not hrp then return false end
+    local refCF = CFrame.new(-46059.078, 40382.543, -20351.945)
+    local dist = (hrp.Position - refCF.Position).Magnitude
+    return dist < 2000
+end
 
--- ===== DROPDOWN REFERENCES =====
 
-local givePlayerDropdown = nil
+-- ===== MAIN LOOP (CLEAN VERSION) =====
+while _G.AutoEggEnabled do
+    task.wait(0.5)
 
+    if next(_G.SelectedEggTargets) == nil then
+        continue
+    end
 
+    local character = player.Character
+    local hrp = character and character:FindFirstChild("HumanoidRootPart")
 
--- 1. SINGLE-SELECT Dropdown: Player Target
+    if not hrp then
+        task.wait(1)
+        continue
+    end
 
-givePlayerDropdown = Tabs.MainTab:Dropdown({
+    -- ===== HANAPIN ANG EGG =====
+    local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
+    if not renderedEggs then
+        task.wait(1)
+        continue
+    end
 
-    Title = "Give Egg To Player Plot",
+    local targetCFrame = nil
+    local foundPrompt = nil
+    local targetEggName = nil
 
-    Desc = "Choose Player then Give Egg to Them",
+    -- Build selected list
+    local selectedLower = {}
+    for name, _ in pairs(_G.SelectedEggTargets) do
+        table.insert(selectedLower, name:lower())
+    end
 
-    Flag = "GiveTargetPlayer",
-
-    Values = getAllPlayers(),
-
-    Value = "",
-
-    AllowNone = true,
-
-    Multi = false,
-
-    Callback = function(selected)
-
-        if type(selected) == "table" then
-
-            selected = selected[1] or ""
-
+    -- Search egg
+    for _, eggModel in ipairs(renderedEggs:GetChildren()) do
+        local eggNameLower = eggModel.Name:lower()
+        local matched = false
+        
+        for _, selName in ipairs(selectedLower) do
+            if eggNameLower:find(selName, 1, true) then
+                matched = true
+                break
+            end
         end
 
-        _G.GiveTargetPlayer = selected
-
-    end,
-
-})
-
-
-
-
-
-
-
--- 2. MULTI-SELECT Dropdown: Egg Targets
-
-Tabs.MainTab:Dropdown({
-
-    Title = "Eggs to Collect & Give",
-
-    Desc = "Choose Egg",
-
-    Flag = "GiveTargetEggs",
-
-    Values = eggChoicesList,
-
-    Value = {},
-
-    AllowNone = true,
-
-    Multi = true,
-
-    Callback = function(selectedTable)
-
-        _G.GiveTargetEggs = {}
-
-
-
-        if type(selectedTable) == "table" then
-
-            for key, value in pairs(selectedTable) do
-
-                if type(key) == "number" and type(value) == "string" then
-
-                    _G.GiveTargetEggs[value] = true
-
-                elseif type(key) == "string" and value == true then
-
-                    _G.GiveTargetEggs[key] = true
-
+        if matched then
+            local pickup = eggModel:FindFirstChild("Pickup", true)
+            if pickup then
+                local targetPart = pickup
+                if pickup:IsA("ProximityPrompt") then
+                    foundPrompt = pickup
+                    targetPart = pickup.Parent
                 end
 
-            end
-
-        end
-
-    end,
-
-})
-
-
-
--- 3. START Button
-
-Tabs.MainTab:Button({
-
-    Title = "Start Collect & Give",
-
-    Desc = "Collect and Give to Player Plot",
-
-    Callback = function()
-
-        -- Validate
-
-        if not _G.GiveTargetPlayer or _G.GiveTargetPlayer == "" or _G.GiveTargetPlayer == "(no players)" then
-
-            WindUI:Notify({
-
-                Title = "Error",
-
-                Content = "Pumili muna ng target player!",
-
-                Icon = "solar:danger-bold",
-
-                Duration = 3,
-
-            })
-
-            return
-
-        end
-
-
-
-        if next(_G.GiveTargetEggs) == nil then
-
-            WindUI:Notify({
-
-                Title = "Error",
-
-                Content = "Pumili muna ng egg target!",
-
-                Icon = "solar:danger-bold",
-
-                Duration = 3,
-
-            })
-
-            return
-
-        end
-
-
-
-        _G.GiveEnabled = true
-
-
-
-        WindUI:Notify({
-
-            Title = "Collect & Give Started",
-
-            Content = "Target: " .. _G.GiveTargetPlayer,
-
-            Icon = "solar:play-circle-bold",
-
-            Duration = 3,
-
-        })
-
-
-
-        task.spawn(function()
-
-            local Players = game:GetService("Players")
-
-            local Workspace = game:GetService("Workspace")
-
-            local TweenService = game:GetService("TweenService")
-
-            local RunService = game:GetService("RunService")
-
-            local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-            local player = Players.LocalPlayer
-
-
-
-            -- ===== BasketDrop Remote =====
-
-            local basketDropRemote = nil
-
-            pcall(function()
-
-                basketDropRemote = ReplicatedStorage:FindFirstChild("Remotes")
-
-                    and ReplicatedStorage.Remotes:FindFirstChild("Game")
-
-                    and ReplicatedStorage.Remotes.Game:FindFirstChild("BasketDrop")
-
-            end)
-
-
-
-            if not basketDropRemote then
-
-                WindUI:Notify({
-
-                    Title = "Error",
-
-                    Content = "Hindi mahanap ang BasketDrop remote!",
-
-                    Icon = "solar:danger-bold",
-
-                    Duration = 5,
-
-                })
-
-                _G.GiveEnabled = false
-
-                return
-
-            end
-
-
-
-            -- ===== SPOT COORDINATES (Volcanic) =====
-
-            local SPOT_1 = CFrame.new(-4926.280, 41288.426, -3695.847)
-
-            local SPOT_2 = CFrame.new(-5050.522, 41267.402, -3511.556)
-
-            local SPOT_3 = CFrame.new(-5329.609, 40912.852, -3581.365)
-
-
-
-            -- ===== HELPER: Plot by player name =====
-
-            local function getPlotByPlayerName(targetName)
-
-                local plots = Workspace:FindFirstChild("Plots")
-
-                if not plots then return nil end
-
-
-
-                local targetPlayerInstance = nil
-
-                for _, p in ipairs(Players:GetPlayers()) do
-
-                    if p.Name == targetName then
-
-                        targetPlayerInstance = p
-
-                        break
-
-                    end
-
-                end
-
-
-
-                for _, plot in ipairs(plots:GetChildren()) do
-
-                    local data = plot:FindFirstChild("Data")
-
-                    local owner = data and data:FindFirstChild("Owner")
-
-
-
-                    if owner then
-
-                        if owner:IsA("ObjectValue") then
-
-                            if targetPlayerInstance and owner.Value == targetPlayerInstance then
-
-                                return plot
-
-                            end
-
-                            if owner.Value and owner.Value.Name == targetName then
-
-                                return plot
-
-                            end
-
-                        elseif owner:IsA("StringValue") then
-
-                            if owner.Value == targetName then
-
-                                return plot
-
-                            end
-
-                        end
-
-                    end
-
-                end
-
-                return nil
-
-            end
-
-
-
-            -- ===== HELPER: Plot center CFrame =====
-
-            local function getPlotCenterCFrame(plot)
-
-                if not plot then return nil end
-
-                if plot.PrimaryPart then return plot.PrimaryPart.CFrame end
-
-
-
-                local hrp = plot:FindFirstChild("HumanoidRootPart", true)
-
-                if hrp then return hrp.CFrame end
-
-
-
-                for _, partName in ipairs({"Spawn", "Base", "Center", "Home"}) do
-
-                    local part = plot:FindFirstChild(partName, true)
-
-                    if part and part:IsA("BasePart") then
-
-                        return part.CFrame
-
-                    end
-
-                end
-
-
-
-                local ok, pivot = pcall(function() return plot:GetPivot() end)
-
-                if ok and pivot then return pivot end
-
-
-
-                for _, desc in ipairs(plot:GetDescendants()) do
-
-                    if desc:IsA("BasePart") then
-
-                        return desc.CFrame
-
-                    end
-
-                end
-
-
-
-                return nil
-
-            end
-
-
-
-            -- ===== HELPER: Noclip =====
-
-            local noclipConnection = nil
-
-
-
-            local function enableNoclip()
-
-                if noclipConnection then return end
-
-
-
-                noclipConnection = RunService.Stepped:Connect(function()
-
-                    local character = player.Character
-
-                    if character then
-
-                        for _, part in ipairs(character:GetDescendants()) do
-
-                            if part:IsA("BasePart") and part.CanCollide then
-
-                                part.CanCollide = false
-
-                            end
-
-                        end
-
-                    end
-
-                end)
-
-            end
-
-
-
-            local function disableNoclip()
-
-                if noclipConnection then
-
-                    noclipConnection:Disconnect()
-
-                    noclipConnection = nil
-
-                end
-
-
-
-                local character = player.Character
-
-                if character then
-
-                    for _, part in ipairs(character:GetDescendants()) do
-
-                        if part:IsA("BasePart") then
-
-                            part.CanCollide = true
-
-                        end
-
-                    end
-
-                end
-
-            end
-
-
-
-            -- ===== HELPER: Fly =====
-
-            local flyConnection = nil
-
-            local flyGyro = nil
-
-
-
-            local function enableFly()
-
-                local character = player.Character
-
-                if not character then return end
-
-
-
-                local hrp = character:FindFirstChild("HumanoidRootPart")
-
-                local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-                if not hrp or not humanoid then return end
-
-
-
-                if hrp:FindFirstChild("GiveFlyVelocity") then hrp.GiveFlyVelocity:Destroy() end
-
-                if hrp:FindFirstChild("GiveFlyGyro") then hrp.GiveFlyGyro:Destroy() end
-
-
-
-                local bv = Instance.new("BodyVelocity")
-
-                bv.Name = "GiveFlyVelocity"
-
-                bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-
-                bv.Velocity = Vector3.new(0, 0, 0)
-
-                bv.Parent = hrp
-
-
-
-                local bg = Instance.new("BodyGyro")
-
-                bg.Name = "GiveFlyGyro"
-
-                bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-
-                bg.P = 10000
-
-                bg.D = 100
-
-                bg.CFrame = hrp.CFrame
-
-                bg.Parent = hrp
-
-                flyGyro = bg
-
-
-
-                humanoid.PlatformStand = true
-
-
-
-                flyConnection = RunService.RenderStepped:Connect(function()
-
-                    if flyGyro and flyGyro.Parent and hrp then
-
-                        flyGyro.CFrame = hrp.CFrame
-
-                    end
-
-                end)
-
-            end
-
-
-
-            local function disableFly()
-
-                if flyConnection then
-
-                    flyConnection:Disconnect()
-
-                    flyConnection = nil
-
-                end
-
-
-
-                local character = player.Character
-
-                if character then
-
-                    local hrp = character:FindFirstChild("HumanoidRootPart")
-
-                    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-
-
-                    if hrp then
-
-                        if hrp:FindFirstChild("GiveFlyVelocity") then hrp.GiveFlyVelocity:Destroy() end
-
-                        if hrp:FindFirstChild("GiveFlyGyro") then hrp.GiveFlyGyro:Destroy() end
-
-                    end
-
-
-
-                    if humanoid then
-
-                        humanoid.PlatformStand = false
-
-                    end
-
-                end
-
-
-
-                flyGyro = nil
-
-            end
-
-
-
-            -- ===== HELPER: Stable Tween (NOCLIP OFF during tween) =====
-
-            local function stableTween(hrp, targetCFrame, duration)
-
-                if not targetCFrame then return false end
-
-
-
-                disableNoclip()
-
-                task.wait(0.1)
-
-
-
-                local tweenInfo = TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-                local tween = TweenService:Create(hrp, tweenInfo, {CFrame = targetCFrame})
-
-                tween:Play()
-
-
-
-                local completed = false
-
-                pcall(function()
-
-                    tween.Completed:Wait()
-
-                    completed = true
-
-                end)
-
-
-
-                task.wait(0.2)
-
-                return completed
-
-            end
-
-
-
-            -- ===== HELPER: Instant Fire Prompt =====
-
-            local function firePrompt(prompt)
-
-                if not prompt or not prompt:IsA("ProximityPrompt") then return false end
-
-                local success = pcall(function()
-
-                    fireproximityprompt(prompt)
-
-                end)
-
-                return success
-
-            end
-
-
-
-            -- ===== HELPER: Touched Trigger =====
-
-            local function triggerTouched(part, character)
-
-                if not part or not part:IsA("BasePart") then return end
-
-
-
-                local hrp = character and character:FindFirstChild("HumanoidRootPart")
-
-                if not hrp then return end
-
-
-
-                pcall(function()
-
-                    part.Touched:Fire(hrp)
-
-                end)
-
-
-
-                for _, desc in ipairs(part:GetDescendants()) do
-
-                    if desc:IsA("BasePart") then
-
-                        pcall(function()
-
-                            desc.Touched:Fire(hrp)
-
-                        end)
-
-                    end
-
-                end
-
-            end
-
-
-
-            -- ===== HELPER: Teleport (NOCLIP ON during teleport) =====
-
-            local function teleport(hrp, targetCFrame)
-
-                if not targetCFrame then return false end
-
-
-
-                enableNoclip()
-
-                task.wait(0.1)
-
-
-
-                pcall(function()
-
-                    hrp.CFrame = targetCFrame
-
-                end)
-
-
-
-                task.wait(0.1)
-
-
-
-                disableNoclip()
-
-
-
-                return true
-
-            end
-
-
-
-            -- ===== HELPER: Volcanic Sequence =====
-
-            local function volcanicSequence(hrp, prompt)
-
-                local character = player.Character
-
-                local volcano = Workspace:FindFirstChild("Volcano")
-
-
-
-                if not volcano then return false end
-
-
-
-                local entrance = volcano:FindFirstChild("VolcanoEntrance")
-
-                local validate = volcano:FindFirstChild("VolcanoValidate")
-
-
-
-                -- Step 1: Teleport to Spot 1
-
-                enableFly()
-
-                enableNoclip()
-
-                task.wait(0.3)
-
-
-
-                teleport(hrp, SPOT_1)
-
-                task.wait(0.3)
-
-
-
-                -- Step 2: Tween to Spot 2 (NOCLIP OFF via stableTween)
-
-                stableTween(hrp, SPOT_2, 1.5)
-
-                task.wait(0.3)
-
-                if validate then triggerTouched(validate, character) end
-
-                task.wait(0.3)
-
-
-
-                -- Step 3: Teleport to Spot 3
-
-                teleport(hrp, SPOT_3)
-
-                task.wait(0.3)
-
-
-
-                if entrance then triggerTouched(entrance, character) end
-
-                task.wait(0.3)
-
-
-
-                if prompt then
-
-                    firePrompt(prompt)
-
-                    task.wait(0.5)
-
-                end
-
-
-
-                -- Step 4: Teleport back to Spot 2
-
-                teleport(hrp, SPOT_2)
-
-                task.wait(0.3)
-
-
-
-                -- Step 5: Tween to Spot 1 (NOCLIP OFF via stableTween)
-
-                stableTween(hrp, SPOT_1, 1.5)
-
-                task.wait(0.3)
-
-
-
-                return true
-
-            end
-
-
-
-            -- ============================================================
-
-            -- ONE-SHOT: Hanapin egg, i-collect, i-give, tapos STOP
-
-            -- ============================================================
-
-
-
-            local character = player.Character
-
-            local hrp = character and character:FindFirstChild("HumanoidRootPart")
-
-
-
-            if not hrp then
-
-                WindUI:Notify({
-
-                    Title = "Error",
-
-                    Content = "Walang character!",
-
-                    Icon = "solar:danger-bold",
-
-                    Duration = 3,
-
-                })
-
-                _G.GiveEnabled = false
-
-                return
-
-            end
-
-
-
-            local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
-
-            if not renderedEggs then
-
-                WindUI:Notify({
-
-                    Title = "Error",
-
-                    Content = "Walang RenderedEggs folder!",
-
-                    Icon = "solar:danger-bold",
-
-                    Duration = 3,
-
-                })
-
-                _G.GiveEnabled = false
-
-                return
-
-            end
-
-
-
-            -- Hanapin ang egg
-
-            local targetCFrame = nil
-
-            local foundPrompt = nil
-
-            local targetEggName = nil
-
-
-
-            for _, eggModel in ipairs(renderedEggs:GetChildren()) do
-
-                if _G.GiveTargetEggs[eggModel.Name] then
-
-                    local pickup = eggModel:FindFirstChild("Pickup", true)
-
-
-
-                    if pickup then
-
-                        local targetPart = pickup
-
-                        if pickup:IsA("ProximityPrompt") then
-
-                            foundPrompt = pickup
-
-                            targetPart = pickup.Parent
-
-                        elseif not pickup:IsA("BasePart") and not pickup:IsA("Model") then
-
-                            targetPart = pickup.Parent
-
-                            foundPrompt = targetPart:FindFirstChildOfClass("ProximityPrompt")
-
-                        else
-
-                            foundPrompt = eggModel:FindFirstChildOfClass("ProximityPrompt", true)
-
-                        end
-
-
-
-                        if targetPart:IsA("Model") then
-
-                            targetCFrame = targetPart.PrimaryPart and targetPart.PrimaryPart.CFrame or targetPart:GetPivot()
-
-                        elseif targetPart:IsA("BasePart") then
-
-                            targetCFrame = targetPart.CFrame
-
-                        end
-
-
-
-                        if targetCFrame then
-
-                            targetEggName = eggModel.Name
-
-                            break
-
-                        end
-
-                    end
-
-                end
-
-            end
-
-
-
-            -- ✅ KUNG MAY NAHANAP
-
-            if targetCFrame then
-
-
-
-                -- ===== VOLCANIC EGG =====
-
-                if targetEggName == "Volcanic Egg" then
-
-                    volcanicSequence(hrp, foundPrompt)
-
-
-
-                    -- ✅ Teleport to target plot + fire BasketDrop
-
-                    local targetPlot = getPlotByPlayerName(_G.GiveTargetPlayer)
-
-                    local targetPlotCenter = getPlotCenterCFrame(targetPlot)
-
-
-
-                    if targetPlotCenter then
-
-                        teleport(hrp, targetPlotCenter + Vector3.new(0, 5, 0))
-
-                        task.wait(0.5)
-
-
-
-                        pcall(function()
-
-                            basketDropRemote:FireServer()
-
-                        end)
-
-
-
-                        task.wait(0.5)
-
+                if targetPart and targetPart:IsA("BasePart") then
+                    targetCFrame = targetPart.CFrame
+                elseif eggModel:IsA("Model") then
+                    if eggModel.PrimaryPart then
+                        targetCFrame = eggModel.PrimaryPart.CFrame
                     else
-
-                        warn("[Collect & Give] Target plot not found for: " .. tostring(_G.GiveTargetPlayer))
-
+                        local ok, pivot = pcall(function() return eggModel:GetPivot() end)
+                        if ok and pivot then targetCFrame = pivot end
                     end
-
-
-
-                    -- ✅ OFF FLY + NOCLIP
-
-                    disableFly()
-
-                    disableNoclip()
-
-                    task.wait(0.3)
-
-
-
-                -- ===== NORMAL EGG =====
-
-                else
-
-                    enableFly()
-
-                    enableNoclip()
-
-                    task.wait(0.3)
-
-
-
-                    -- Teleport to egg
-
-                    teleport(hrp, targetCFrame + Vector3.new(0, 3, 0))
-
-                    task.wait(0.3)
-
-
-
-                    if foundPrompt and foundPrompt:IsA("ProximityPrompt") then
-
-                        firePrompt(foundPrompt)
-
-                        task.wait(0.3)
-
-
-
-                        -- Teleport to target plot
-
-                        local targetPlot = getPlotByPlayerName(_G.GiveTargetPlayer)
-
-                        local targetPlotCenter = getPlotCenterCFrame(targetPlot)
-
-
-
-                        if targetPlotCenter then
-
-                            teleport(hrp, targetPlotCenter + Vector3.new(0, 5, 0))
-
-                            task.wait(0.5)
-
-
-
-                            pcall(function()
-
-                                basketDropRemote:FireServer()
-
-                            end)
-
-
-
-                            task.wait(0.5)
-
-                        else
-
-                            warn("[Collect & Give] Target plot not found for: " .. tostring(_G.GiveTargetPlayer))
-
-                        end
-
-                    end
-
-
-
-                    disableFly()
-
-                    disableNoclip()
-
                 end
 
-
-
-                WindUI:Notify({
-
-                    Title = "Done",
-
-                    Content = "Egg collected & given. Click Start ulit para mag-collect.",
-
-                    Icon = "solar:check-circle-bold",
-
-                    Duration = 3,
-
-                })
-
-            else
-
-                WindUI:Notify({
-
-                    Title = "No Egg Found",
-
-                    Content = "Walang egg na available sa selected targets.",
-
-                    Icon = "solar:danger-bold",
-
-                    Duration = 3,
-
-                })
-
+                if targetCFrame then
+                    targetEggName = eggModel.Name
+                    break
+                end
             end
+        end
+    end
 
+    if not targetCFrame then
+        task.wait(0.5)
+        continue
+    end
 
+    -- ✅ DISTANCE CHECK — kung malayo, skip (Auto Candy na bahala)
+    local distToEgg = (targetCFrame.Position - hrp.Position).Magnitude
+    
+    if distToEgg > 10000 then
+        print("[AutoEgg] ⏸️ Egg malayo (" .. math.floor(distToEgg) .. " studs) — hintay Auto Candy")
+        task.wait(0.5)
+        continue
+    end
 
-            -- ✅ AUTO-STOP
+    -- ✅ MALAPIT NA — SET FLAG + COLLECT
+    _G.EggCollecting = true
+    print("[AutoEgg] ✅ Collecting:", targetEggName)
 
-            _G.GiveEnabled = false
+    -- ===== VOLCANIC EGG =====
+    if targetEggName == "Volcanic Egg" then
+        volcanicSequence(hrp, foundPrompt)
+        task.wait(0.5)
+        _G.EggCollecting = false
+        print("[AutoEgg] 🔓 EggCollecting = false (volcanic)")
+        continue
+    end
 
-        end)
+    -- ===== NORMAL EGG =====
+    enableFly()
+    task.wait(0.3)
 
+    tweenSpeed(hrp, targetCFrame + Vector3.new(0, 3, 0), 3000)
+    task.wait(0.3)
+
+    if foundPrompt and foundPrompt:IsA("ProximityPrompt") then
+        firePrompt(foundPrompt)
+        task.wait(0.3)
+        postDropFlow(hrp, targetEggName)
+    end
+
+    disableFly()
+    disableNoclip()
+
+    _G.EggCollecting = false
+    print("[AutoEgg] 🔓 EggCollecting = false (normal)")
+end
+
+             
+            end)
+            end
+        
     end,
-
 })
 
 
 
 
 
--- ===== REFRESH BUTTON: I-update yung player list =====
-
-Tabs.MainTab:Button({
-
-    Title = "Refresh Player List",
-
-    Desc = "Update the Drop-down List",
-
-    Callback = function()
-
-        local newList = getAllPlayers()
 
 
 
-        if givePlayerDropdown and givePlayerDropdown.Refresh then
-
-            givePlayerDropdown:Refresh(newList)
 
 
 
-            WindUI:Notify({
 
-                Title = "Refreshed",
 
-                Content = "Naka-" .. tostring(#newList) .. " players sa listahan",
 
-                Icon = "solar:refresh-bold",
 
-                Duration = 3,
 
-            })
 
-        else
 
-            WindUI:Notify({
 
-                Title = "Note",
-
-                Content = "Restart script para ma-refresh yung listahan",
-
-                Icon = "solar:info-circle-bold",
-
-                Duration = 3,
-
-            })
-
-        end
-
-    end,
-
-}) -- end refresh player
 
 
 
@@ -2684,7 +2871,15 @@ local Tabs = {
 
 
 
+
+
+
+
 AutomaticallyTab = Window:Tab({
+
+
+
+
 
 
 
@@ -2692,7 +2887,15 @@ AutomaticallyTab = Window:Tab({
 
 
 
+
+
+
+
      Icon = "workflow",
+
+
+
+
 
 
 
@@ -2700,11 +2903,31 @@ AutomaticallyTab = Window:Tab({
 
 
 
+
+
+
+
    }),
 
 
 
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2720,7 +2943,15 @@ AutomaticallyTab = Window:Tab({
 
 
 
+
+
+
+
 -- Global variable para sa Auto Upgrade
+
+
+
+
 
 
 
@@ -2732,7 +2963,19 @@ _G.AutoUpgradeEnabled = false
 
 
 
+
+
+
+
+
+
+
+
 Tabs.AutomaticallyTab:Toggle({
+
+
+
+
 
 
 
@@ -2740,17 +2983,35 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
     Desc = "Automatically Max Luck Upgrade",
+
+
+
+
 
 
 
     Flag = "AutoUpgrade",
 
+
+
     Value = false,
 
 
 
+
+
+
+
     Callback = function(state)
+
+
+
+
 
 
 
@@ -2762,11 +3023,27 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
         if state then
 
 
 
+
+
+
+
             task.spawn(function()
+
+
+
+
 
 
 
@@ -2778,7 +3055,19 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
                 -- Hanapin ang RemoteEvent para sa Upgrades
+
+
+
+
 
 
 
@@ -2786,11 +3075,23 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
                     and ReplicatedStorage.Remotes:FindFirstChild("Game")
 
 
 
+
+
+
+
                     and ReplicatedStorage.Remotes.Game:FindFirstChild("Plot")
+
+
+
+
 
 
 
@@ -2802,7 +3103,19 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
                 while _G.AutoUpgradeEnabled do
+
+
+
+
 
 
 
@@ -2814,7 +3127,19 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
                     if upgradesEvent then
+
+
+
+
 
 
 
@@ -2822,7 +3147,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
                             upgradesEvent:FireServer("Max")
+
+
+
+
 
 
 
@@ -2830,7 +3163,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
                     else
+
+
+
+
 
 
 
@@ -2838,7 +3179,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
                         upgradesEvent = ReplicatedStorage:FindFirstChild("Remotes")
+
+
+
+
 
 
 
@@ -2846,7 +3195,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
                             and ReplicatedStorage.Remotes.Game:FindFirstChild("Plot")
+
+
+
+
 
 
 
@@ -2854,7 +3211,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -2862,7 +3227,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
             end)
+
+
+
+
 
 
 
@@ -2870,7 +3243,15 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
     end,
+
+
+
+
 
 
 
@@ -2898,7 +3279,35 @@ Tabs.AutomaticallyTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 local Tabs = {
+
+
+
+
 
 
 
@@ -2906,7 +3315,15 @@ EventTab = Window:Tab({
 
 
 
+
+
+
+
        Title = "Event",
+
+
+
+
 
 
 
@@ -2914,7 +3331,15 @@ EventTab = Window:Tab({
 
 
 
+
+
+
+
     Border = true,
+
+
+
+
 
 
 
@@ -2922,8 +3347,11 @@ EventTab = Window:Tab({
 
 
 
-}
 
+
+
+
+}
 
 
 
@@ -2936,7 +3364,15 @@ Tabs.EventTab:Toggle({
     Value = false,
     Callback = function(state)
         _G.AutoCandyEnabled = state
-        if not state then return end
+        _G.ExitingHalloween = false  -- ✅ Reset flag
+        
+        if not state then 
+            _G.ExitingHalloween = false
+            print("[AutoCandy] OFF 🛑")
+            return 
+        end
+        
+        print("[AutoCandy] ON 🍬")
 
         task.spawn(function()
             local Players = game:GetService("Players")
@@ -2948,15 +3384,195 @@ Tabs.EventTab:Toggle({
             local SPOT_COOLDOWN = 6
             local SPOT_FAIL_COOLDOWN = 30
             local PROMPT_WAIT = 0.5
-            local CANDY_WAIT = 1.5
             local RETURN_SPEED = 2000
             local DROPOFF_WAIT = 1
+
+            -- ===== HARDCODED PORTAL POSITIONS =====
+            local ENTER_PORTAL_CF = CFrame.new(197.624, 40325.387, 674.741)
+            local LEAVE_PORTAL_CF = CFrame.new(-46059.078, 40382.543, -20351.945)
+
+            -- ===== GET ENTER PORTAL PROMPT =====
+            local function getEnterPortalPrompt()
+                local ok, prompt = pcall(function()
+                    return Workspace.Map.Portal
+                        .Model.Model.Model.Model
+                        .portal.Part
+                        .HalloweenPromptAnchor
+                        .HalloweenPortalPrompt
+                end)
+                if ok and prompt then return prompt end
+                
+                local map = Workspace:FindFirstChild("Map")
+                if map then
+                    local portal = map:FindFirstChild("Portal")
+                    if portal then
+                        for _, d in ipairs(portal:GetDescendants()) do
+                            if d.Name == "HalloweenPortalPrompt" and d:IsA("ProximityPrompt") then
+                                return d
+                            end
+                        end
+                    end
+                end
+                
+                warn("[Portal] ❌ Enter portal prompt not found!")
+                return nil
+            end
+
+            -- ===== GET LEAVE PORTAL PROMPT =====
+            local function getLeavePortalPrompt()
+                local ok, prompt = pcall(function()
+                    return Workspace.HalloweenArea.Portal
+                        .Model.Model
+                        .Part
+                        .HalloweenPromptAnchor
+                        .HalloweenPortalPrompt
+                end)
+                if ok and prompt then return prompt end
+                
+                local ha = Workspace:FindFirstChild("HalloweenArea")
+                if ha then
+                    local portal = ha:FindFirstChild("Portal")
+                    if portal then
+                        for _, d in ipairs(portal:GetDescendants()) do
+                            if d.Name == "HalloweenPortalPrompt" and d:IsA("ProximityPrompt") then
+                                return d
+                            end
+                        end
+                    end
+                end
+                
+                warn("[Portal] ❌ Leave portal prompt not found!")
+                return nil
+            end
 
             local function getHRP()
                 local c = player.Character
                 return c and c:FindFirstChild("HumanoidRootPart")
             end
 
+            -- ===== LOCATION DETECTION =====
+            local function isInHalloweenArea(hrp)
+                if not hrp then return false end
+                local halloween = Workspace:FindFirstChild("HalloweenArea")
+                if not halloween then return false end
+                local distance = (hrp.Position - LEAVE_PORTAL_CF.Position).Magnitude
+                return distance < 2000
+            end
+
+            -- ===== GO TO HALLOWEEN =====
+            local function goToHalloweenArea(hrp)
+                if not hrp then return false end
+                print("[AutoCandy] Pupunta sa Halloween Area...")
+                
+                local prompt = getEnterPortalPrompt()
+                if not prompt then return false end
+                
+                local promptPos = ENTER_PORTAL_CF.Position
+                local parent = prompt.Parent
+                if parent and parent:IsA("BasePart") then
+                    promptPos = parent.Position
+                elseif parent and parent:IsA("Model") then
+                    local ok, pivot = pcall(function() return parent:GetPivot() end)
+                    if ok and pivot then promptPos = pivot.Position end
+                end
+                
+                local approachCF = CFrame.new(promptPos + Vector3.new(0, 3, 0), promptPos)
+                local distance = (approachCF.Position - hrp.Position).Magnitude
+                local duration = math.max(distance / 20000, 0.1)
+                
+                local tw = TweenService:Create(hrp,
+                    TweenInfo.new(duration, Enum.EasingStyle.Linear),
+                    { CFrame = approachCF })
+                tw:Play()
+                tw.Completed:Wait()
+                task.wait(0.5)
+                
+                local waitStart = tick()
+                while not prompt.Enabled and (tick() - waitStart) < 3 do
+                    task.wait(0.2)
+                end
+                
+                local fired = false
+                for attempt = 1, 8 do
+                    if prompt.Enabled then
+                        pcall(function() fireproximityprompt(prompt) end)
+                        task.wait(0.3)
+                        if not prompt.Enabled then
+                            fired = true
+                            break
+                        end
+                    end
+                    task.wait(0.3)
+                end
+                
+                if fired then
+                    print("[AutoCandy] ✅ Enter portal fired!")
+                    task.wait(3)
+                    return true
+                end
+                
+                warn("[AutoCandy] ❌ Enter portal fail!")
+                return false
+            end
+
+            -- ===== GO TO MAIN MAP =====
+            local function goToMainMap(hrp)
+                if not hrp then return false end
+                print("[AutoCandy] Bumalik sa Main Map...")
+                
+                local prompt = getLeavePortalPrompt()
+                if not prompt then return false end
+                
+                local promptPos = LEAVE_PORTAL_CF.Position
+                local okPart, part = pcall(function()
+                    return Workspace.HalloweenArea.Portal
+                        .Model.Model
+                        .Part
+                end)
+                if okPart and part and part:IsA("BasePart") then
+                    promptPos = part.Position
+                end
+                
+                local approachCF = CFrame.new(promptPos + Vector3.new(0, 3, 0), promptPos)
+                local distance = (approachCF.Position - hrp.Position).Magnitude
+                local duration = math.max(distance / 20000, 0.1)
+                
+                local tw = TweenService:Create(hrp,
+                    TweenInfo.new(duration, Enum.EasingStyle.Linear),
+                    { CFrame = approachCF })
+                tw:Play()
+                tw.Completed:Wait()
+                task.wait(0.5)
+                
+                local waitStart = tick()
+                while not prompt.Enabled and (tick() - waitStart) < 3 do
+                    task.wait(0.2)
+                end
+                
+                local fired = false
+                for attempt = 1, 8 do
+                    if prompt.Enabled then
+                        pcall(function() fireproximityprompt(prompt) end)
+                        task.wait(0.3)
+                        if not prompt.Enabled then
+                            fired = true
+                            break
+                        end
+                    end
+                    task.wait(0.3)
+                end
+                
+                if fired then
+                    print("[AutoCandy] ✅ Leave portal fired!")
+                    task.wait(3)
+                    return true
+                end
+                
+                warn("[AutoCandy] ❌ Leave portal fail!")
+                return false
+            end
+
+            -- ===== NOCLIP =====
             local noclipConn = nil
             local function enableNoclip()
                 if noclipConn then return end
@@ -2973,6 +3589,7 @@ Tabs.EventTab:Toggle({
                 if noclipConn then noclipConn:Disconnect(); noclipConn = nil end
             end
 
+            -- ===== LOCK =====
             local lockedCFrame, lockConn = nil, nil
             local function startLock(cf)
                 lockedCFrame = cf
@@ -2991,6 +3608,7 @@ Tabs.EventTab:Toggle({
                 if lockConn then lockConn:Disconnect(); lockConn = nil end
             end
 
+            -- ===== TWEEN HOME =====
             local function tweenHome(hrp, targetCF, speed)
                 if not hrp or not targetCF then return end
                 local distance = (targetCF.Position - hrp.Position).Magnitude
@@ -3003,6 +3621,7 @@ Tabs.EventTab:Toggle({
                 tw.Completed:Wait()
             end
 
+            -- ===== FOLDER FINDERS =====
             local function findFolder(name)
                 local direct = Workspace:FindFirstChild(name)
                 if direct then return direct end
@@ -3045,31 +3664,198 @@ Tabs.EventTab:Toggle({
             end
 
             local cooldowns, blacklist = {}, {}
+while _G.AutoCandyEnabled do
+    task.wait(0.2)
 
-            while _G.AutoCandyEnabled do
-                task.wait(0.2)
+    local hrp = getHRP()
+    if not hrp then task.wait(0.5); continue end
 
-                local hrp = getHRP()
-                if not hrp then task.wait(0.5); continue end
+    -- ✅✅✅ PRIORITY CHECK 0: AUTO BUY EGG IN PROGRESS
+    if _G.AutoBuyingEgg then
+        print("[AutoCandy] ⏸️ Auto Buy Egg in progress — WAIT")
+        while _G.AutoCandyEnabled and _G.AutoBuyingEgg do
+            task.wait(0.2)
+        end
+        print("[AutoCandy] ▶️ Auto Buy done — resume")
+        task.wait(0.3)
+        continue
+    end
 
-                local candySpawns = findFolder("CandySpawns")
-                local candyFolder = findFolder("HalloweenCandy")
-                local dropOff = Workspace:FindFirstChild("CandyDropOff")
+    -- ✅ PRIORITY CHECK 1: BUSY FLAG
+    if _G.EggCollecting then
+        -- ... existing code
+        print("[AutoCandy] ⏸️ Egg in progress — WAIT")
+        while _G.AutoCandyEnabled and _G.EggCollecting do
+            task.wait(0.2)
+        end
+        print("[AutoCandy] ▶️ Resume")
+        task.wait(0.3)
+        continue
+    end
 
-                if not candySpawns or not candyFolder or not dropOff then
-                    task.wait(1); continue
+    -- ✅ PRIORITY CHECK 2: MAY TARGET EGG BA
+    local hasTargetEgg = false
+    -- ... (existing code mo)
+    -- ... rest ng code
+local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
+
+if renderedEggs and _G.AutoEggEnabled then
+    local selectedLower = {}
+    if _G.SelectedEggTargets then
+        for name, _ in pairs(_G.SelectedEggTargets) do
+            table.insert(selectedLower, name:lower())
+        end
+    end
+    
+    for _, eggModel in ipairs(renderedEggs:GetChildren()) do
+        local modelNameLower = eggModel.Name:lower()
+        
+        local matched = false
+        for _, selName in ipairs(selectedLower) do
+            if modelNameLower:find(selName, 1, true) then
+                matched = true
+                break
+            end
+        end
+        
+        if matched then
+            if eggModel:FindFirstChild("Pickup", true) then
+                hasTargetEgg = true
+                print("[AutoCandy] 🥚 Egg detected:", eggModel.Name)
+                break
+            end
+        end
+    end
+end
+
+-- ✅ CHECK 1: MAY TARGET EGG BA?
+if hasTargetEgg then
+    print("[AutoCandy] ⏸️ May target egg — PAUSE")
+    
+    -- ✅ KUNG NAKA-FLAG NA AUTO EGG, WAIT LANG
+    if _G.EggCollecting then
+        print("[AutoCandy] ⏸️ Auto Egg collecting — WAIT")
+        while _G.AutoCandyEnabled and _G.EggCollecting do
+            task.wait(0.3)
+        end
+        task.wait(0.3)
+        continue
+    end
+    
+    -- ✅ WALANG NAG-CO-COLLECT PA — TELEPORT SA HOME BASE
+    local inHalloweenNow = isInHalloweenArea(hrp)
+    
+    if inHalloweenNow then
+        print("[AutoCandy] 🏠 Nasa Halloween — teleport sa home base")
+        
+        -- Get plot
+        local myPlot = nil
+        local plots = Workspace:FindFirstChild("Plots")
+        if plots then
+            for _, plot in ipairs(plots:GetChildren()) do
+                local data = plot:FindFirstChild("Data")
+                local owner = data and data:FindFirstChild("Owner")
+                if owner then
+                    if owner:IsA("ObjectValue") and owner.Value == player then
+                        myPlot = plot
+                        break
+                    elseif owner:IsA("StringValue") 
+                        and (owner.Value == player.Name or owner.Value == player.DisplayName) then
+                        myPlot = plot
+                        break
+                    end
                 end
+            end
+        end
+        
+        if myPlot then
+            local plotCenter = nil
+            if myPlot.PrimaryPart then
+                plotCenter = myPlot.PrimaryPart.CFrame
+            else
+                for _, partName in ipairs({"Spawn", "Base", "Center", "Home"}) do
+                    local part = myPlot:FindFirstChild(partName, true)
+                    if part and part:IsA("BasePart") then
+                        plotCenter = part.CFrame
+                        break
+                    end
+                end
+            end
+            
+            if plotCenter then
+                enableNoclip()
+                local targetCF = plotCenter + Vector3.new(0, 5, 0)
+                hrp.CFrame = targetCF
+                task.wait(0.3)
+                disableNoclip()
+                
+                print("[AutoCandy] ✅ Teleported sa home base!")
+                task.wait(0.5)
+            end
+        end
+    else
+        print("[AutoCandy] Nasa Main Map na — hintayin Auto Egg")
+    end
+    
+    -- ✅ SIMPLE WAIT + CONTINUE (walang complex loop)
+    task.wait(1)
+    continue
+end
 
-                -- Cache candies
+
+
+-- ✅✅✅ IDAGDAG ITO — PRIORITY CHECK 3
+if _G.EggCollecting then
+    print("[AutoCandy] ⏸️ Nag-start na Auto Egg — skip candy")
+    task.wait(0.3)
+    continue
+end
+
+-- ✅✅✅ IDAGDAG ITO — LOCATION CHECK
+local inHalloween = isInHalloweenArea(hrp)
+_G.CurrentLocation = inHalloween and "Halloween Area" or "Main Map"
+print("[AutoCandy] Location:", _G.CurrentLocation)
+
+if not inHalloween then
+    print("[AutoCandy] 🎯 Nasa Main Map — pumasok sa Halloween via portal")
+    
+    local enterSuccess = goToHalloweenArea(hrp)
+    
+    if enterSuccess then
+        print("[AutoCandy] ✅ Nakapasok sa Halloween — collect candy na")
+        task.wait(1)
+        continue
+    else
+        warn("[AutoCandy] ❌ Enter portal fail — retry next iteration")
+        task.wait(2)
+        continue
+    end
+end
+
+-- ===== NASA HALLOWEEN NA — COLLECT CANDY =====
+local candySpawns = findFolder("CandySpawns")
+local candyFolder = findFolder("HalloweenCandy")
+local dropOff = Workspace:FindFirstChild("CandyDropOff")
+
+if not candySpawns or not candyFolder or not dropOff then
+    task.wait(1); continue
+end
+
+-- ... rest ng candy collection code mo
+
+
                 local candyList = {}
                 for _, candy in ipairs(candyFolder:GetChildren()) do
                     local cf = getCFrameOf(candy)
                     if cf then table.insert(candyList, {candy = candy, cf = cf}) end
                 end
 
-                if #candyList == 0 then task.wait(0.3); continue end
+                if #candyList == 0 then
+                    print("[AutoCandy] Walang candy sa HalloweenCandy")
+                    task.wait(1)
+                    continue
+                end
 
-                -- Build candy → nearest marker map
                 local markers = {}
                 for _, spot in ipairs(candySpawns:GetChildren()) do
                     local cf = getCFrameOf(spot)
@@ -3088,7 +3874,6 @@ Tabs.EventTab:Toggle({
                     end
                 end
 
-                -- Pick nearest to player
                 local target, targetName, bestPlayerDist = nil, nil, math.huge
                 for name, entry in pairs(candyMap) do
                     if (cooldowns[name] or 0) > tick() then continue end
@@ -3101,7 +3886,13 @@ Tabs.EventTab:Toggle({
                     end
                 end
 
-                if not target then task.wait(0.3); continue end
+                if not target then 
+                    print("[AutoCandy] Walang target candy (naka-cooldown?)")
+                    task.wait(0.3)
+                    continue 
+                end
+
+                print("[AutoCandy] 🎯 Target:", targetName, "| Dist:", math.floor(bestPlayerDist))
 
                 enableNoclip()
                 startLock(target.cf + Vector3.new(0, 3, 0))
@@ -3137,9 +3928,17 @@ Tabs.EventTab:Toggle({
 
             stopLock()
             disableNoclip()
+            print("[AutoCandy] Stopped 🛑")
         end)
     end,
-})
+}) 
+
+
+
+
+
+
+
 
 
 
@@ -3151,11 +3950,20 @@ Tabs.EventTab:Toggle({
     Desc = "Bumili ng Halloween Egg kapag may 350+ tokens",
     Flag = "AutoBuyHalloweenEgg",
     Value = false,
-    Callback = function(state)
-        _G.AutoBuyHalloweenEgg = state
+Callback = function(state)
+    _G.AutoBuyHalloweenEgg = state
+    
+    -- ✅ RESET FLAG KAPAG NAG-OFF
+    if not state then
+        _G.AutoBuyingEgg = false
+    
+        return
+    end
+    
 
-        if state then
-            task.spawn(function()
+    
+    task.spawn(function()
+        -- ... existing code mo
                 local Players = game:GetService("Players")
                 local Workspace = game:GetService("Workspace")
                 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -3242,7 +4050,7 @@ Tabs.EventTab:Toggle({
                     local buyRemote = gameRemotes and gameRemotes:FindFirstChild("BuyHalloweenEgg")
 
                     if not buyRemote then
-                        warn("[AutoBuyEgg] Hindi mahanap ang 'BuyHalloweenEgg' remote!")
+               
                         return false
                     end
 
@@ -3255,13 +4063,13 @@ Tabs.EventTab:Toggle({
                     end)
 
                     if not ok then
-                        warn("[AutoBuyEgg] Failed to fire BuyHalloweenEgg!")
+             
                     end
                     return ok
                 end
 
                 -- ===== MAIN LOOP =====
-                print("[AutoBuyEgg] 🎃 Started — threshold:", TOKEN_THRESHOLD)
+      
                 local lastBuy = 0
 
                 while _G.AutoBuyHalloweenEgg do
@@ -3275,1239 +4083,63 @@ Tabs.EventTab:Toggle({
                     local tokens, rawText = getTokenCount()
 
                     if not tokens then
-                        warn("[AutoBuyEgg] Hindi ma-read yung HalloweenTokens.Count — check path!")
+                
                         task.wait(1)
                         continue
                     end
 
-                    -- ===== 2. IF ENOUGH → BUY =====
-                    if tokens >= TOKEN_THRESHOLD then
-                        local shopGuy = Workspace:FindFirstChild("ShopGuy")
-                        if not shopGuy then
-                            warn("[AutoBuyEgg] Hindi mahanap ang 'ShopGuy'!")
-                            task.wait(2)
-                            continue
-                        end
+                   -- ===== 2. IF ENOUGH → BUY =====
+if tokens >= TOKEN_THRESHOLD then
+    local shopGuy = Workspace:FindFirstChild("ShopGuy")
+    if not shopGuy then
+ 
+        task.wait(2)
+        continue
+    end
 
-                        local shopCF = getCFrameOf(shopGuy)
-                        if not shopCF then
-                            warn("[AutoBuyEgg] Walang ShopGuy CFrame!")
-                            task.wait(2)
-                            continue
-                        end
+    local shopCF = getCFrameOf(shopGuy)
+    if not shopCF then
+     
+        task.wait(2)
+        continue
+    end
 
-                        print(string.format("[AutoBuyEgg] ✅ Tokens: %s — TP to ShopGuy...", tostring(rawText)))
-                        teleportTo(shopCF + Vector3.new(0, 3, 0))
-                        task.wait(TELEPORT_WAIT)
+    -- ✅✅✅ SET FLAG — PAUSE AUTO CANDY
+    _G.AutoBuyingEgg = true
 
-                        print("[AutoBuyEgg] 🛒 Firing BuyHalloweenEgg...")
-                        local success = fireBuy()
-                        task.wait(0.5)
+    task.wait(0.3)
 
-                        if not success then
-                            print("[AutoBuyEgg] Retry buy...")
-                            fireBuy()
-                            task.wait(0.5)
-                        end
 
-                        lastBuy = tick()
-                        print("[AutoBuyEgg] Buy attempt complete. Cooldown...")
-                    else
-                        print(string.format("[AutoBuyEgg] ⏳ Kulang pa: %d/%d",
-                            math.floor(tokens), TOKEN_THRESHOLD))
-                    end
+    teleportTo(shopCF + Vector3.new(0, 3, 0))
+    task.wait(TELEPORT_WAIT)
+
+
+    local success = fireBuy()
+    task.wait(0.5)
+
+    if not success then
+     
+        fireBuy()
+        task.wait(0.5)
+    end
+
+    lastBuy = tick()
+    
+
+    -- ✅✅✅ RESET FLAG — RESUME AUTO CANDY
+    task.wait(0.3)
+    _G.AutoBuyingEgg = false
+ 
+else
+
+end
                 end
 
-                print("[AutoBuyEgg] Stopped 🛑")
+         
             end)
-        end
+        
     end,
 })
-
-
-
-Tabs.EventTab:Space()
-
-
---------------------------------------------------
-
--- CUSTOM EGG TEXT INPUT & FLEXIBLE SEARCH TOGGLE
-
---------------------------------------------------
-
-
-
-_G.CustomEggQuery = ""
-
-_G.AutoCustomEggEnabled = false
-
-_G.AutoCustomDipEnabled = false
-
-
-
--- 1. Custom Text Input para sa pag-type ng keyword
-
-Tabs.EventTab:Input({
-
-    Title = "Custom Egg Name",
-
-    Desc = "example Cherub",
-
-    Flag = "CustomEggName",
-
-    Callback = function(textValue)
-
-        if textValue and textValue ~= "" then
-
-            _G.CustomEggQuery = textValue:gsub("^%s*(.-)%s*$", "%1"):lower()
-
-        else
-
-            _G.CustomEggQuery = ""
-
-        end
-
-    end,
-
-})
-
-
-
--- 2. Toggle para sa Auto Dip (Custom)
-
-Tabs.EventTab:Toggle({
-
-    Title = "Auto Dip (Custom)",
-
-    Desc = "Teleport to Drop Location, Fire Dip, Wait 10s, then Return to Plot. If OFF, diretso sa Plot.",
-
-    Flag = "CustomAutoDip",
-
-    Value = false,
-
-    Callback = function(state)
-
-        _G.AutoCustomDipEnabled = state
-
-    end,
-
-})
-
-
-
--- 3. Toggle para sa Custom Egg Auto Collect
-
-Tabs.EventTab:Toggle({
-
-    Title = "Turn on Auto Collect Custom Egg",
-
-    Desc = "Automatically Collect the Egg Name You Input",
-
-    Flag = "CustomEggToggle",
-
-    Value = false,
-
-    Callback = function(state)
-
-        _G.AutoCustomEggEnabled = state
-
-
-
-        if state then
-
-            task.spawn(function()
-
-                local Players = game:GetService("Players")
-
-                local Workspace = game:GetService("Workspace")
-
-                local TweenService = game:GetService("TweenService")
-
-                local RunService = game:GetService("RunService")
-
-                local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-                local player = Players.LocalPlayer
-
-
-
-                -- ===== SPOT COORDINATES (Volcanic) =====
-
-                local SPOT_1 = CFrame.new(-4926.280, 41288.426, -3695.847)  -- Entrance
-
-                local SPOT_2 = CFrame.new(-5050.522, 41267.402, -3511.556)  -- Validate
-
-                local SPOT_3 = CFrame.new(-5329.609, 40912.852, -3581.365)  -- Egg location
-
-
-
-                -- ===== DROP LOCATION =====
-
-                local DROP_CFRAME = CFrame.new(-5102.84277, 41405.6289, -3489.11401)
-
-
-
-                -- ===== FIRE VOLCANO DIP EVENT (Cobalt) =====
-
-                local function fireVolcanoDip()
-
-                    local ok, remote = pcall(function()
-
-                        return ReplicatedStorage
-
-                            :FindFirstChild("packages")
-
-                            :FindFirstChild("Net")
-
-                            :FindFirstChild("RE/VolcanoDip")
-
-                    end)
-
-
-
-                    if not ok or not remote then
-
-                        warn("[AutoCustomEgg] Hindi mahanap ang 'RE/VolcanoDip' remote!")
-
-                        return false
-
-                    end
-
-
-
-                    local success = pcall(function()
-
-                        remote:FireServer()
-
-                    end)
-
-
-
-                    if not success then
-
-                        warn("[AutoCustomEgg] Failed to fire VolcanoDip!")
-
-                    end
-
-
-
-                    return success
-
-                end
-
-
-
-                -- ===== HELPER: Kunin ang plot mo =====
-
-                local function getMyPlot()
-
-                    local plots = Workspace:FindFirstChild("Plots")
-
-                    if not plots then return nil end
-
-
-
-                    for _, plot in ipairs(plots:GetChildren()) do
-
-                        local data = plot:FindFirstChild("Data")
-
-                        local owner = data and data:FindFirstChild("Owner")
-
-
-
-                        if owner then
-
-                            if owner:IsA("ObjectValue") then
-
-                                if owner.Value == player then return plot end
-
-                            elseif owner:IsA("StringValue") then
-
-                                if owner.Value == player.Name or owner.Value == player.DisplayName then
-
-                                    return plot
-
-                                end
-
-                            end
-
-                        end
-
-                    end
-
-                    return nil
-
-                end
-
-
-
-                -- ===== HELPER: Plot center CFrame =====
-
-                local function getPlotCenterCFrame(plot)
-
-                    if not plot then return nil end
-
-                    if plot.PrimaryPart then return plot.PrimaryPart.CFrame end
-
-
-
-                    local hrp = plot:FindFirstChild("HumanoidRootPart", true)
-
-                    if hrp then return hrp.CFrame end
-
-
-
-                    for _, partName in ipairs({"Spawn", "Base", "Center", "Home"}) do
-
-                        local part = plot:FindFirstChild(partName, true)
-
-                        if part and part:IsA("BasePart") then
-
-                            return part.CFrame
-
-                        end
-
-                    end
-
-
-
-                    local ok, pivot = pcall(function() return plot:GetPivot() end)
-
-                    if ok and pivot then return pivot end
-
-
-
-                    for _, desc in ipairs(plot:GetDescendants()) do
-
-                        if desc:IsA("BasePart") then
-
-                            return desc.CFrame
-
-                        end
-
-                    end
-
-
-
-                    return nil
-
-                end
-
-
-
-                -- ===== HELPER: Generic tween sa CFrame =====
-
-                local function tweenTo(hrp, targetCFrame, duration, offsetY)
-
-                    if not targetCFrame then return false end
-
-
-
-                    local finalCFrame = targetCFrame + Vector3.new(0, offsetY or 3, 0)
-
-                    local tweenInfo = TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-                    local tween = TweenService:Create(hrp, tweenInfo, {CFrame = finalCFrame})
-
-                    tween:Play()
-
-
-
-                    local completed = false
-
-                    pcall(function()
-
-                        tween.Completed:Wait()
-
-                        completed = true
-
-                    end)
-
-
-
-                    task.wait(0.2)
-
-                    return completed
-
-                end
-
-
-
-                -- ===== HELPER: Tween pabalik sa plot =====
-
-                local function returnToPlot(hrp)
-
-                    local myPlot = getMyPlot()
-
-                    local plotCenter = getPlotCenterCFrame(myPlot)
-
-
-
-                    if not plotCenter then
-
-                        warn("[AutoCustomEgg] Plot not found!")
-
-                        return
-
-                    end
-
-
-
-                    tweenTo(hrp, plotCenter, 1.5, 5)
-
-                end
-
-
-
-                -- ===== HELPER: Noclip ON/OFF =====
-
-                local noclipConnection = nil
-
-
-
-                local function enableNoclip()
-
-                    if noclipConnection then return end
-
-
-
-                    noclipConnection = RunService.Stepped:Connect(function()
-
-                        local character = player.Character
-
-                        if character then
-
-                            for _, part in ipairs(character:GetDescendants()) do
-
-                                if part:IsA("BasePart") and part.CanCollide then
-
-                                    part.CanCollide = false
-
-                                end
-
-                            end
-
-                        end
-
-                    end)
-
-                end
-
-
-
-                local function disableNoclip()
-
-                    if noclipConnection then
-
-                        noclipConnection:Disconnect()
-
-                        noclipConnection = nil
-
-                    end
-
-
-
-                    local character = player.Character
-
-                    if character then
-
-                        for _, part in ipairs(character:GetDescendants()) do
-
-                            if part:IsA("BasePart") then
-
-                                part.CanCollide = true
-
-                            end
-
-                        end
-
-                    end
-
-                end
-
-
-
-                -- ===== HELPER: FLY MODE ON/OFF =====
-
-                local flyConnection = nil
-
-                local flyVelocity = nil
-
-                local flyGyro = nil
-
-
-
-                local function enableFly()
-
-                    local character = player.Character
-
-                    if not character then return end
-
-
-
-                    local hrp = character:FindFirstChild("HumanoidRootPart")
-
-                    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-                    if not hrp or not humanoid then return end
-
-
-
-                    if hrp:FindFirstChild("DemoFlyVelocity") then hrp.DemoFlyVelocity:Destroy() end
-
-                    if hrp:FindFirstChild("DemoFlyGyro") then hrp.DemoFlyGyro:Destroy() end
-
-
-
-                    local bv = Instance.new("BodyVelocity")
-
-                    bv.Name = "DemoFlyVelocity"
-
-                    bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-
-                    bv.Velocity = Vector3.new(0, 0, 0)
-
-                    bv.Parent = hrp
-
-                    flyVelocity = bv
-
-
-
-                    local bg = Instance.new("BodyGyro")
-
-                    bg.Name = "DemoFlyGyro"
-
-                    bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-
-                    bg.P = 10000
-
-                    bg.D = 100
-
-                    bg.CFrame = hrp.CFrame
-
-                    bg.Parent = hrp
-
-                    flyGyro = bg
-
-
-
-                    humanoid.PlatformStand = true
-
-
-
-                    flyConnection = RunService.RenderStepped:Connect(function()
-
-                        if flyGyro and flyGyro.Parent and hrp then
-
-                            flyGyro.CFrame = hrp.CFrame
-
-                        end
-
-                    end)
-
-                end
-
-
-
-                local function disableFly()
-
-                    if flyConnection then
-
-                        flyConnection:Disconnect()
-
-                        flyConnection = nil
-
-                    end
-
-
-
-                    local character = player.Character
-
-                    if character then
-
-                        local hrp = character:FindFirstChild("HumanoidRootPart")
-
-                        local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-
-
-                        if hrp then
-
-                            if hrp:FindFirstChild("DemoFlyVelocity") then hrp.DemoFlyVelocity:Destroy() end
-
-                            if hrp:FindFirstChild("DemoFlyGyro") then hrp.DemoFlyGyro:Destroy() end
-
-                        end
-
-
-
-                        if humanoid then
-
-                            humanoid.PlatformStand = false
-
-                        end
-
-                    end
-
-
-
-                    flyVelocity = nil
-
-                    flyGyro = nil
-
-                end
-
-
-
-                -- ===== HELPER: Instant Teleport (NOCLIP ON during teleport) =====
-
-                local function teleportTo(hrp, targetCFrame)
-
-                    if not targetCFrame or not hrp then return false end
-
-
-
-                    enableNoclip()
-
-                    task.wait(0.1)
-
-
-
-                    pcall(function()
-
-                        hrp.CFrame = targetCFrame
-
-                    end)
-
-
-
-                    task.wait(0.1)
-
-
-
-                    disableNoclip()
-
-
-
-                    return true
-
-                end
-
-
-
-                -- ===== HELPER: Stable Tween (NOCLIP OFF during tween) =====
-
-                local function stableTween(hrp, targetCFrame, duration)
-
-                    if not targetCFrame then return false end
-
-
-
-                    disableNoclip()
-
-                    task.wait(0.1)
-
-
-
-                    local tweenInfo = TweenInfo.new(duration or 1.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-
-                    local tween = TweenService:Create(hrp, tweenInfo, {CFrame = targetCFrame})
-
-                    tween:Play()
-
-
-
-                    local completed = false
-
-                    pcall(function()
-
-                        tween.Completed:Wait()
-
-                        completed = true
-
-                    end)
-
-
-
-                    task.wait(0.2)
-
-                    return completed
-
-                end
-
-
-
-                -- ===== HELPER: Instant Fire Prompt =====
-
-                local function firePrompt(prompt)
-
-                    if not prompt or not prompt:IsA("ProximityPrompt") then return false end
-
-
-
-                    local success = pcall(function()
-
-                        fireproximityprompt(prompt)
-
-                    end)
-
-
-
-                    return success
-
-                end
-
-
-
-                -- ===== HELPER: Manual Touched Trigger =====
-
-                local function triggerTouched(part, character)
-
-                    if not part or not part:IsA("BasePart") then return end
-
-
-
-                    local hrp = character and character:FindFirstChild("HumanoidRootPart")
-
-                    if not hrp then return end
-
-
-
-                    pcall(function()
-
-                        part.Touched:Fire(hrp)
-
-                    end)
-
-
-
-                    for _, desc in ipairs(part:GetDescendants()) do
-
-                        if desc:IsA("BasePart") then
-
-                            pcall(function()
-
-                                desc.Touched:Fire(hrp)
-
-                            end)
-
-                        end
-
-                    end
-
-                end
-
-
--- ===== FIRE BASKET DROP / CLAIM EVENT =====
-local function fireBasketDrop()
-    local remotes = ReplicatedStorage:FindFirstChild("Remotes")
-    local gameRemote = remotes and remotes:FindFirstChild("Game")
-    local remote = gameRemote and gameRemote:FindFirstChild("BasketDrop")
-
-    if not remote then
-        warn("[AutoCustomEgg] Hindi mahanap ang 'BasketDrop' remote!")
-        return false
-    end
-
-    local ok = pcall(function()
-        remote:FireServer()
-    end)
-
-    if not ok then
-        warn("[AutoCustomEgg] Failed to fire BasketDrop!")
-    end
-
-    return ok
-end
-
--- ===== HELPER: Hanapin ang Model ancestor =====
-local function getOwningModelName(inst)
-    local cur = inst
-    while cur and cur ~= Workspace do
-        if cur:IsA("Model") then
-            return cur.Name
-        end
-        cur = cur.Parent
-    end
-    return nil
-end
-
--- ===== HELPER: Match ba ang model name sa target? =====
-local function modelMatchesTarget(modelName, targetEggName)
-    if not modelName or not targetEggName then return false end
-
-    local a = string.lower(modelName)
-    local b = string.lower(targetEggName)
-
-    return a == b or string.find(a, b, 1, true) ~= nil
-end
-
--- ===== HELPER: Nearest Pickup prompt (with target verification) =====
-local function findNearestPickupPrompt(hrp, maxDist, targetEggName)
-    if not hrp then return nil, nil end
-
-    local nearest, nearestDist = nil, math.huge
-
-    local ok, descendants = pcall(function()
-        return Workspace:GetDescendants()
-    end)
-    if not ok or not descendants then return nil, nil end
-
-    for _, desc in ipairs(descendants) do
-        if desc:IsA("ProximityPrompt") and desc.Enabled then
-            local txt = string.lower(desc.ActionText or "")
-
-            if string.find(txt, "pick") or string.find(txt, "claim") or string.find(txt, "collect") then
-                -- ✅ VERIFICATION: Yung owning Model ba ay target egg?
-                local ownerModel = getOwningModelName(desc)
-
-                if targetEggName and not modelMatchesTarget(ownerModel, targetEggName) then
-                    continue
-                end
-
-                local parent = desc.Parent
-                local pos = nil
-
-                if parent then
-                    if parent:IsA("BasePart") then
-                        pos = parent.Position
-                    elseif parent:IsA("Model") then
-                        local okPivot, pivot = pcall(function() return parent:GetPivot() end)
-                        if okPivot and pivot then pos = pivot.Position end
-                    end
-                end
-
-                if pos then
-                    local dist = (pos - hrp.Position).Magnitude
-                    if dist < nearestDist and dist <= (maxDist or math.huge) then
-                        nearestDist = dist
-                        nearest = desc
-                    end
-                end
-            end
-        end
-    end
-
-    return nearest, nearestDist
-end
-
-
-
-
--- ===== HELPER: Post-drop flow (FAST) =====
-local function postDropFlow(hrp, targetEggName)
-    -- ===== AUTO DIP =====
-    if _G.AutoCustomDipEnabled then
-        teleportTo(hrp, DROP_CFRAME)
-        task.wait(0.1)
-
-        fireVolcanoDip()
-        task.wait(0.1)
-
-        print("[AutoCustomEgg] Auto Dip ON — Waiting 10 seconds...")
-        task.wait(10)
-    end
-
-    -- ===== TELEPORT AWAY FROM HOME =====
-    local myPlot = getMyPlot()
-    local plotCenter = getPlotCenterCFrame(myPlot)
-
-    if not plotCenter then
-        warn("[AutoCustomEgg] Plot not found!")
-        return
-    end
-
-    local AWAY_DISTANCE = 75
-
-    local awayCFrame = CFrame.new(
-        plotCenter.Position + Vector3.new(AWAY_DISTANCE, 5, 0),
-        plotCenter.Position
-    )
-
-    teleportTo(hrp, awayCFrame)
-    task.wait(0.05)
-
-    -- ===== 🔥 FIRE DROP =====
-    fireBasketDrop()
-
-    -- ===== CLAIM — fast retry loop with target verification =====
-    local pickupPrompt, dist = nil, nil
-    local MAX_ATTEMPTS = 12
-    local INTERVAL = 0.15
-
-    for attempt = 1, MAX_ATTEMPTS do
-        pickupPrompt, dist = findNearestPickupPrompt(hrp, 500, targetEggName)
-
-        if pickupPrompt then
-            print(string.format("[AutoCustomEgg] Found prompt (attempt %d, dist: %d)",
-                attempt, math.floor(dist or 0)))
-            break
-        end
-
-        task.wait(INTERVAL)
-    end
-
-    if pickupPrompt then
-        for i = 1, 5 do
-            firePrompt(pickupPrompt)
-            task.wait(0.1)
-
-            if not pickupPrompt.Parent or not pickupPrompt.Enabled then
-                print("[AutoCustomEgg] Prompt consumed ✅")
-                break
-            end
-        end
-    else
-        warn("[AutoCustomEgg] ❌ Walang matching pickup prompt.")
-    end
-
-    -- ===== Diretso sa HOME =====
-    teleportTo(hrp, plotCenter + Vector3.new(0, 5, 0))
-    task.wait(0.1)
-end
-
-                
-
-
-
-                -- ===== HELPER: Volcanic Egg sequence (TELEPORT + TWEEN MIX) =====
-
-                local function volcanicSequence(hrp, prompt)
-
-                    local character = player.Character
-
-                    local volcano = Workspace:FindFirstChild("Volcano")
-
-                    if not volcano then
-
-                        warn("[AutoCustomEgg] Walang 'Volcano' folder sa Workspace!")
-
-                        return false
-
-                    end
-
-
-
-                    local entrance = volcano:FindFirstChild("VolcanoEntrance")
-
-                    local validate = volcano:FindFirstChild("VolcanoValidate")
-
-
-
-                    -- ✅ FLY ON
-
-                    enableFly()
-
-                    task.wait(0.5)
-
-
-
-                    -- ===== ENTRY =====
-
-
-
-                    -- Step 1: TELEPORT → SPOT 1 (Entrance)
-
-                    teleportTo(hrp, SPOT_1)
-
-                    task.wait(0.3)
-
-
-
-                    if entrance then
-
-                        triggerTouched(entrance, character)
-
-                    end
-
-                    task.wait(0.5)
-
-
-
-                    -- Step 2: TWEEN → SPOT 2 (Validate)
-
-                    stableTween(hrp, SPOT_2, 1.5)
-
-                    task.wait(0.3)
-
-
-
-                    if validate then
-
-                        triggerTouched(validate, character)
-
-                    end
-
-                    task.wait(0.5)
-
-
-
-                    -- Step 3: TELEPORT → SPOT 3 (Egg)
-
-                    teleportTo(hrp, SPOT_3)
-
-                    task.wait(0.5)
-
-
-
-                    -- Step 4: Instant fire prompt
-
-                    if prompt then
-
-                        firePrompt(prompt)
-
-                        task.wait(0.5)
-
-                    end
-
-
-
-                    -- ===== EXIT =====
-
-
-
-                    -- Step 5: TELEPORT → SPOT 2 (Validate)
-
-                    teleportTo(hrp, SPOT_2)
-
-                    task.wait(0.3)
-
-
-
-                    -- Step 6: TWEEN → SPOT 1 (Entrance)
-
-                    stableTween(hrp, SPOT_1, 1.5)
-
-                    task.wait(0.5)
-
-
-
-                    -- Step 7+: Post-drop flow (Dip toggle dependent)
-
-                    -- dati:
--- postDropFlow(hrp)
-
--- gawin:
-postDropFlow(hrp, "Volcanic Egg")
-
-
-
-                    -- ✅ FLY OFF + NOCLIP OFF
-
-                    task.wait(0.5)
-
-                    disableFly()
-
-                    disableNoclip()
-
-
-
-                    return true
-
-                end
-
-
-
-                -- ===== MAIN LOOP =====
-
-                while _G.AutoCustomEggEnabled do
-
-                    task.wait(0.5)
-
-
-
-                    if _G.CustomEggQuery and _G.CustomEggQuery ~= "" then
-
-                        local character = player.Character
-
-                        local hrp = character and character:FindFirstChild("HumanoidRootPart")
-
-
-
-                        if not hrp then
-
-                            task.wait(1)
-
-                            continue
-
-                        end
-
-
-
-                        local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
-
-                        if not renderedEggs then
-
-                            task.wait(1)
-
-                            continue
-
-                        end
-
-
-
-                        local targetCFrame = nil
-
-                        local foundPrompt = nil
-
-                        local targetEggName = nil
-
-
-
-                        -- Flexible Search
-
-                        for _, eggModel in ipairs(renderedEggs:GetChildren()) do
-
-                            local modelNameLower = eggModel.Name:lower()
-
-
-
-                            if modelNameLower:find(_G.CustomEggQuery, 1, true) then
-
-                                local pickup = eggModel:FindFirstChild("Pickup", true)
-
-
-
-                                if pickup then
-
-                                    local targetPart = pickup
-
-                                    if pickup:IsA("ProximityPrompt") then
-
-                                        foundPrompt = pickup
-
-                                        targetPart = pickup.Parent
-
-                                    elseif not pickup:IsA("BasePart") and not pickup:IsA("Model") then
-
-                                        targetPart = pickup.Parent
-
-                                        foundPrompt = targetPart:FindFirstChildOfClass("ProximityPrompt")
-
-                                    else
-
-                                        foundPrompt = eggModel:FindFirstChildOfClass("ProximityPrompt", true)
-
-                                    end
-
-
-
-                                    if targetPart:IsA("Model") then
-
-                                        targetCFrame = targetPart.PrimaryPart and targetPart.PrimaryPart.CFrame or targetPart:GetPivot()
-
-                                    elseif targetPart:IsA("BasePart") then
-
-                                        targetCFrame = targetPart.CFrame
-
-                                    end
-
-
-
-                                    if targetCFrame then
-
-                                        targetEggName = eggModel.Name
-
-                                        break
-
-                                    end
-
-                                end
-
-                            end
-
-                        end
-
-
-
-                        -- ✅ KUNG MAY NAHANAP
-
-                        if targetCFrame then
-
-
-
-                            -- ===== VOLCANIC EGG SPECIAL SEQUENCE =====
-
-                            if targetEggName == "Volcanic Egg" then
-
-                                volcanicSequence(hrp, foundPrompt)
-
-                                task.wait(0.5)
-
-                                continue
-
-                            end
-
-                            -- ===== END VOLCANIC SEQUENCE =====
-
-
-
-                            -- ===== NORMAL EGG SEQUENCE (TELEPORT) =====
-
-                            enableFly()
-
-                            task.wait(0.3)
-
-
-
-                            -- Step 1: TELEPORT → EGG
-
-                            teleportTo(hrp, targetCFrame + Vector3.new(0, 3, 0))
-
-                            task.wait(0.3)
-
-
-
-                            if foundPrompt and foundPrompt:IsA("ProximityPrompt") then
-
-                                -- Step 2: Fire Egg Prompt
-
-                                firePrompt(foundPrompt)
-
-                                task.wait(0.3)
-
-
-
-                                -- Step 3+: Post-drop flow (Dip toggle dependent)
-
-                                -- dati:
--- postDropFlow(hrp)
-
--- gawin:
-postDropFlow(hrp, targetEggName)
-
-                            end
-
-
-
-                            disableFly()
-
-                            disableNoclip()
-
-                        end
-
-                        -- ❌ KUNG WALANG NAHANAP: free walk lang
-
-                    end
-
-                end
-
-            end)
-
-        end
-
-    end,
-
-})
-
-
-
-
-
-
-
-
-
 
 
 
@@ -4530,7 +4162,15 @@ local Tabs = {
 
 
 
+
+
+
+
 MiscTab = Window:Tab({
+
+
+
+
 
 
 
@@ -4538,7 +4178,15 @@ MiscTab = Window:Tab({
 
 
 
+
+
+
+
      Icon = "view",
+
+
+
+
 
 
 
@@ -4546,7 +4194,15 @@ MiscTab = Window:Tab({
 
 
 
+
+
+
+
    }),
+
+
+
+
 
 
 
@@ -4562,7 +4218,23 @@ MiscTab = Window:Tab({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ----------------------------------------------------
+
+
+
+
 
 
 
@@ -4570,7 +4242,15 @@ MiscTab = Window:Tab({
 
 
 
+
+
+
+
 ----------------------------------------------------
+
+
+
+
 
 
 
@@ -4582,11 +4262,27 @@ local Workspace = game:GetService("Workspace")
 
 
 
+
+
+
+
+
+
+
+
 -- Global variables
 
 
 
+
+
+
+
 local selectedEggsMap = {} -- Dictionary para mabilis ang check
+
+
+
+
 
 
 
@@ -4596,7 +4292,17 @@ local isEggEspOn = false
 
 
 
+
+
+
+
+
+
 -- Multi-select Dropdown
+
+
+
+
 
 
 
@@ -4604,7 +4310,15 @@ Tabs.MiscTab:Dropdown({
 
 
 
+
+
+
+
     Title = "Select Eggs to ESP",
+
+
+
+
 
 
 
@@ -4612,241 +4326,489 @@ Tabs.MiscTab:Dropdown({
 
 
 
+
+
+
+
     Flag = "EspEggSelect",
+
+
 
  Values = eggChoicesList,
 
+
+
     Value = {},
+
+
 
     AllowNone = true,
 
+
+
     Multi = true,
 
+
+
     Callback = function(selectedTable)
+
+
 
         selectedEggsMap = {}
 
 
 
+
+
+
+
         if type(selectedTable) == "table" then
+
+
 
             for key, value in pairs(selectedTable) do
 
+
+
                 if type(key) == "number" and type(value) == "string" then
+
+
 
                     selectedEggsMap[value] = true
 
+
+
                 elseif type(key) == "string" and value == true then
+
+
 
                     selectedEggsMap[key] = true
 
+
+
                 end
+
+
 
             end
 
+
+
         end
+
+
 
     end,
 
+
+
 })
+
+
+
+
 
 
 
 -- Toggle para i-on o i-off ang ESP
 
+
+
 Tabs.MiscTab:Toggle({
+
+
 
     Title = "Turn on ESP Eggs",
 
+
+
     Desc = "Highlights the Selected Egg",
+
+
 
     Flag = "EspEgg",
 
+
+
 Value = false,
 
+
+
     Callback = function(state)
+
+
 
         isEggEspOn = state
 
 
 
+
+
+
+
         if state then
+
+
 
             task.spawn(function()
 
+
+
                 while isEggEspOn do
+
+
 
                     task.wait(0.5) -- I-refresh para sa mga bagong spawn na itlog
 
 
 
+
+
+
+
                     -- Kung biglang pinatay habang nag-aantay sa wait, itigil agad ang loop
+
+
 
                     if not isEggEspOn then break end
 
 
 
+
+
+
+
                     local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
+
+
 
                     if renderedEggs then
 
+
+
                         for _, eggModel in ipairs(renderedEggs:GetChildren()) do
+
+
 
                             -- Suriin kung ang pangalan ng itlog ay nasa loob ng iyong selectedEggsMap
 
+
+
                             if selectedEggsMap[eggModel.Name] then
+
+
 
                                 -- Lagyan ng Highlight kung wala pa
 
+
+
                                 local highlight = eggModel:FindFirstChild("CustomEggHighlight")
+
+
 
                                 if not highlight then
 
+
+
                                     highlight = Instance.new("Highlight")
+
+
 
                                     highlight.Name = "CustomEggHighlight"
 
+
+
                                     highlight.Adornee = eggModel
+
+
 
                                     highlight.FillColor = Color3.fromRGB(0, 255, 128) -- Kulay berde/neon
 
+
+
                                     highlight.FillTransparency = 0.4
+
+
 
                                     highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
 
+
+
                                     highlight.OutlineTransparency = 0
+
+
 
                                     highlight.Parent = eggModel
 
+
+
                                 end
+
+
+
+
 
 
 
                                 -- Lagyan ng BillboardGui para sa Pangalan kung wala pa
 
+
+
                                 local billboard = eggModel:FindFirstChild("CustomEggBillboard")
+
+
 
                                 if not billboard then
 
+
+
                                     billboard = Instance.new("BillboardGui")
+
+
 
                                     billboard.Name = "CustomEggBillboard"
 
+
+
                                     billboard.Size = UDim2.new(0, 150, 0, 50)
 
+
+
                                     billboard.StudsOffset = Vector3.new(0, 3, 0)
+
+
 
                                     billboard.AlwaysOnTop = true
 
 
 
+
+
+
+
                                     local textLabel = Instance.new("TextLabel")
+
+
 
                                     textLabel.Size = UDim2.new(1, 0, 1, 0)
 
+
+
                                     textLabel.BackgroundTransparency = 1
+
+
 
                                     textLabel.Text = "[ " .. eggModel.Name .. " ]"
 
+
+
                                     textLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+
+
 
                                     textLabel.TextStrokeTransparency = 0
 
+
+
                                     textLabel.Font = Enum.Font.GothamBold
 
+
+
                                     textLabel.TextSize = 14
+
+
 
                                     textLabel.Parent = billboard
 
 
 
+
+
+
+
                                     billboard.Adornee = eggModel
+
+
 
                                     billboard.Parent = eggModel
 
+
+
                                 end
+
+
 
                             else
 
+
+
                                 -- Tanggalin ang ESP kung hindi napili
 
+
+
                                 local highlight = eggModel:FindFirstChild("CustomEggHighlight")
+
+
 
                                 if highlight then highlight:Destroy() end
 
 
 
+
+
+
+
                                 local billboard = eggModel:FindFirstChild("CustomEggBillboard")
+
+
 
                                 if billboard then billboard:Destroy() end
 
+
+
                             end
+
+
 
                         end
 
+
+
                     end
 
+
+
                 end
+
+
+
+
 
 
 
                 -- PANGHULING PAGLILINIS kapag huminto ang while loop
 
+
+
                 local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
+
+
 
                 if renderedEggs then
 
+
+
                     for _, eggModel in ipairs(renderedEggs:GetChildren()) do
 
+
+
                         local highlight = eggModel:FindFirstChild("CustomEggHighlight")
+
+
 
                         if highlight then highlight:Destroy() end
 
 
 
+
+
+
+
                         local billboard = eggModel:FindFirstChild("CustomEggBillboard")
+
+
 
                         if billboard then billboard:Destroy() end
 
+
+
                     end
+
+
 
                 end
 
+
+
             end)
+
+
 
         else
 
+
+
             -- Kapag direktang pinatay ang Toggle, siguruhing false na ang state at burahin agad ang lahat
+
+
 
             isEggEspOn = false
 
 
 
+
+
+
+
             local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
+
+
 
             if renderedEggs then
 
+
+
                 for _, eggModel in ipairs(renderedEggs:GetChildren()) do
 
+
+
                     local highlight = eggModel:FindFirstChild("CustomEggHighlight")
+
+
 
                     if highlight then highlight:Destroy() end
 
 
 
+
+
+
+
                     local billboard = eggModel:FindFirstChild("CustomEggBillboard")
+
+
 
                     if billboard then billboard:Destroy() end
 
+
+
                 end
+
+
 
             end
 
+
+
         end
+
+
 
     end,
 
+
+
 })
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4864,7 +4826,19 @@ Tabs.MiscTab:Space()
 
 
 
+
+
+
+
+
+
+
+
 ----------------------------------------------------
+
+
+
+
 
 
 
@@ -4872,7 +4846,15 @@ Tabs.MiscTab:Space()
 
 
 
+
+
+
+
 ----------------------------------------------------
+
+
+
+
 
 
 
@@ -4884,7 +4866,19 @@ _G.DisableGameMessages = false
 
 
 
+
+
+
+
+
+
+
+
 Tabs.MiscTab:Toggle({
+
+
+
+
 
 
 
@@ -4892,13 +4886,27 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
     Desc = "Hide Notification GUI",
+
+
+
+
 
 
 
     Flag = "DisableNotification",
 
+
+
     Value = false,
+
+
+
+
 
 
 
@@ -4906,7 +4914,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
         _G.DisableGameMessages = state
+
+
+
+
 
 
 
@@ -4914,7 +4930,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
         task.spawn(function()
+
+
+
+
 
 
 
@@ -4922,11 +4946,23 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
             local player = Players.LocalPlayer
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -4934,11 +4970,23 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                 task.wait(0.5) -- Regular na susuriin para hindi makalusot kung mag-reload ang UI
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -4946,7 +4994,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                     local playerGui = player:FindFirstChild("PlayerGui")
+
+
+
+
 
 
 
@@ -4954,11 +5010,23 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                     local gameMessages = reusable and reusable:FindFirstChild("GameMessages")
 
 
 
+
+
+
+
                     
+
+
+
+
 
 
 
@@ -4966,7 +5034,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                         -- Kung ScreenGui ito, i-disable ang Enabled property
+
+
+
+
 
 
 
@@ -4974,7 +5050,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                             gameMessages.Enabled = false
+
+
+
+
 
 
 
@@ -4982,7 +5066,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                         elseif gameMessages:IsA("GuiObject") then
+
+
+
+
 
 
 
@@ -4990,7 +5082,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                         end
+
+
+
+
 
 
 
@@ -4998,7 +5098,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                         -- Para masigurong pati ang mga laman sa loob ay matago
+
+
+
+
 
 
 
@@ -5006,7 +5114,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                             if child:IsA("GuiObject") then
+
+
+
+
 
 
 
@@ -5014,7 +5130,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                             end
+
+
+
+
 
 
 
@@ -5022,7 +5146,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -5030,7 +5162,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
 
 
 
@@ -5038,7 +5178,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
             -- Kapag pinatay ang Toggle (Toggle Off), ibalik sa dati ang UI
+
+
+
+
 
 
 
@@ -5046,7 +5194,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                 local playerGui = player:FindFirstChild("PlayerGui")
+
+
+
+
 
 
 
@@ -5054,7 +5210,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                 local gameMessages = reusable and reusable:FindFirstChild("GameMessages")
+
+
+
+
 
 
 
@@ -5062,7 +5226,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                 if gameMessages then
+
+
+
+
 
 
 
@@ -5070,7 +5242,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                         gameMessages.Enabled = true
+
+
+
+
 
 
 
@@ -5078,11 +5258,23 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                         gameMessages.Visible = true
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -5090,7 +5282,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                     for _, child in ipairs(gameMessages:GetDescendants()) do
+
+
+
+
 
 
 
@@ -5098,7 +5298,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                             child.Visible = true
+
+
+
+
 
 
 
@@ -5106,7 +5314,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -5114,7 +5330,15 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
             end)
+
+
+
+
 
 
 
@@ -5122,11 +5346,67 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
     end,
 
 
 
+
+
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5182,7 +5462,19 @@ Tabs.MiscTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
 local Tabs = {
+
+
+
+
 
 
 
@@ -5190,7 +5482,15 @@ local Tabs = {
 
 
 
+
+
+
+
 		Title = "Player",
+
+
+
+
 
 
 
@@ -5198,7 +5498,15 @@ local Tabs = {
 
 
 
+
+
+
+
 	}),
+
+
+
+
 
 
 
@@ -5214,7 +5522,23 @@ local Tabs = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -5222,7 +5546,15 @@ local Tabs = {
 
 
 
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -5230,11 +5562,27 @@ local CoreGui = game:GetService("CoreGui")
 
 
 
+
+
+
+
 local Players = game:GetService("Players")
 
 
 
+
+
+
+
 local RunService = game:GetService("RunService")
+
+
+
+
+
+
+
+
 
 
 
@@ -5246,11 +5594,23 @@ local localPlayer = Players.LocalPlayer
 
 
 
+
+
+
+
 local playerEspConnection = nil
 
 
 
+
+
+
+
 local renderConnection = nil
+
+
+
+
 
 
 
@@ -5262,7 +5622,19 @@ local activeBillboards = {}
 
 
 
+
+
+
+
+
+
+
+
 Tabs.PlayerTab:Toggle({
+
+
+
+
 
 
 
@@ -5270,13 +5642,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 	Desc = "Highlights other players with distance info",
+
+
+
+
 
 
 
 	Flag = "PlayerEsp",
 
+
+
 	Value = false,
+
+
+
+
 
 
 
@@ -5284,7 +5670,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 	     -- tanggalin ang lahat ng ESP
+
+
+
+
 
 
 
@@ -5292,7 +5686,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			if playerEspConnection then
+
+
+
+
 
 
 
@@ -5300,11 +5702,23 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				playerEspConnection = nil
 
 
 
+
+
+
+
 			end
+
+
+
+
 
 
 
@@ -5312,7 +5726,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				renderConnection:Disconnect()
+
+
+
+
 
 
 
@@ -5320,7 +5742,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			end
+
+
+
+
+
+
+
+
 
 
 
@@ -5332,7 +5766,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			for _, p in ipairs(Players:GetPlayers()) do
+
+
+
+
 
 
 
@@ -5340,7 +5782,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					local hl = p.Character:FindFirstChild("PlayerEspHighlight")
+
+
+
+
 
 
 
@@ -5348,11 +5798,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				end
 
 
 
+
+
+
+
 			end
+
+
+
+
+
+
+
+
 
 
 
@@ -5364,7 +5830,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				if gui then gui:Destroy() end
+
+
+
+
 
 
 
@@ -5372,11 +5846,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			activeBillboards = {}
 
 
 
+
+
+
+
 		end
+
+
+
+
+
+
+
+
 
 
 
@@ -5388,7 +5878,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 	     -- toggle on
+
+
+
+
 
 
 
@@ -5396,7 +5894,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				if targetPlayer == localPlayer then return end
+
+
+
+
 
 
 
@@ -5404,7 +5910,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				local function addESP(char)
+
+
+
+
 
 
 
@@ -5412,7 +5926,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					local tagIdentifier = "PlayerESP_" .. targetPlayer.Name
+
+
+
+
 
 
 
@@ -5420,7 +5942,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 		
+
+
+
+
 
 
 
@@ -5428,11 +5958,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						CoreGui[tagIdentifier]:Destroy()
 
 
 
+
+
+
+
 					end
+
+
+
+
+
+
+
+
 
 
 
@@ -5444,7 +5990,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					local highlight = char:FindFirstChild("PlayerEspHighlight")
+
+
+
+
 
 
 
@@ -5452,7 +6006,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						highlight = Instance.new("Highlight")
+
+
+
+
 
 
 
@@ -5460,7 +6022,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						highlight.FillColor = Color3.fromRGB(255, 50, 50) -- Reddish tone
+
+
+
+
 
 
 
@@ -5468,7 +6038,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+
+
+
+
 
 
 
@@ -5476,11 +6054,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						highlight.Parent = char
 
 
 
+
+
+
+
 					end
+
+
+
+
+
+
+
+
 
 
 
@@ -5492,7 +6086,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					local head = char:FindFirstChild("Head") or char:FindFirstChild("HumanoidRootPart")
+
+
+
+
 
 
 
@@ -5500,7 +6102,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						local billboard = Instance.new("BillboardGui")
+
+
+
+
 
 
 
@@ -5508,7 +6118,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						billboard.Size = UDim2.new(0, 200, 0, 40)
+
+
+
+
 
 
 
@@ -5516,7 +6134,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						billboard.ExtentsOffset = Vector3.new(0, 2.8, 0)
+
+
+
+
 
 
 
@@ -5524,7 +6150,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						billboard.Parent = CoreGui
+
+
+
+
 
 
 
@@ -5532,7 +6166,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						local label = Instance.new("TextLabel")
+
+
+
+
 
 
 
@@ -5540,7 +6182,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						label.Size = UDim2.new(1, 0, 1, 0)
+
+
+
+
 
 
 
@@ -5548,7 +6198,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						label.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+
+
+
 
 
 
@@ -5556,7 +6214,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						label.Font = Enum.Font.GothamBold
+
+
+
+
 
 
 
@@ -5564,7 +6230,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						label.TextStrokeTransparency = 0.3
+
+
+
+
 
 
 
@@ -5576,7 +6250,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
 						activeBillboards[targetPlayer.Name] = {Gui = billboard, Label = label, TargetChar = char}
+
+
+
+
 
 
 
@@ -5584,7 +6270,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				end
+
+
+
+
+
+
+
+
 
 
 
@@ -5596,7 +6294,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					addESP(targetPlayer.Character)
+
+
+
+
 
 
 
@@ -5604,7 +6310,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				
+
+
+
+
 
 
 
@@ -5612,7 +6326,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					if state then
+
+
+
+
 
 
 
@@ -5620,7 +6342,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						addESP(char)
+
+
+
+
 
 
 
@@ -5628,11 +6358,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				end)
 
 
 
+
+
+
+
 			end
+
+
+
+
+
+
+
+
 
 
 
@@ -5644,7 +6390,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 				setupPlayerESP(p)
+
+
+
+
 
 
 
@@ -5656,7 +6410,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
 			playerEspConnection = Players.PlayerAdded:Connect(function(p)
+
+
+
+
 
 
 
@@ -5664,7 +6430,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			end)
+
+
+
+
+
+
+
+
 
 
 
@@ -5676,11 +6454,23 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			renderConnection = RunService.RenderStepped:Connect(function()
 
 
 
+
+
+
+
 				local localChar = localPlayer.Character
+
+
+
+
 
 
 
@@ -5692,7 +6482,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
 				for name, data in pairs(activeBillboards) do
+
+
+
+
 
 
 
@@ -5700,7 +6502,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					local label = data.Label
+
+
+
+
 
 
 
@@ -5712,7 +6522,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
 					if char and char:FindFirstChild("HumanoidRootPart") and localHrp then
+
+
+
+
 
 
 
@@ -5720,7 +6542,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 						local distance = math.floor((hrp.Position - localHrp.Position).Magnitude)
+
+
+
+
 
 
 
@@ -5728,7 +6558,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					else
+
+
+
+
 
 
 
@@ -5736,11 +6574,23 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 					end
 
 
 
+
+
+
+
 				end
+
+
+
+
 
 
 
@@ -5752,7 +6602,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
 		else
+
+
+
+
 
 
 
@@ -5760,7 +6622,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 			clearESP()
+
+
+
+
 
 
 
@@ -5768,11 +6638,31 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
 	end,
 
 
 
+
+
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5792,7 +6682,19 @@ Tabs.PlayerTab:Space()
 
 
 
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -5800,11 +6702,23 @@ Tabs.PlayerTab:Space()
 
 
 
+
+
+
+
 -- ====================================================================
 
 
 
+
+
+
+
 local RunService = game:GetService("RunService")
+
+
+
+
 
 
 
@@ -5816,7 +6730,19 @@ local Players = game:GetService("Players")
 
 
 
+
+
+
+
+
+
+
+
 local player = Players.LocalPlayer
+
+
+
+
 
 
 
@@ -5828,7 +6754,19 @@ local noclipConnection = nil
 
 
 
+
+
+
+
+
+
+
+
 Tabs.PlayerTab:Toggle({
+
+
+
+
 
 
 
@@ -5836,13 +6774,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
     Desc = "Walk through walls and obstacles",
+
+
+
+
 
 
 
     Flag = "Noclip",
 
+
+
     Value = false,
+
+
+
+
 
 
 
@@ -5850,7 +6802,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
         if state then
+
+
+
+
 
 
 
@@ -5858,7 +6818,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             if noclipConnection then
+
+
+
+
 
 
 
@@ -5866,7 +6834,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -5878,7 +6858,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 local character = player.Character
+
+
+
+
 
 
 
@@ -5886,7 +6874,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     for _, part in ipairs(character:GetDescendants()) do
+
+
+
+
 
 
 
@@ -5894,7 +6890,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                             part.CanCollide = false
+
+
+
+
 
 
 
@@ -5902,7 +6906,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -5910,7 +6922,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             end)
+
+
+
+
 
 
 
@@ -5918,7 +6938,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             -- ===== [TOGGLE OFF] =====
+
+
+
+
 
 
 
@@ -5926,7 +6954,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 noclipConnection:Disconnect()
+
+
+
+
 
 
 
@@ -5934,7 +6970,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -5946,7 +6994,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             if character then
+
+
+
+
 
 
 
@@ -5954,7 +7010,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     if part:IsA("BasePart") then
+
+
+
+
 
 
 
@@ -5962,7 +7026,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -5970,7 +7042,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
 
 
 
@@ -5978,11 +7058,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
     end,
 
 
 
+
+
+
+
 })
+
+
+
+
+
+
+
+
 
 
 
@@ -5998,7 +7094,19 @@ Tabs.PlayerTab:Space()
 
 
 
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -6006,7 +7114,15 @@ Tabs.PlayerTab:Space()
 
 
 
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -6014,7 +7130,15 @@ local Players = game:GetService("Players")
 
 
 
+
+
+
+
 local RunService = game:GetService("RunService")
+
+
+
+
 
 
 
@@ -6026,7 +7150,19 @@ local Debris = game:GetService("Debris")
 
 
 
+
+
+
+
+
+
+
+
 local player = Players.LocalPlayer
+
+
+
+
 
 
 
@@ -6034,7 +7170,15 @@ local lastPos = nil
 
 
 
+
+
+
+
 local fixedY = nil
+
+
+
+
 
 
 
@@ -6046,7 +7190,19 @@ local pathConnection = nil
 
 
 
+
+
+
+
+
+
+
+
 Tabs.PlayerTab:Toggle({
+
+
+
+
 
 
 
@@ -6054,13 +7210,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
     Desc = "Creates a black path under your feet as you walk (Disappears after 5s)",
+
+
+
+
 
 
 
     Flag = "PathBuilder",
 
+
+
     Value = false,
+
+
+
+
 
 
 
@@ -6068,7 +7238,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
         if state then
+
+
+
+
 
 
 
@@ -6076,7 +7254,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             lastPos = nil
+
+
+
+
 
 
 
@@ -6088,7 +7274,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
             pathConnection = RunService.Heartbeat:Connect(function()
+
+
+
+
 
 
 
@@ -6096,7 +7294,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 if not character then return end
+
+
+
+
 
 
 
@@ -6104,11 +7310,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 local humanoid = character:FindFirstChild("Humanoid")
 
 
 
+
+
+
+
                 if not rootPart or not humanoid then return end
+
+
+
+
+
+
+
+
 
 
 
@@ -6124,7 +7346,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
                 -- Lock Y on first step
+
+
+
+
 
 
 
@@ -6132,11 +7366,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     fixedY = pos.Y - 3.1
 
 
 
+
+
+
+
                 end
+
+
+
+
+
+
+
+
 
 
 
@@ -6148,7 +7398,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 local stateType = humanoid:GetState()
+
+
+
+
 
 
 
@@ -6156,7 +7414,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     or stateType == Enum.HumanoidStateType.Freefall
+
+
+
+
 
 
 
@@ -6164,11 +7430,27 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     fixedY = pos.Y - 3.1
 
 
 
+
+
+
+
                 end
+
+
+
+
+
+
+
+
 
 
 
@@ -6184,7 +7466,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
                 if lastPos then
+
+
+
+
 
 
 
@@ -6192,7 +7486,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 end
+
+
+
+
+
+
+
+
 
 
 
@@ -6204,7 +7510,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 part.Name = "BlackPath"
+
+
+
+
 
 
 
@@ -6212,7 +7526,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 part.CanCollide = true
+
+
+
+
 
 
 
@@ -6220,7 +7542,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 part.Color = Color3.fromRGB(0, 0, 0)
+
+
+
+
 
 
 
@@ -6228,7 +7558,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 part.BottomSurface = Enum.SurfaceType.Smooth
+
+
+
+
 
 
 
@@ -6240,7 +7578,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
                 if lastPos then
+
+
+
+
 
 
 
@@ -6248,7 +7598,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     local dist = (below - lastPos).Magnitude
+
+
+
+
 
 
 
@@ -6256,7 +7614,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     part.CFrame = CFrame.lookAt(mid, below)
+
+
+
+
 
 
 
@@ -6264,7 +7630,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                     part.Size = Vector3.new(4, 0.5, 4)
+
+
+
+
 
 
 
@@ -6272,7 +7646,19 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 end
+
+
+
+
+
+
+
+
 
 
 
@@ -6284,7 +7670,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 Debris:AddItem(part, 5)
+
+
+
+
 
 
 
@@ -6292,7 +7686,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             end)
+
+
+
+
 
 
 
@@ -6300,7 +7702,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             -- ===== [TOGGLE OFF] =====
+
+
+
+
 
 
 
@@ -6308,7 +7718,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
                 pathConnection:Disconnect()
+
+
+
+
 
 
 
@@ -6316,7 +7734,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
 
 
 
@@ -6324,7 +7750,15 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
             fixedY = nil
+
+
+
+
 
 
 
@@ -6332,11 +7766,31 @@ Tabs.PlayerTab:Toggle({
 
 
 
+
+
+
+
     end,
 
 
 
+
+
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6356,159 +7810,323 @@ Tabs.PlayerTab:Space()
 
 
 
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
 
 -- FLY SPEED SLIDER (SETTINGS)
 
+
+
 -- ====================================================================
+
+
 
 local Players = game:GetService("Players")
 
+
+
 local UserInputService = game:GetService("UserInputService")
+
+
 
 local RunService = game:GetService("RunService")
 
 
 
+
+
+
+
 local speaker = Players.LocalPlayer
+
+
 
 local camera = workspace.CurrentCamera
 
 
 
+
+
+
+
 -- Shared state para sa fly
+
+
 
 local flyActive = false
 
+
+
 local flyConnection = nil
 
+
+
 local flyKeyDown, flyKeyUp = nil, nil
+
+
 
 local flightSpeed = 0  -- Default na bilis ng lipad (0 = hindi gagalaw)
 
 
 
+
+
+
+
 Tabs.PlayerTab:Slider({
+
+
 
     Title = "Fly Speed",
 
+
+
     Desc = "Adjust Flying Speed",
+
+
 
     Flag = "FlySpeed",
 
+
+
 IsTooltip = true,
+
+
 
     IsTextbox = true,
 
+
+
     Step = 1,
+
+
 
     Value = {
 
+
+
         Min = 0,
+
+
 
         Max = 1000,
 
+
+
         Default = 0,
+
+
 
     },
 
+
+
     Callback = function(value)
+
+
 
         flightSpeed = value
 
+
+
     end,
+
+
 
 })
 
 
 
+
+
+
+
 -- ====================================================================
+
+
 
 -- FLY TOGGLE (MOBILE & PC FRIENDLY)
 
+
+
 -- ====================================================================
+
+
 
 Tabs.PlayerTab:Toggle({
 
+
+
     Title = "Fly",
+
+
 
     Desc = "Allows you to Fly",
 
+
+
     Flag = "FlyToggle",
+
+
 
 Value = false,
 
+
+
     Callback = function(state)
+
+
 
         local char = speaker.Character or speaker.CharacterAdded:Wait()
 
+
+
         local humanoid = char:FindFirstChildOfClass("Humanoid")
+
+
 
         local root = char:FindFirstChild("HumanoidRootPart") 
 
+
+
             or char:FindFirstChild("Torso") 
+
+
 
             or char:FindFirstChild("UpperTorso")
 
 
 
+
+
+
+
         if not root or not humanoid then
 
+
+
             return
+
+
 
         end
 
 
 
+
+
+
+
         local velocityHandlerName = "IYFlyVelocity"
+
+
 
         local gyroHandlerName = "IYFlyGyro"
 
 
 
+
+
+
+
         if state then
 
+
+
             -- ===== [TOGGLE ON] =====
+
+
 
             flyActive = true
 
 
 
+
+
+
+
             if root:FindFirstChild(velocityHandlerName) then root[velocityHandlerName]:Destroy() end
+
+
 
             if root:FindFirstChild(gyroHandlerName) then root[gyroHandlerName]:Destroy() end
 
 
 
+
+
+
+
             local v3zero = Vector3.new(0, 0, 0)
+
+
 
             local v3inf = Vector3.new(9e9, 9e9, 9e9)
 
 
 
+
+
+
+
             local bv = Instance.new("BodyVelocity")
+
+
 
             bv.Name = velocityHandlerName
 
+
+
             bv.Parent = root
 
+
+
             bv.MaxForce = v3inf
+
+
 
             bv.Velocity = v3zero
 
 
 
+
+
+
+
             local bg = Instance.new("BodyGyro")
+
+
 
             bg.Name = gyroHandlerName
 
+
+
             bg.Parent = root
+
+
 
             bg.MaxTorque = v3inf
 
+
+
             bg.P = 1000
 
+
+
             bg.D = 50
+
+
+
+
 
 
 
@@ -6516,199 +8134,401 @@ Value = false,
 
 
 
+
+
+
+
             local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+
+
 
             local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
 
 
 
+
+
+
+
             if not isMobile then
+
+
 
                 flyKeyDown = UserInputService.InputBegan:Connect(function(input, processed)
 
+
+
                     if processed then return end
+
+
 
                     if input.KeyCode == Enum.KeyCode.W then
 
+
+
                         CONTROL.F = 1
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.S then
 
+
+
                         CONTROL.B = -1
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.A then
 
+
+
                         CONTROL.L = -1
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.D then
 
+
+
                         CONTROL.R = 1
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.E then
 
+
+
                         CONTROL.Q = 1
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.Q then
 
+
+
                         CONTROL.E = -1
+
+
 
                     end
 
+
+
                 end)
+
+
+
+
 
 
 
                 flyKeyUp = UserInputService.InputEnded:Connect(function(input, processed)
 
+
+
                     if processed then return end
+
+
 
                     if input.KeyCode == Enum.KeyCode.W then
 
+
+
                         CONTROL.F = 0
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.S then
 
+
+
                         CONTROL.B = 0
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.A then
 
+
+
                         CONTROL.L = 0
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.D then
 
+
+
                         CONTROL.R = 0
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.E then
 
+
+
                         CONTROL.Q = 0
+
+
 
                     elseif input.KeyCode == Enum.KeyCode.Q then
 
+
+
                         CONTROL.E = 0
+
+
 
                     end
 
+
+
                 end)
 
+
+
             end
+
+
+
+
 
 
 
             local success, controlModule = pcall(function()
 
+
+
                 return require(speaker.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
 
+
+
             end)
+
+
+
+
 
 
 
             flyConnection = RunService.RenderStepped:Connect(function()
 
+
+
                 if not flyActive or not char or not humanoid or humanoid.Health <= 0 then return end
+
+
+
+
 
 
 
                 bg.CFrame = camera.CFrame
 
+
+
                 bv.Velocity = v3zero
+
+
+
+
 
 
 
                 if isMobile then
 
+
+
                     if success and controlModule then
 
+
+
                         local moveDirection = controlModule:GetMoveVector()
+
+
 
                         local speedMultiplier = flightSpeed * 5
 
 
 
+
+
+
+
                         local camCFrame = camera.CFrame
+
+
 
                         local flyVector = Vector3.new(0, 0, 0)
 
 
 
+
+
+
+
                         if moveDirection.Magnitude > 0 then
 
+
+
                             flyVector = (camCFrame.RightVector * moveDirection.X - camCFrame.LookVector * moveDirection.Z) * speedMultiplier
+
+
 
                         end
 
 
 
+
+
+
+
                         bv.Velocity = flyVector
+
+
 
                     end
 
+
+
                 else
+
+
 
                     bv.Velocity = ((camera.CFrame.LookVector * (CONTROL.F + CONTROL.B)) + 
 
+
+
                     ((camera.CFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - camera.CFrame.p)) * (flightSpeed * 15)
+
+
 
                 end
 
+
+
             end)
+
+
 
         else
 
+
+
             -- ===== [TOGGLE OFF] =====
+
+
 
             flyActive = false
 
 
 
+
+
+
+
             if flyConnection then
+
+
 
                 flyConnection:Disconnect()
 
+
+
                 flyConnection = nil
 
+
+
             end
+
+
 
             if flyKeyDown then
 
+
+
                 flyKeyDown:Disconnect()
+
+
 
                 flyKeyDown = nil
 
+
+
             end
+
+
 
             if flyKeyUp then
 
+
+
                 flyKeyUp:Disconnect()
+
+
 
                 flyKeyUp = nil
 
+
+
             end
+
+
+
+
 
 
 
             pcall(function()
 
+
+
                 if root then
+
+
 
                     if root:FindFirstChild(velocityHandlerName) then root[velocityHandlerName]:Destroy() end
 
+
+
                     if root:FindFirstChild(gyroHandlerName) then root[gyroHandlerName]:Destroy() end
 
+
+
                 end
+
+
 
                 if humanoid then
 
+
+
                     humanoid.PlatformStand = false
+
+
 
                 end
 
+
+
             end)
+
+
 
         end
 
+
+
     end,
 
+
+
 })
+
+
+
+
+
+
 
 
 
@@ -6722,65 +8542,147 @@ Tabs.PlayerTab:Space()
 
 
 
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
 
 -- WALKSPEED SLIDER (PLAYER TAB)
 
+
+
 -- ====================================================================
 
+
+
 local Players = game:GetService("Players")
+
+
 
 local speaker = Players.LocalPlayer
 
 
 
+
+
+
+
 Tabs.PlayerTab:Slider({
+
+
 
     Title = "WalkSpeed",
 
+
+
     Desc = "Adjust your character's walking speed",
+
+
 
    Flag = "WalkSpeedSlider",
 
+
+
  IsTooltip = true,
+
+
 
     IsTextbox = true, -- Pwede mong gawing false kung ayaw mo ng textbox
 
+
+
     Step = 1,
+
+
 
     Value = {
 
+
+
         Min = 0,
+
+
 
         Max = 1000,
 
+
+
         Default = 16, -- 16 ang default walkspeed sa Roblox
+
+
 
     },
 
+
+
     Callback = function(value)
+
+
 
         pcall(function()
 
+
+
             local char = speaker.Character
+
+
 
             if char then
 
+
+
                 local humanoid = char:FindFirstChildOfClass("Humanoid")
+
+
 
                 if humanoid then
 
+
+
                     humanoid.WalkSpeed = value
+
+
 
                 end
 
+
+
             end
+
+
 
         end)
 
+
+
     end,
 
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -6804,7 +8706,19 @@ Tabs.PlayerTab:Slider({
 
 
 
+
+
+
+
+
+
+
+
 local Tabs = {
+
+
+
+
 
 
 
@@ -6812,7 +8726,15 @@ local Tabs = {
 
 
 
+
+
+
+
 		Title = "Setting",
+
+
+
+
 
 
 
@@ -6820,7 +8742,15 @@ local Tabs = {
 
 
 
+
+
+
+
 	}),
+
+
+
+
 
 
 
@@ -6832,7 +8762,19 @@ local Tabs = {
 
 
 
+
+
+
+
+
+
+
+
 local Keybind = Tabs.SettingTab:Keybind({
+
+
+
+
 
 
 
@@ -6840,7 +8782,15 @@ local Keybind = Tabs.SettingTab:Keybind({
 
 
 
+
+
+
+
     Desc = "Keybind to open ui",
+
+
+
+
 
 
 
@@ -6848,7 +8798,15 @@ local Keybind = Tabs.SettingTab:Keybind({
 
 
 
+
+
+
+
     Callback = function(v)
+
+
+
+
 
 
 
@@ -6856,7 +8814,15 @@ local Keybind = Tabs.SettingTab:Keybind({
 
 
 
+
+
+
+
     end,
+
+
+
+
 
 
 
@@ -6868,7 +8834,19 @@ local Keybind = Tabs.SettingTab:Keybind({
 
 
 
+
+
+
+
+
+
+
+
 -- I-lock ito para hindi na mabago ng user
+
+
+
+
 
 
 
@@ -6884,7 +8862,23 @@ Keybind:Lock()
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -6892,7 +8886,15 @@ Keybind:Lock()
 
 
 
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -6900,11 +8902,23 @@ local Lighting = game:GetService("Lighting")
 
 
 
+
+
+
+
 local RunService = game:GetService("RunService")
 
 
 
+
+
+
+
 local Workspace = game:GetService("Workspace")
+
+
+
+
 
 
 
@@ -6916,7 +8930,19 @@ local StarterGui = game:GetService("StarterGui")
 
 
 
+
+
+
+
+
+
+
+
 local antilagConnection = nil
+
+
+
+
 
 
 
@@ -6928,7 +8954,19 @@ local originalSettings = {}
 
 
 
+
+
+
+
+
+
+
+
 local function notify(title, text, duration)
+
+
+
+
 
 
 
@@ -6936,7 +8974,15 @@ local function notify(title, text, duration)
 
 
 
+
+
+
+
         StarterGui:SetCore("SendNotification", {
+
+
+
+
 
 
 
@@ -6944,7 +8990,15 @@ local function notify(title, text, duration)
 
 
 
+
+
+
+
             Text = text;
+
+
+
+
 
 
 
@@ -6952,11 +9006,23 @@ local function notify(title, text, duration)
 
 
 
+
+
+
+
         })
 
 
 
+
+
+
+
     end)
+
+
+
+
 
 
 
@@ -6968,7 +9034,19 @@ end
 
 
 
+
+
+
+
+
+
+
+
 Tabs.SettingTab:Toggle({
+
+
+
+
 
 
 
@@ -6976,13 +9054,27 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
     Desc = "Boosts FPS by disabling shadows, particles, and heavy textures",
+
+
+
+
 
 
 
     Flag = "AntiLag",
 
+
+
     Value = false,
+
+
+
+
 
 
 
@@ -6990,11 +9082,23 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
         if state then
 
 
 
+
+
+
+
             -- ===== [TOGGLE ON] =====
+
+
+
+
 
 
 
@@ -7006,7 +9110,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
             local Terrain = Workspace:FindFirstChildWhichIsA("Terrain")
+
+
+
+
 
 
 
@@ -7014,7 +9130,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 originalSettings.WaterWaveSize = Terrain.WaterWaveSize
+
+
+
+
 
 
 
@@ -7022,7 +9146,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 originalSettings.WaterReflectance = Terrain.WaterReflectance
+
+
+
+
 
 
 
@@ -7030,7 +9162,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Terrain.WaterWaveSize = 0
+
+
+
+
 
 
 
@@ -7038,7 +9178,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Terrain.WaterReflectance = 0
+
+
+
+
 
 
 
@@ -7046,7 +9194,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7058,7 +9218,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             originalSettings.FogEnd = Lighting.FogEnd
+
+
+
+
 
 
 
@@ -7066,11 +9234,23 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             Lighting.GlobalShadows = false
 
 
 
+
+
+
+
             Lighting.FogEnd = 9e9
+
+
+
+
 
 
 
@@ -7082,7 +9262,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
             for _, v in pairs(game:GetDescendants()) do
+
+
+
+
 
 
 
@@ -7090,7 +9282,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     originalSettings[v] = {CastShadow = v.CastShadow, Material = v.Material, Reflectance = v.Reflectance}
+
+
+
+
 
 
 
@@ -7098,7 +9298,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     v.Material = Enum.Material.Plastic
+
+
+
+
 
 
 
@@ -7106,7 +9314,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 elseif v:IsA("Decal") then
+
+
+
+
 
 
 
@@ -7114,7 +9330,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     v.Transparency = 1
+
+
+
+
 
 
 
@@ -7122,7 +9346,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     if originalSettings[v] == nil then originalSettings[v] = v.Lifetime end
+
+
+
+
 
 
 
@@ -7130,11 +9362,27 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 end
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7146,7 +9394,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 if v:IsA("PostEffect") then
+
+
+
+
 
 
 
@@ -7154,7 +9410,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     v.Enabled = false
+
+
+
+
 
 
 
@@ -7162,7 +9426,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7174,7 +9450,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 task.spawn(function()
+
+
+
+
 
 
 
@@ -7182,7 +9466,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         RunService.Heartbeat:Wait()
+
+
+
+
 
 
 
@@ -7190,7 +9482,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     elseif child:IsA("BasePart") then
+
+
+
+
 
 
 
@@ -7198,11 +9498,23 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     end
 
 
 
+
+
+
+
                 end)
+
+
+
+
 
 
 
@@ -7214,7 +9526,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
             
+
+
+
+
 
 
 
@@ -7222,7 +9546,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             -- ===== [TOGGLE OFF] =====
+
+
+
+
 
 
 
@@ -7230,7 +9562,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 antilagConnection:Disconnect()
+
+
+
+
 
 
 
@@ -7238,7 +9578,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7250,7 +9602,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             if Terrain and originalSettings.WaterTransparency then
+
+
+
+
 
 
 
@@ -7258,7 +9618,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Terrain.WaterWaveSpeed = originalSettings.WaterWaveSpeed
+
+
+
+
 
 
 
@@ -7266,11 +9634,27 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Terrain.WaterTransparency = originalSettings.WaterTransparency
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7282,7 +9666,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             Lighting.FogEnd = originalSettings.FogEnd ~= nil and originalSettings.FogEnd or 100000
+
+
+
+
 
 
 
@@ -7294,7 +9686,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
             for _, v in pairs(game:GetDescendants()) do
+
+
+
+
 
 
 
@@ -7302,7 +9706,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     if v:IsA("BasePart") then
+
+
+
+
 
 
 
@@ -7310,7 +9722,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         v.Material = originalSettings[v].Material
+
+
+
+
 
 
 
@@ -7318,7 +9738,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     elseif v:IsA("Decal") then
+
+
+
+
 
 
 
@@ -7326,7 +9754,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     elseif v:IsA("ParticleEmitter") or v:IsA("Trail") then
+
+
+
+
 
 
 
@@ -7334,7 +9770,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     end
+
+
+
+
 
 
 
@@ -7342,7 +9786,19 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7354,7 +9810,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 if originalSettings[v] ~= nil and v:IsA("PostEffect") then
+
+
+
+
 
 
 
@@ -7362,11 +9826,27 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 end
 
 
 
+
+
+
+
             end
+
+
+
+
+
+
+
+
 
 
 
@@ -7378,7 +9858,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
             
+
+
+
+
 
 
 
@@ -7386,7 +9874,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
     end,
+
+
+
+
 
 
 
@@ -7406,7 +9902,27 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -7414,7 +9930,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
 -- ====================================================================
+
+
+
+
 
 
 
@@ -7426,7 +9950,19 @@ local Lighting = game:GetService("Lighting")
 
 
 
+
+
+
+
+
+
+
+
 Tabs.SettingTab:Toggle({
+
+
+
+
 
 
 
@@ -7434,13 +9970,27 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
     Desc = "Leave to the Darkness",
+
+
+
+
 
 
 
     Flag = "DayTime",
 
+
+
     Value = false,
+
+
+
+
 
 
 
@@ -7448,7 +9998,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
         pcall(function()
+
+
+
+
 
 
 
@@ -7456,7 +10014,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 -- ===== [TOGGLE ON: Gawing Tanghali] =====
+
+
+
+
 
 
 
@@ -7464,7 +10030,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Lighting.Brightness = 3
+
+
+
+
 
 
 
@@ -7472,7 +10046,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Lighting.Ambient = Color3.fromRGB(150, 150, 150)
+
+
+
+
 
 
 
@@ -7480,7 +10062,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7488,7 +10078,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     if child:IsA("Atmosphere") then
+
+
+
+
 
 
 
@@ -7496,7 +10094,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.Haze = 0
+
+
+
+
 
 
 
@@ -7504,7 +10110,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.Decay = Color3.fromRGB(255, 255, 255)
+
+
+
+
 
 
 
@@ -7512,7 +10126,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.TintColor = Color3.fromRGB(255, 255, 255)
+
+
+
+
 
 
 
@@ -7520,11 +10142,23 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.Contrast = 0.1
 
 
 
+
+
+
+
                     elseif child:IsA("Sky") then
+
+
+
+
 
 
 
@@ -7532,11 +10166,23 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     end
 
 
 
+
+
+
+
                 end
+
+
+
+
 
 
 
@@ -7544,7 +10190,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 -- ===== [TOGGLE OFF: Ibalik sa Normal/Gabi] =====
+
+
+
+
 
 
 
@@ -7552,7 +10206,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Lighting.Brightness = 1
+
+
+
+
 
 
 
@@ -7560,7 +10222,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 Lighting.Ambient = Color3.fromRGB(70, 70, 70)
+
+
+
+
 
 
 
@@ -7568,7 +10238,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 
+
+
+
+
 
 
 
@@ -7576,7 +10254,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                     if child:IsA("Atmosphere") then
+
+
+
+
 
 
 
@@ -7584,7 +10270,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.Haze = 0
+
+
+
+
 
 
 
@@ -7592,7 +10286,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.Decay = Color3.fromRGB(106, 112, 125)
+
+
+
+
 
 
 
@@ -7600,7 +10302,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.TintColor = Color3.fromRGB(255, 255, 255)
+
+
+
+
 
 
 
@@ -7608,7 +10318,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.Contrast = 0
+
+
+
+
 
 
 
@@ -7616,7 +10334,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                         child.StarCount = 3000
+
+
+
+
 
 
 
@@ -7624,7 +10350,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
                 end
+
+
+
+
 
 
 
@@ -7632,7 +10366,15 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
         end)
+
+
+
+
 
 
 
@@ -7640,7 +10382,39 @@ Tabs.SettingTab:Toggle({
 
 
 
+
+
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -7670,139 +10444,275 @@ Tabs.SettingTab:Toggle({
 
 Tabs.SettingTab:Space()
 
+
+
 --------------------------------------------------
+
+
 
 -- CONFIG MANAGER (Auto-load sa start)
 
+
+
 --------------------------------------------------
+
+
 
 local ConfigManager = Window.ConfigManager
 
-local CONFIG_NAME = "IOHUB_RideAPet"  -- ⬅️ fixed name
+
+
+local CONFIG_NAME = "IOHUB_RideAPet"  -- â¬…ï¸ fixed name
+
+
+
+
 
 
 
 local function getConfig()
 
+
+
     return ConfigManager:CreateConfig(CONFIG_NAME)
+
+
 
 end
 
 
 
+
+
+
+
 -- ====== SAVE BUTTON ======
+
+
 
 Tabs.SettingTab:Button({
 
+
+
     Title = "Save Config",
+
+
 
     Desc = "Save current settings",
 
+
+
     Callback = function()
 
+
+
         local cfg = getConfig()
+
+
+
+
 
 
 
         if cfg:Save() then
 
+
+
             WindUI:Notify({
+
+
 
                 Title = "Config Saved",
 
+
+
                 Content = "Settings saved as '" .. CONFIG_NAME .. "'",
+
+
 
                 Icon = "solar:check-circle-bold",
 
+
+
                 Duration = 3,
 
+
+
             })
+
+
 
         else
 
+
+
             WindUI:Notify({
+
+
 
                 Title = "Save Failed",
 
+
+
                 Content = "Failed to Save.",
+
+
 
                 Icon = "solar:danger-bold",
 
+
+
                 Duration = 3,
+
+
 
             })
 
+
+
         end
+
+
 
     end,
 
+
+
 })
+
+
+
+
 
 
 
 -- ====== DELETE BUTTON ======
 
+
+
 Tabs.SettingTab:Button({
+
+
 
     Title = "Delete Config",
 
+
+
     Desc = "Delete the saved config",
+
+
 
     Callback = function()
 
+
+
         local cfg = getConfig()
+
+
+
+
 
 
 
         if cfg:Delete() then
 
+
+
             WindUI:Notify({
+
+
 
                 Title = "Config Deleted",
 
+
+
                 Content = "'" .. CONFIG_NAME .. "' has been deleted!",
+
+
 
                 Icon = "solar:trash-bin-trash-bold",
 
+
+
                 Duration = 3,
 
+
+
             })
+
+
 
         else
 
+
+
             WindUI:Notify({
+
+
 
                 Title = "Delete Failed",
 
+
+
                 Content = "Config Not Found '" .. CONFIG_NAME .. "'",
+
+
 
                 Icon = "solar:danger-bold",
 
+
+
                 Duration = 3,
+
+
 
             })
 
+
+
         end
 
+
+
     end,
+
+
 
 })
 
 
 
+
+
+
+
 -- ====== AUTO-LOAD SA START (system-level, walang toggle) ======
+
+
 
 task.spawn(function()
 
+
+
     task.wait(0.5)
+
+
 
     pcall(function()
 
+
+
         local cfg = getConfig()
+
+
 
         cfg:Load()
 
+
+
     end)
+
+
 
 end)
 
@@ -7814,6 +10724,16 @@ end)
 
 
 
+
+
+
+
+
+
+
+
+
+
 Tabs.SettingTab:Space()
 
 
@@ -7822,77 +10742,159 @@ Tabs.SettingTab:Space()
 
 
 
+
+
+
+
+
+
+
+
 --------------------------------------------------
+
+
 
 -- SERVER HOP (SETTING TAB)
 
+
+
 --------------------------------------------------
+
+
+
+
 
 
 
 -- Storage ng recent servers (para iwasan)
 
+
+
 local RECENT_FILE = "IOHUB2_recent_servers.json"
+
+
 
 local MAX_RECENT = 5
 
 
 
+
+
+
+
 -- Helper: Kunin yung recent servers list
+
+
 
 local function getRecentServers()
 
+
+
     local HttpService = game:GetService("HttpService")
+
+
 
     local recent = {}
 
 
 
+
+
+
+
     pcall(function()
+
+
 
         if isfile(RECENT_FILE) then
 
+
+
             local data = HttpService:JSONDecode(readfile(RECENT_FILE))
+
+
 
             if type(data) == "table" then
 
+
+
                 recent = data
+
+
 
             end
 
+
+
         end
 
+
+
     end)
+
+
+
+
 
 
 
     return recent
 
+
+
 end
+
+
+
+
 
 
 
 -- Helper: I-save yung recent servers list
 
+
+
 local function saveRecentServers(list)
+
+
 
     local HttpService = game:GetService("HttpService")
 
+
+
     pcall(function()
+
+
 
         writefile(RECENT_FILE, HttpService:JSONEncode(list))
 
+
+
     end)
+
+
 
 end
 
 
 
+
+
+
+
 -- Helper: Idagdag yung current server sa recent list
+
+
 
 local function addRecentServer(jobId)
 
+
+
     if not jobId or jobId == "" then return end
+
+
+
+
 
 
 
@@ -7900,17 +10902,35 @@ local function addRecentServer(jobId)
 
 
 
+
+
+
+
     for i, id in ipairs(recent) do
+
+
 
         if id == jobId then
 
+
+
             table.remove(recent, i)
+
+
 
             break
 
+
+
         end
 
+
+
     end
+
+
+
+
 
 
 
@@ -7918,305 +10938,611 @@ local function addRecentServer(jobId)
 
 
 
+
+
+
+
     while #recent > MAX_RECENT do
+
+
 
         table.remove(recent)
 
+
+
     end
+
+
+
+
 
 
 
     saveRecentServers(recent)
 
+
+
 end
+
+
+
+
 
 
 
 -- Helper: Kunin yung server list via Roblox API
 
+
+
 local function fetchServerList(placeId)
+
+
 
     local HttpService = game:GetService("HttpService")
 
 
 
+
+
+
+
     local url = string.format(
+
+
 
         "https://games.roblox.com/v1/games/%d/servers/Public?sortOrder=Asc&limit=100",
 
+
+
         placeId
+
+
 
     )
 
 
 
+
+
+
+
     local success, response = pcall(function()
+
+
 
         return HttpService:RequestAsync({
 
+
+
             Url = url,
+
+
 
             Method = "GET",
 
+
+
         })
 
+
+
     end)
+
+
+
+
 
 
 
     if not success or not response or not response.Success then
 
+
+
         return nil
 
+
+
     end
+
+
+
+
 
 
 
     local ok, decoded = pcall(function()
 
+
+
         return HttpService:JSONDecode(response.Body)
+
+
 
     end)
 
 
 
+
+
+
+
     if not ok or not decoded or not decoded.data then
 
+
+
         return nil
+
+
 
     end
 
 
 
+
+
+
+
     return decoded.data
+
+
 
 end
 
 
 
+
+
+
+
 -- ===== BUTTON: Server Hop =====
+
+
 
 Tabs.SettingTab:Button({
 
+
+
     Title = "Server Hop",
+
+
 
     Desc = "Leave and Rejoin to Different Server",
 
+
+
     Callback = function()
+
+
 
         local TeleportService = game:GetService("TeleportService")
 
+
+
         local Players = game:GetService("Players")
+
+
 
         local player = Players.LocalPlayer
 
 
 
+
+
+
+
         local currentJobId = game.JobId
+
+
 
         local placeId = game.PlaceId
 
 
 
+
+
+
+
         if not currentJobId or currentJobId == "" then
+
+
 
             WindUI:Notify({
 
+
+
                 Title = "Error",
+
+
 
                 Content = "Walang JobId (baka sa Studio ka nagte-test).",
 
+
+
                 Icon = "solar:danger-bold",
+
+
 
                 Duration = 3,
 
+
+
             })
 
+
+
             return
+
+
 
         end
 
 
 
+
+
+
+
         WindUI:Notify({
+
+
 
             Title = "Server Hop",
 
+
+
             Content = "Naghahanap ng bagong server...",
+
+
 
             Icon = "solar:refresh-bold",
 
+
+
             Duration = 3,
+
+
 
         })
 
 
 
+
+
+
+
         task.spawn(function()
 
+
+
             -- Idagdag yung current server sa recent list
+
+
 
             addRecentServer(currentJobId)
 
 
 
+
+
+
+
             -- Kunin lahat ng recent servers
+
+
 
             local recentServers = getRecentServers()
 
+
+
             local recentSet = {}
+
+
 
             for _, id in ipairs(recentServers) do
 
+
+
                 recentSet[id] = true
 
+
+
             end
+
+
+
+
 
 
 
             -- Kunin yung server list
 
+
+
             local servers = fetchServerList(placeId)
+
+
+
+
 
 
 
             if not servers or #servers == 0 then
 
+
+
                 WindUI:Notify({
+
+
 
                     Title = "Fallback",
 
+
+
                     Content = "Walang server list, random join.",
+
+
 
                     Icon = "solar:danger-bold",
 
+
+
                     Duration = 3,
+
+
 
                 })
 
 
 
+
+
+
+
                 pcall(function()
+
+
 
                     TeleportService:Teleport(placeId, player)
 
+
+
                 end)
+
+
 
                 return
 
+
+
             end
+
+
+
+
 
 
 
             -- Filter: alisin yung recent at current
 
+
+
             local validServers = {}
+
+
 
             for _, server in ipairs(servers) do
 
+
+
                 local serverId = server.id
 
+
+
                 local playerCount = server.playing or 0
+
+
 
                 local maxPlayers = server.maxPlayers or 0
 
 
 
+
+
+
+
                 if serverId 
+
+
 
                    and serverId ~= currentJobId 
 
+
+
                    and not recentSet[serverId] 
+
+
 
                    and playerCount < maxPlayers then
 
+
+
                     table.insert(validServers, server)
+
+
 
                 end
 
+
+
             end
+
+
+
+
 
 
 
             -- Kung walang valid, alisin na lang yung recent filter
 
+
+
             if #validServers == 0 then
+
+
 
                 for _, server in ipairs(servers) do
 
+
+
                     local serverId = server.id
 
+
+
                     local playerCount = server.playing or 0
+
+
 
                     local maxPlayers = server.maxPlayers or 0
 
 
 
+
+
+
+
                     if serverId 
+
+
 
                        and serverId ~= currentJobId 
 
+
+
                        and playerCount < maxPlayers then
+
+
 
                         table.insert(validServers, server)
 
+
+
                     end
+
+
 
                 end
 
+
+
             end
+
+
+
+
 
 
 
             if #validServers == 0 then
 
+
+
                 WindUI:Notify({
+
+
 
                     Title = "Fallback",
 
+
+
                     Content = "Walang available, random join.",
+
+
 
                     Icon = "solar:danger-bold",
 
+
+
                     Duration = 3,
+
+
 
                 })
 
 
 
+
+
+
+
                 pcall(function()
+
+
 
                     TeleportService:Teleport(placeId, player)
 
+
+
                 end)
 
+
+
                 return
+
+
 
             end
 
 
 
+
+
+
+
             -- Pumili ng random server
+
+
 
             local chosen = validServers[math.random(1, #validServers)]
 
 
 
+
+
+
+
             WindUI:Notify({
+
+
 
                 Title = "Joining Server",
 
+
+
                 Content = string.format("Players: %d/%d", 
+
+
 
                     chosen.playing or 0,
 
+
+
                     chosen.maxPlayers or 0),
+
+
 
                 Icon = "solar:login-bold",
 
+
+
                 Duration = 3,
 
+
+
             })
+
+
+
+
 
 
 
@@ -8224,35 +11550,83 @@ Tabs.SettingTab:Button({
 
 
 
+
+
+
+
             local success, err = pcall(function()
 
+
+
                 TeleportService:TeleportToPlaceInstance(placeId, chosen.id, player)
+
+
 
             end)
 
 
 
+
+
+
+
             if not success then
+
+
 
                 WindUI:Notify({
 
+
+
                     Title = "Teleport Failed",
+
+
 
                     Content = tostring(err),
 
+
+
                     Icon = "solar:danger-bold",
+
+
 
                     Duration = 5,
 
+
+
                 })
+
+
 
             end
 
+
+
         end)
+
+
 
     end,
 
+
+
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
