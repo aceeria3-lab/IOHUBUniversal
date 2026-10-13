@@ -1,4 +1,4 @@
-
+-- fixed version 4
 
 
 
@@ -46,7 +46,7 @@ end)
 
 
 
-print("Anti-AFK âœ…")
+print("Anti-AFK ✅")
 
 
 
@@ -751,17 +751,17 @@ Callback = function(state)
     _G.AutoEggEnabled = state
     
     if not state then
-        -- ✅ RESET FLAGS PAGKA-OFF
+        --  RESET FLAGS PAGKA-OFF
         _G.EggCollecting = false
         _G.ExitingHalloween = false
         _G.LocationMismatchCount = 0
-        print("[AutoEgg] OFF 🛑")
+        print("[AutoEgg] OFF ")
         return
     end
     
-    print("[AutoEgg] ON 🥚")
+    print("[AutoEgg] ON ")
     
-    if state then                        -- ✅ ITO YUNG WRAPPER
+    if state then                        --  ITO YUNG WRAPPER
         task.spawn(function()
             -- ... rest ng code
 
@@ -2015,7 +2015,7 @@ local function findNearestPickupPrompt(hrp, maxDist, targetEggName)
 
 
 
-                -- âœ… VERIFICATION: Yung owning Model ba ay target egg?
+                -- ✅ VERIFICATION: Yung owning Model ba ay target egg?
 
                 local ownerModel = getOwningModelName(desc)
 
@@ -2023,7 +2023,7 @@ local function findNearestPickupPrompt(hrp, maxDist, targetEggName)
 
                 if targetEggName and not modelMatchesTarget(ownerModel, targetEggName) then
 
-                    -- Skip â€” hindi ito yung hinahanap nating egg
+                    -- Skip — hindi ito yung hinahanap nating egg
 
                     continue
 
@@ -2154,7 +2154,7 @@ end
 local function arcTween(hrp, targetCF, peakHeight, speed)
     if not hrp or not targetCF then return false end
     peakHeight = peakHeight or 240
-    speed = speed or 300  -- âš ï¸ BAGAL: 300 studs/sec (recording speed)
+    speed = speed or 300  -- ⚠️ BAGAL: 300 studs/sec (recording speed)
     
     enableNoclip()
     task.wait(0.05)
@@ -2255,7 +2255,7 @@ local function walkWithBob(hrp, targetCF, speed, bobHeight, bobDelay)
     local endPos = targetCF.Position
     local totalDist = (endPos - startPos).Magnitude
 
-    -- Hatiin sa chunks â€” bawat chunk may up-down
+    -- Hatiin sa chunks — bawat chunk may up-down
     local CHUNKS = 5
     for i = 1, CHUNKS do
         local progress = i / CHUNKS
@@ -2266,7 +2266,7 @@ local function walkWithBob(hrp, targetCF, speed, bobHeight, bobDelay)
         tweenSpeed(hrp, CFrame.new(upPos, endPos), speed)
         task.wait(bobDelay)
 
-        -- Down position (baba) â€” same basePos
+        -- Down position (baba) — same basePos
         tweenSpeed(hrp, CFrame.new(basePos, endPos), speed)
         task.wait(bobDelay)
     end
@@ -2358,7 +2358,7 @@ local function fireHalloweenPortalToHalloween()
     local portal = Workspace.HalloweenArea.Portal.Model.Model:FindFirstChild("portal")
     if portal and portal:IsA("BasePart") then
         -- tweenSpeed(hrp, portal.CFrame + Vector3.new(0, 5, 0), 20000)
-        -- â†‘ gagamitin natin sa caller, para may access sa hrp
+        -- ↑ gagamitin natin sa caller, para may access sa hrp
     end
     
     local success = pcall(function()
@@ -2421,7 +2421,7 @@ local function postDropFlow(hrp, targetEggName)
         fireVolcanoDip()
         task.wait(0.1)
 
-        print("[AutoCollect] Auto Dip ON â€” Waiting 10 seconds...")
+        print("[AutoCollect] Auto Dip ON — Waiting 10 seconds...")
         task.wait(10)
     end
 
@@ -2436,23 +2436,23 @@ local function postDropFlow(hrp, targetEggName)
 
     local homeCF = plotCenter + Vector3.new(0, 5, 0)
 
-    -- ===== ðŸŽ¯ WAITING AREA (side ng home) =====
+    -- ===== 🎯 WAITING AREA (side ng home) =====
     local SIDE_DISTANCE = 200
     local waitCF = CFrame.new(
         homeCF.Position + Vector3.new(SIDE_DISTANCE, 0, 0),
         homeCF.Position
     )
 
-    -- ===== ðŸŽ¬ STEP 1: ARC TWEEN PAPUNTANG WAITING AREA (MABAGAL) =====
+    -- ===== 🎬 STEP 1: ARC TWEEN PAPUNTANG WAITING AREA (MABAGAL) =====
 print("[AutoCollect] Arc flying SLOW to waiting area...")
-arcTween(hrp, waitCF, 240, 800)  -- âš ï¸ 300 studs/sec
+arcTween(hrp, waitCF, 240, 800)  -- ⚠️ 300 studs/sec
 task.wait(0.1)
 
-    -- ===== â±ï¸ STEP 2: WAIT SA WAITING AREA =====
+    -- ===== ⏱️ STEP 2: WAIT SA WAITING AREA =====
     print("[AutoCollect] Waiting at side...")
     task.wait(5)
 
-    -- ===== ðŸŽ¬ STEP 3: TWEEN SA HOME BASE =====
+    -- ===== 🎬 STEP 3: TWEEN SA HOME BASE =====
     print("[AutoCollect] Going home...")
     tweenSpeed(hrp, homeCF, 5000)
 end
@@ -2529,7 +2529,7 @@ end
 
 
 
-                    -- Step 1: TELEPORT â†’ SPOT 1 (Entrance)
+                    -- Step 1: TELEPORT → SPOT 1 (Entrance)
 
 
 
@@ -2565,7 +2565,7 @@ end
 
 
 
-                    -- Step 2: TWEEN â†’ SPOT 2 (Validate)
+                    -- Step 2: TWEEN → SPOT 2 (Validate)
 
 
 
@@ -2640,7 +2640,7 @@ task.wait(0.3)
 
 
 
-                  -- Step 5: ðŸŽ¬ TWEEN â†’ SPOT 2 (Validate)
+                  -- Step 5: 🎬 TWEEN → SPOT 2 (Validate)
 tweenSpeed(hrp, SPOT_2, 3000)
 task.wait(0.3)
 
@@ -2650,7 +2650,7 @@ task.wait(0.3)
 
 
 
-                    -- Step 6: TWEEN â†’ SPOT 1 (Entrance)
+                    -- Step 6: TWEEN → SPOT 1 (Entrance)
 
 
 
@@ -2681,14 +2681,14 @@ task.wait(0.3)
 -- Step 7+: Post-drop flow
 postDropFlow(hrp, "Volcanic Egg")
 
--- ✅ FLY OFF + NOCLIP OFF
+--  FLY OFF + NOCLIP OFF
 task.wait(0.5)
 disableFly()
 disableNoclip()
 
--- ✅✅✅ RESET FLAG PAGKA-TAPOS NG VOLCANIC
+--  RESET FLAG PAGKA-TAPOS NG VOLCANIC
 _G.EggCollecting = false
-print("[AutoEgg] 🔓 EggCollecting = false (volcanic done)")
+print("[AutoEgg]  EggCollecting = false (volcanic done)")
 
 return true
 
@@ -2795,25 +2795,90 @@ while _G.AutoEggEnabled do
         continue
     end
 
-    -- ✅ DISTANCE CHECK — kung malayo, skip (Auto Candy na bahala)
-    local distToEgg = (targetCFrame.Position - hrp.Position).Magnitude
-    
-    if distToEgg > 10000 then
+ -- ✅ DISTANCE CHECK
+local distToEgg = (targetCFrame.Position - hrp.Position).Magnitude
+
+if distToEgg > 10000 then
+    -- ✅ KUNG AUTO CANDY ON, HINTAYIN LANG (auto candy mag-te-teleport)
+    if _G.AutoCandyEnabled then
         print("[AutoEgg] ⏸️ Egg malayo (" .. math.floor(distToEgg) .. " studs) — hintay Auto Candy")
         task.wait(0.5)
         continue
+    else
+        -- ✅ KUNG AUTO CANDY OFF, AUTO EGG MAG-TELEPORT SA HOME BASE
+        print("[AutoEgg] 🏠 Egg malayo + Auto Candy OFF — teleport sa home base")
+        
+        local myPlot = nil
+        local plots = Workspace:FindFirstChild("Plots")
+        if plots then
+            for _, plot in ipairs(plots:GetChildren()) do
+                local data = plot:FindFirstChild("Data")
+                local owner = data and data:FindFirstChild("Owner")
+                if owner then
+                    if owner:IsA("ObjectValue") and owner.Value == player then
+                        myPlot = plot
+                        break
+                    elseif owner:IsA("StringValue") 
+                        and (owner.Value == player.Name or owner.Value == player.DisplayName) then
+                        myPlot = plot
+                        break
+                    end
+                end
+            end
+        end
+        
+        if myPlot then
+            local plotCenter = nil
+            if myPlot.PrimaryPart then
+                plotCenter = myPlot.PrimaryPart.CFrame
+            else
+                for _, partName in ipairs({"Spawn", "Base", "Center", "Home"}) do
+                    local part = myPlot:FindFirstChild(partName, true)
+                    if part and part:IsA("BasePart") then
+                        plotCenter = part.CFrame
+                        break
+                    end
+                end
+            end
+            
+            if plotCenter then
+                enableNoclip()
+                local targetCF = plotCenter + Vector3.new(0, 5, 0)
+                hrp.CFrame = targetCF
+                task.wait(0.3)
+                disableNoclip()
+                print("[AutoEgg] ✅ Teleported sa home base!")
+                task.wait(1)
+                continue
+            end
+        else
+            warn("[AutoEgg] Hindi mahanap ang plot!")
+        end
     end
+    
+    task.wait(0.5)
+    continue
+end
 
-    -- ✅ MALAPIT NA — SET FLAG + COLLECT
+
+
+
+
+
+
+
+
+
+    --  MALAPIT NA � SET FLAG + COLLECT
     _G.EggCollecting = true
-    print("[AutoEgg] ✅ Collecting:", targetEggName)
+    print("[AutoEgg]  Collecting:", targetEggName)
 
     -- ===== VOLCANIC EGG =====
     if targetEggName == "Volcanic Egg" then
         volcanicSequence(hrp, foundPrompt)
         task.wait(0.5)
         _G.EggCollecting = false
-        print("[AutoEgg] 🔓 EggCollecting = false (volcanic)")
+        print("[AutoEgg]  EggCollecting = false (volcanic)")
         continue
     end
 
@@ -2834,7 +2899,7 @@ while _G.AutoEggEnabled do
     disableNoclip()
 
     _G.EggCollecting = false
-    print("[AutoEgg] 🔓 EggCollecting = false (normal)")
+    print("[AutoEgg]  EggCollecting = false (normal)")
 end
 
              
@@ -3364,15 +3429,15 @@ Tabs.EventTab:Toggle({
     Value = false,
     Callback = function(state)
         _G.AutoCandyEnabled = state
-        _G.ExitingHalloween = false  -- ✅ Reset flag
+        _G.ExitingHalloween = false  --  Reset flag
         
         if not state then 
             _G.ExitingHalloween = false
-            print("[AutoCandy] OFF 🛑")
+            print("[AutoCandy] OFF ")
             return 
         end
         
-        print("[AutoCandy] ON 🍬")
+        print("[AutoCandy] ON ")
 
         task.spawn(function()
             local Players = game:GetService("Players")
@@ -3383,67 +3448,94 @@ Tabs.EventTab:Toggle({
 
             local SPOT_COOLDOWN = 6
             local SPOT_FAIL_COOLDOWN = 30
-            local PROMPT_WAIT = 0.5
+            local PROMPT_WAIT = 0.6
             local RETURN_SPEED = 2000
-            local DROPOFF_WAIT = 1
+            local DROPOFF_WAIT = 0.3
 
             -- ===== HARDCODED PORTAL POSITIONS =====
             local ENTER_PORTAL_CF = CFrame.new(197.624, 40325.387, 674.741)
             local LEAVE_PORTAL_CF = CFrame.new(-46059.078, 40382.543, -20351.945)
 
-            -- ===== GET ENTER PORTAL PROMPT =====
-            local function getEnterPortalPrompt()
-                local ok, prompt = pcall(function()
-                    return Workspace.Map.Portal
-                        .Model.Model.Model.Model
-                        .portal.Part
-                        .HalloweenPromptAnchor
-                        .HalloweenPortalPrompt
-                end)
-                if ok and prompt then return prompt end
-                
-                local map = Workspace:FindFirstChild("Map")
-                if map then
-                    local portal = map:FindFirstChild("Portal")
-                    if portal then
-                        for _, d in ipairs(portal:GetDescendants()) do
-                            if d.Name == "HalloweenPortalPrompt" and d:IsA("ProximityPrompt") then
-                                return d
-                            end
-                        end
-                    end
+-- ===== GET ENTER PORTAL PROMPT =====
+local function getEnterPortalPrompt()
+    local ok, prompt = pcall(function()
+        return Workspace.Map.Portal
+            .Model.Model.Model.Model
+            .portal.Part
+            .HalloweenPromptAnchor
+            .HalloweenPortalPrompt
+    end)
+    
+    if ok and prompt then
+        -- ✅ OVERRIDE PROPERTIES
+        pcall(function()
+            prompt.RequiresLineOfSight = false
+            prompt.MaxActivationDistance = 100
+        end)
+        return prompt
+    end
+    
+    -- Fallback: auto-search
+    local map = Workspace:FindFirstChild("Map")
+    if map then
+        local portal = map:FindFirstChild("Portal")
+        if portal then
+            for _, d in ipairs(portal:GetDescendants()) do
+                if d.Name == "HalloweenPortalPrompt" and d:IsA("ProximityPrompt") then
+                    -- ✅ OVERRIDE PROPERTIES
+                    pcall(function()
+                        d.RequiresLineOfSight = false
+                        d.MaxActivationDistance = 100
+                    end)
+                    return d
                 end
-                
-                warn("[Portal] ❌ Enter portal prompt not found!")
-                return nil
             end
+        end
+    end
+    
+    return nil
+end
 
-            -- ===== GET LEAVE PORTAL PROMPT =====
-            local function getLeavePortalPrompt()
-                local ok, prompt = pcall(function()
-                    return Workspace.HalloweenArea.Portal
-                        .Model.Model
-                        .Part
-                        .HalloweenPromptAnchor
-                        .HalloweenPortalPrompt
-                end)
-                if ok and prompt then return prompt end
-                
-                local ha = Workspace:FindFirstChild("HalloweenArea")
-                if ha then
-                    local portal = ha:FindFirstChild("Portal")
-                    if portal then
-                        for _, d in ipairs(portal:GetDescendants()) do
-                            if d.Name == "HalloweenPortalPrompt" and d:IsA("ProximityPrompt") then
-                                return d
-                            end
-                        end
-                    end
+
+-- ===== GET LEAVE PORTAL PROMPT =====
+local function getLeavePortalPrompt()
+    local ok, prompt = pcall(function()
+        return Workspace.HalloweenArea.Portal
+            .Model.Model
+            .Part
+            .HalloweenPromptAnchor
+            .HalloweenPortalPrompt
+    end)
+    
+    if ok and prompt then
+        -- ✅ OVERRIDE PROPERTIES
+        pcall(function()
+            prompt.RequiresLineOfSight = false
+            prompt.MaxActivationDistance = 100
+        end)
+        return prompt
+    end
+    
+    -- Fallback
+    local ha = Workspace:FindFirstChild("HalloweenArea")
+    if ha then
+        local portal = ha:FindFirstChild("Portal")
+        if portal then
+            for _, d in ipairs(portal:GetDescendants()) do
+                if d.Name == "HalloweenPortalPrompt" and d:IsA("ProximityPrompt") then
+                    pcall(function()
+                        d.RequiresLineOfSight = false
+                        d.MaxActivationDistance = 100
+                    end)
+                    return d
                 end
-                
-                warn("[Portal] ❌ Leave portal prompt not found!")
-                return nil
             end
+        end
+    end
+    
+    return nil
+end
+
 
             local function getHRP()
                 local c = player.Character
@@ -3459,120 +3551,8 @@ Tabs.EventTab:Toggle({
                 return distance < 2000
             end
 
-            -- ===== GO TO HALLOWEEN =====
-            local function goToHalloweenArea(hrp)
-                if not hrp then return false end
-                print("[AutoCandy] Pupunta sa Halloween Area...")
-                
-                local prompt = getEnterPortalPrompt()
-                if not prompt then return false end
-                
-                local promptPos = ENTER_PORTAL_CF.Position
-                local parent = prompt.Parent
-                if parent and parent:IsA("BasePart") then
-                    promptPos = parent.Position
-                elseif parent and parent:IsA("Model") then
-                    local ok, pivot = pcall(function() return parent:GetPivot() end)
-                    if ok and pivot then promptPos = pivot.Position end
-                end
-                
-                local approachCF = CFrame.new(promptPos + Vector3.new(0, 3, 0), promptPos)
-                local distance = (approachCF.Position - hrp.Position).Magnitude
-                local duration = math.max(distance / 20000, 0.1)
-                
-                local tw = TweenService:Create(hrp,
-                    TweenInfo.new(duration, Enum.EasingStyle.Linear),
-                    { CFrame = approachCF })
-                tw:Play()
-                tw.Completed:Wait()
-                task.wait(0.5)
-                
-                local waitStart = tick()
-                while not prompt.Enabled and (tick() - waitStart) < 3 do
-                    task.wait(0.2)
-                end
-                
-                local fired = false
-                for attempt = 1, 8 do
-                    if prompt.Enabled then
-                        pcall(function() fireproximityprompt(prompt) end)
-                        task.wait(0.3)
-                        if not prompt.Enabled then
-                            fired = true
-                            break
-                        end
-                    end
-                    task.wait(0.3)
-                end
-                
-                if fired then
-                    print("[AutoCandy] ✅ Enter portal fired!")
-                    task.wait(3)
-                    return true
-                end
-                
-                warn("[AutoCandy] ❌ Enter portal fail!")
-                return false
-            end
 
-            -- ===== GO TO MAIN MAP =====
-            local function goToMainMap(hrp)
-                if not hrp then return false end
-                print("[AutoCandy] Bumalik sa Main Map...")
-                
-                local prompt = getLeavePortalPrompt()
-                if not prompt then return false end
-                
-                local promptPos = LEAVE_PORTAL_CF.Position
-                local okPart, part = pcall(function()
-                    return Workspace.HalloweenArea.Portal
-                        .Model.Model
-                        .Part
-                end)
-                if okPart and part and part:IsA("BasePart") then
-                    promptPos = part.Position
-                end
-                
-                local approachCF = CFrame.new(promptPos + Vector3.new(0, 3, 0), promptPos)
-                local distance = (approachCF.Position - hrp.Position).Magnitude
-                local duration = math.max(distance / 20000, 0.1)
-                
-                local tw = TweenService:Create(hrp,
-                    TweenInfo.new(duration, Enum.EasingStyle.Linear),
-                    { CFrame = approachCF })
-                tw:Play()
-                tw.Completed:Wait()
-                task.wait(0.5)
-                
-                local waitStart = tick()
-                while not prompt.Enabled and (tick() - waitStart) < 3 do
-                    task.wait(0.2)
-                end
-                
-                local fired = false
-                for attempt = 1, 8 do
-                    if prompt.Enabled then
-                        pcall(function() fireproximityprompt(prompt) end)
-                        task.wait(0.3)
-                        if not prompt.Enabled then
-                            fired = true
-                            break
-                        end
-                    end
-                    task.wait(0.3)
-                end
-                
-                if fired then
-                    print("[AutoCandy] ✅ Leave portal fired!")
-                    task.wait(3)
-                    return true
-                end
-                
-                warn("[AutoCandy] ❌ Leave portal fail!")
-                return false
-            end
-
-            -- ===== NOCLIP =====
+   -- ===== NOCLIP =====
             local noclipConn = nil
             local function enableNoclip()
                 if noclipConn then return end
@@ -3607,6 +3587,154 @@ Tabs.EventTab:Toggle({
                 lockedCFrame = nil
                 if lockConn then lockConn:Disconnect(); lockConn = nil end
             end
+
+
+
+
+
+
+-- ===== GO TO HALLOWEEN (FORCE TELEPORT VIA RENDERSTEPPED) =====
+local function goToHalloweenArea(hrp)
+    if not hrp then return false end
+    
+    local CANDYDROPOFF_CF = CFrame.new(-45842.754, 40383.602, -20120.252)
+    local targetCF = CANDYDROPOFF_CF + Vector3.new(0, 5, 0)
+    
+    print("[AutoCandy] 🎯 Force teleport sa CandyDropOff...")
+    
+    pcall(function()
+        -- ✅ 1. STOP LAHAT NG LOCKS
+        stopLock()
+        task.wait(0.1)
+        
+        -- ✅ 2. ENABLE NOCLIP
+        enableNoclip()
+        task.wait(0.1)
+        
+        -- ✅✅✅ 3. FORCE TELEPORT VIA RENDERSTEPPED (60 times per second)
+        local forceTeleport = true
+        local forceConn
+        
+        forceConn = RunService.RenderStepped:Connect(function()
+            if not forceTeleport then return end
+            
+            local char = player.Character
+            local freshHRP = char and char:FindFirstChild("HumanoidRootPart")
+            
+            if freshHRP then
+                freshHRP.CFrame = targetCF
+                freshHRP.AssemblyLinearVelocity = Vector3.zero
+                freshHRP.AssemblyAngularVelocity = Vector3.zero
+                freshHRP.Velocity = Vector3.zero
+            end
+        end)
+        
+        -- ✅ 4. HOLD FOR 1.5 SECONDS
+        task.wait(1.5)
+        
+        -- ✅ 5. DISCONNECT FORCE TELEPORT
+        forceTeleport = false
+        if forceConn then
+            forceConn:Disconnect()
+            forceConn = nil
+        end
+        
+        -- ✅ 6. FINAL POSITION SET
+        local char = player.Character
+        local freshHRP = char and char:FindFirstChild("HumanoidRootPart")
+        if freshHRP then
+            freshHRP.CFrame = targetCF
+            freshHRP.AssemblyLinearVelocity = Vector3.zero
+            freshHRP.AssemblyAngularVelocity = Vector3.zero
+        end
+        
+        task.wait(0.3)
+        disableNoclip()
+    end)
+    
+    print("[AutoCandy] ✅ Force teleport complete!")
+    task.wait(1)
+    return true
+end
+
+            -- ===== GO TO MAIN MAP =====
+            local function goToMainMap(hrp)
+                if not hrp then return false end
+                print("[AutoCandy] Bumalik sa Main Map...")
+                
+                local prompt = getLeavePortalPrompt()
+                if not prompt then return false end
+                
+                local promptPos = LEAVE_PORTAL_CF.Position
+                local okPart, part = pcall(function()
+                    return Workspace.HalloweenArea.Portal
+                        .Model.Model
+                        .Part
+                end)
+                if okPart and part and part:IsA("BasePart") then
+                    promptPos = part.Position
+                end
+                
+                local approachCF = CFrame.new(promptPos + Vector3.new(0, 3, 0), promptPos)
+                local distance = (approachCF.Position - hrp.Position).Magnitude
+                local duration = math.max(distance / 20000, 0.1)
+                
+                local tw = TweenService:Create(hrp,
+                    TweenInfo.new(duration, Enum.EasingStyle.Linear),
+                    { CFrame = approachCF })
+                tw:Play()
+                tw.Completed:Wait()
+                task.wait(0.5)
+                
+              -- ✅✅✅ OVERRIDE PROMPT PROPERTIES BAGO MAG-FIRE
+pcall(function()
+    if prompt then
+        prompt.RequiresLineOfSight = false
+        prompt.MaxActivationDistance = 100
+        prompt.HoldDuration = 0
+        prompt.Enabled = true
+        print("[Portal] 🔧 Override: LOS=false, Dist=100, Hold=0, Enabled=true")
+    end
+end)
+
+-- ✅ WAIT FOR ENABLE
+local waitStart = tick()
+while not prompt.Enabled and (tick() - waitStart) < 3 do
+    task.wait(0.2)
+    pcall(function()
+        if prompt then
+            prompt.RequiresLineOfSight = false
+            prompt.MaxActivationDistance = 100
+            prompt.Enabled = true
+        end
+    end)
+end
+
+-- ✅ FIRE WITH RETRIES
+local fired = false
+for attempt = 1, 8 do
+    if prompt.Enabled then
+        pcall(function() fireproximityprompt(prompt) end)
+        task.wait(0.3)
+        if not prompt.Enabled then
+            fired = true
+            break
+        end
+    end
+    task.wait(0.3)
+end
+                
+                if fired then
+                    print("[AutoCandy]  Leave portal fired!")
+                    task.wait(3)
+                    return true
+                end
+                
+                warn("[AutoCandy]  Leave portal fail!")
+                return false
+            end
+
+         
 
             -- ===== TWEEN HOME =====
             local function tweenHome(hrp, targetCF, speed)
@@ -3670,30 +3798,30 @@ while _G.AutoCandyEnabled do
     local hrp = getHRP()
     if not hrp then task.wait(0.5); continue end
 
-    -- ✅✅✅ PRIORITY CHECK 0: AUTO BUY EGG IN PROGRESS
+    --  PRIORITY CHECK 0: AUTO BUY EGG IN PROGRESS
     if _G.AutoBuyingEgg then
-        print("[AutoCandy] ⏸️ Auto Buy Egg in progress — WAIT")
+        print("[AutoCandy]  Auto Buy Egg in progress � WAIT")
         while _G.AutoCandyEnabled and _G.AutoBuyingEgg do
             task.wait(0.2)
         end
-        print("[AutoCandy] ▶️ Auto Buy done — resume")
+        print("[AutoCandy]  Auto Buy done � resume")
         task.wait(0.3)
         continue
     end
 
-    -- ✅ PRIORITY CHECK 1: BUSY FLAG
+    --  PRIORITY CHECK 1: BUSY FLAG
     if _G.EggCollecting then
         -- ... existing code
-        print("[AutoCandy] ⏸️ Egg in progress — WAIT")
+        print("[AutoCandy]  Egg in progress � WAIT")
         while _G.AutoCandyEnabled and _G.EggCollecting do
             task.wait(0.2)
         end
-        print("[AutoCandy] ▶️ Resume")
+        print("[AutoCandy]  Resume")
         task.wait(0.3)
         continue
     end
 
-    -- ✅ PRIORITY CHECK 2: MAY TARGET EGG BA
+    --  PRIORITY CHECK 2: MAY TARGET EGG BA
     local hasTargetEgg = false
     -- ... (existing code mo)
     -- ... rest ng code
@@ -3721,20 +3849,20 @@ if renderedEggs and _G.AutoEggEnabled then
         if matched then
             if eggModel:FindFirstChild("Pickup", true) then
                 hasTargetEgg = true
-                print("[AutoCandy] 🥚 Egg detected:", eggModel.Name)
+                print("[AutoCandy]  Egg detected:", eggModel.Name)
                 break
             end
         end
     end
 end
 
--- ✅ CHECK 1: MAY TARGET EGG BA?
+--  CHECK 1: MAY TARGET EGG BA?
 if hasTargetEgg then
-    print("[AutoCandy] ⏸️ May target egg — PAUSE")
+    print("[AutoCandy]  May target egg � PAUSE")
     
-    -- ✅ KUNG NAKA-FLAG NA AUTO EGG, WAIT LANG
+    --  KUNG NAKA-FLAG NA AUTO EGG, WAIT LANG
     if _G.EggCollecting then
-        print("[AutoCandy] ⏸️ Auto Egg collecting — WAIT")
+        print("[AutoCandy]  Auto Egg collecting � WAIT")
         while _G.AutoCandyEnabled and _G.EggCollecting do
             task.wait(0.3)
         end
@@ -3742,11 +3870,11 @@ if hasTargetEgg then
         continue
     end
     
-    -- ✅ WALANG NAG-CO-COLLECT PA — TELEPORT SA HOME BASE
+    --  WALANG NAG-CO-COLLECT PA � TELEPORT SA HOME BASE
     local inHalloweenNow = isInHalloweenArea(hrp)
     
     if inHalloweenNow then
-        print("[AutoCandy] 🏠 Nasa Halloween — teleport sa home base")
+        print("[AutoCandy]  Nasa Halloween � teleport sa home base")
         
         -- Get plot
         local myPlot = nil
@@ -3789,50 +3917,50 @@ if hasTargetEgg then
                 task.wait(0.3)
                 disableNoclip()
                 
-                print("[AutoCandy] ✅ Teleported sa home base!")
+                print("[AutoCandy]  Teleported sa home base!")
                 task.wait(0.5)
             end
         end
     else
-        print("[AutoCandy] Nasa Main Map na — hintayin Auto Egg")
+        print("[AutoCandy] Nasa Main Map na � hintayin Auto Egg")
     end
     
-    -- ✅ SIMPLE WAIT + CONTINUE (walang complex loop)
+    --  SIMPLE WAIT + CONTINUE (walang complex loop)
     task.wait(1)
     continue
 end
 
 
 
--- ✅✅✅ IDAGDAG ITO — PRIORITY CHECK 3
+--  IDAGDAG ITO � PRIORITY CHECK 3
 if _G.EggCollecting then
-    print("[AutoCandy] ⏸️ Nag-start na Auto Egg — skip candy")
+    print("[AutoCandy]  Nag-start na Auto Egg � skip candy")
     task.wait(0.3)
     continue
 end
 
--- ✅✅✅ IDAGDAG ITO — LOCATION CHECK
+--  IDAGDAG ITO � LOCATION CHECK
 local inHalloween = isInHalloweenArea(hrp)
 _G.CurrentLocation = inHalloween and "Halloween Area" or "Main Map"
 print("[AutoCandy] Location:", _G.CurrentLocation)
 
 if not inHalloween then
-    print("[AutoCandy] 🎯 Nasa Main Map — pumasok sa Halloween via portal")
+    print("[AutoCandy]  Nasa Main Map � pumasok sa Halloween via portal")
     
     local enterSuccess = goToHalloweenArea(hrp)
     
     if enterSuccess then
-        print("[AutoCandy] ✅ Nakapasok sa Halloween — collect candy na")
+        print("[AutoCandy]  Nakapasok sa Halloween � collect candy na")
         task.wait(1)
         continue
     else
-        warn("[AutoCandy] ❌ Enter portal fail — retry next iteration")
+        warn("[AutoCandy]  Enter portal fail � retry next iteration")
         task.wait(2)
         continue
     end
 end
 
--- ===== NASA HALLOWEEN NA — COLLECT CANDY =====
+-- ===== NASA HALLOWEEN NA � COLLECT CANDY =====
 local candySpawns = findFolder("CandySpawns")
 local candyFolder = findFolder("HalloweenCandy")
 local dropOff = Workspace:FindFirstChild("CandyDropOff")
@@ -3892,7 +4020,7 @@ end
                     continue 
                 end
 
-                print("[AutoCandy] 🎯 Target:", targetName, "| Dist:", math.floor(bestPlayerDist))
+                
 
                 enableNoclip()
                 startLock(target.cf + Vector3.new(0, 3, 0))
@@ -3928,7 +4056,7 @@ end
 
             stopLock()
             disableNoclip()
-            print("[AutoCandy] Stopped 🛑")
+            print("[AutoCandy] Stopped ")
         end)
     end,
 }) 
@@ -3953,7 +4081,7 @@ Tabs.EventTab:Toggle({
 Callback = function(state)
     _G.AutoBuyHalloweenEgg = state
     
-    -- ✅ RESET FLAG KAPAG NAG-OFF
+    --  RESET FLAG KAPAG NAG-OFF
     if not state then
         _G.AutoBuyingEgg = false
     
@@ -4088,7 +4216,7 @@ Callback = function(state)
                         continue
                     end
 
-                   -- ===== 2. IF ENOUGH → BUY =====
+                   -- ===== 2. IF ENOUGH  BUY =====
 if tokens >= TOKEN_THRESHOLD then
     local shopGuy = Workspace:FindFirstChild("ShopGuy")
     if not shopGuy then
@@ -4104,7 +4232,7 @@ if tokens >= TOKEN_THRESHOLD then
         continue
     end
 
-    -- ✅✅✅ SET FLAG — PAUSE AUTO CANDY
+    --  SET FLAG � PAUSE AUTO CANDY
     _G.AutoBuyingEgg = true
 
     task.wait(0.3)
@@ -4126,7 +4254,7 @@ if tokens >= TOKEN_THRESHOLD then
     lastBuy = tick()
     
 
-    -- ✅✅✅ RESET FLAG — RESUME AUTO CANDY
+    --  RESET FLAG � RESUME AUTO CANDY
     task.wait(0.3)
     _G.AutoBuyingEgg = false
  
@@ -9982,7 +10110,7 @@ Tabs.SettingTab:Toggle({
 
 
 
-  
+    Flag = "DayTime",
 
 
 
@@ -10462,7 +10590,7 @@ local ConfigManager = Window.ConfigManager
 
 
 
-local CONFIG_NAME = "IOHUB_RideAPet"  -- â¬…ï¸ fixed name
+local CONFIG_NAME = "IOHUB_RideAPet"  -- ⬅️ fixed name
 
 
 
@@ -11642,5 +11770,5 @@ Tabs.SettingTab:Button({
 
 
 
--- fixed version 2
+
 
