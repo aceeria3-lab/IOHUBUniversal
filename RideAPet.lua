@@ -1,4 +1,4 @@
--- fixed version 5
+-- fixed version 6
 
 
 
@@ -3781,6 +3781,56 @@ end
                 return spot:FindFirstChildWhichIsA("ClickDetector", true)
             end
 
+
+
+
+-- ===== PRIORITY SYSTEM PARA SA CANDY =====
+local CANDY_PRIORITY = {
+    ["legendary candy"] = 1,  -- Highest
+    ["epic candy"]      = 2,
+    ["rare candy"]      = 3,
+    ["common candy"]    = 4,  -- Lowest
+}
+
+local function getCandyPriority(prompt)
+    if not prompt then return 999 end
+    
+    -- Check ObjectText muna
+    local objText = prompt.ObjectText or ""
+    objText = string.lower(objText)
+    
+    local priority = CANDY_PRIORITY[objText]
+    if priority then return priority end
+    
+    -- Fallback: check ActionText kung walang ObjectText
+    local actText = prompt.ActionText or ""
+    actText = string.lower(actText)
+    
+    for key, val in pairs(CANDY_PRIORITY) do
+        if string.find(actText, key, 1, true) then
+            return val
+        end
+    end
+    
+    -- Fallback: check name ng parent
+    local parent = prompt.Parent
+    if parent then
+        local parentName = string.lower(parent.Name)
+        for key, val in pairs(CANDY_PRIORITY) do
+            if string.find(parentName, key, 1, true) then
+                return val
+            end
+        end
+    end
+    
+    return 999  -- Unknown priority (pinaka-mababa)
+end
+
+
+
+
+
+
             local function firePrompt(prompt)
                 if not prompt then return false end
                 if prompt:IsA("ProximityPrompt") then
@@ -4031,17 +4081,36 @@ end
                     end
                 end
 
-                local target, targetName, bestPlayerDist = nil, nil, math.huge
-                for name, entry in pairs(candyMap) do
-                    if (cooldowns[name] or 0) > tick() then continue end
-                    if blacklist[name] and blacklist[name] > tick() then continue end
-                    local d = (entry.cf.Position - hrp.Position).Magnitude
-                    if d < bestPlayerDist then
-                        bestPlayerDist = d
-                        target = entry
-                        targetName = name
-                    end
-                end
+                -- ====================================================
+-- ✅ PRIORITY-BASED TARGET SELECTION
+-- Legendary > Epic > Rare > Common
+-- Sa loob ng same priority: pinakamalapit ang pipiliin
+-- ====================================================
+local target, targetName, bestPlayerDist = nil, nil, math.huge
+local bestPriority = 999
+
+for name, entry in pairs(candyMap) do
+    if (cooldowns[name] or 0) > tick() then continue end
+    if blacklist[name] and blacklist[name] > tick() then continue end
+    
+    -- Kunin yung prompt para malaman yung priority
+    local prompt = getPromptFromSpot(entry.marker)
+    local priority = getCandyPriority(prompt)
+    
+    local d = (entry.cf.Position - hrp.Position).Magnitude
+    
+    -- ✅ Priority check: mas mababang number = mas mataas na priority
+    -- Kung same priority, pinakamalapit yung pipiliin
+    if priority < bestPriority 
+       or (priority == bestPriority and d < bestPlayerDist) then
+        bestPriority = priority
+        bestPlayerDist = d
+        target = entry
+        targetName = name
+    end
+end
+
+
 
                 if not target then 
                     print("[AutoCandy] Walang target candy (naka-cooldown?)")
