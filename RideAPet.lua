@@ -1,4 +1,4 @@
--- fixed version 4
+-- fixed version 5
 
 
 
@@ -3792,11 +3792,40 @@ end
             end
 
             local cooldowns, blacklist = {}, {}
+            
+            
+            
+            
 while _G.AutoCandyEnabled do
     task.wait(0.2)
 
-    local hrp = getHRP()
+
+local hrp = getHRP()
     if not hrp then task.wait(0.5); continue end
+
+
+
+    -- ✅ IDAGDAG ITO: PRIORITY CHECK PARA SA AUTO RITUAL
+    if _G.AutoRitualRunning then
+        print("[AutoCandy] ⏸️ Auto Ritual is running — waiting...")
+        while _G.AutoCandyEnabled and _G.AutoRitualRunning do
+            task.wait(0.5)
+        end
+        task.wait(0.3)
+        continue
+    end
+    
+
+
+    
+
+
+
+
+
+
+
+
 
     --  PRIORITY CHECK 0: AUTO BUY EGG IN PROGRESS
     if _G.AutoBuyingEgg then
@@ -3942,7 +3971,7 @@ end
 --  IDAGDAG ITO � LOCATION CHECK
 local inHalloween = isInHalloweenArea(hrp)
 _G.CurrentLocation = inHalloween and "Halloween Area" or "Main Map"
-print("[AutoCandy] Location:", _G.CurrentLocation)
+
 
 if not inHalloween then
     print("[AutoCandy]  Nasa Main Map � pumasok sa Halloween via portal")
@@ -4203,6 +4232,17 @@ Callback = function(state)
                 while _G.AutoBuyHalloweenEgg do
                     task.wait(CHECK_INTERVAL)
 
+
+   -- ✅ IDAGDAG ITO: PRIORITY CHECK PARA SA AUTO RITUAL
+    if _G.AutoBuyPaused then
+        task.wait(1)
+        continue
+    end
+
+
+
+
+
                     if tick() - lastBuy < BUY_COOLDOWN then
                         continue
                     end
@@ -4270,18 +4310,533 @@ end
 })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+-- ===== Toggle para sa Auto Headless Ritual =====
+Tabs.EventTab:Toggle({
+    Title = "Auto Headless Ritual",
+    Desc = "Auto collect Yin & Yang, place sa altar, at kunin yung reward",
+    Flag = "AutoRitualToggle",
+    Value = false,
+    Callback = function(state)
+        _G.AutoRitualEnabled = state
+        
+        if not state then
+            _G.AutoRitualRunning = false
+            _G.AutoBuyPaused = false
+            print("[AutoRitual] OFF 🛑")
+            return
+        end
+        
+        print("[AutoRitual] ON 🎭")
+        
+        task.spawn(function()
+            local Players = game:GetService("Players")
+            local Workspace = game:GetService("Workspace")
+            local RunService = game:GetService("RunService")
+            local TweenService = game:GetService("TweenService")
+            local player = Players.LocalPlayer
+            
+            -- ===== CONFIG =====
+            local CANDYDROPOFF_CF = CFrame.new(-45842.754, 40383.602, -20120.252)
+            local RETURN_SPEED = 5000
+            local REWARD_LOAD_WAIT = 6
+            local RESET_SCAN_WAIT = 35
+            
+            -- ===== HELPERS =====
+            local function getHRP()
+                local char = player.Character
+                return char and char:FindFirstChild("HumanoidRootPart")
+            end
+            
+            local function enableNoclip()
+                local noclipConn
+                noclipConn = RunService.Stepped:Connect(function()
+                    local char = player.Character
+                    if char then
+                        for _, part in ipairs(char:GetDescendants()) do
+                            if part:IsA("BasePart") then
+                                part.CanCollide = false
+                            end
+                        end
+                    end
+                end)
+                return noclipConn
+            end
+            
+            local function forceTeleport(targetCF)
+                local hrp = getHRP()
+                if not hrp then return false end
+            
+                local noclipConn = enableNoclip()
+                local teleportActive = true
+                local teleportConn
+                
+                teleportConn = RunService.RenderStepped:Connect(function()
+                    if not teleportActive then return end
+                    local freshChar = player.Character
+                    local freshHrp = freshChar and freshChar:FindFirstChild("HumanoidRootPart")
+                    if freshHrp then
+                        freshHrp.CFrame = targetCF
+                        freshHrp.AssemblyLinearVelocity = Vector3.zero
+                        freshHrp.AssemblyAngularVelocity = Vector3.zero
+                    end
+                end)
+            
+                task.wait(0.5)
+                teleportActive = false
+                if teleportConn then teleportConn:Disconnect() end
+                if noclipConn then noclipConn:Disconnect() end
+                
+                task.wait(0.1)
+                local char = player.Character
+                if char then
+                    for _, part in ipairs(char:GetDescendants()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = true
+                        end
+                    end
+                end
+                return true
+            end
+            
+            local function firePromptSafe(prompt)
+                if not prompt or not prompt:IsA("ProximityPrompt") then return false end
+                
+                pcall(function()
+                    prompt.RequiresLineOfSight = false
+                    prompt.MaxActivationDistance = 100
+                    prompt.HoldDuration = 0
+                    prompt.Enabled = true
+                end)
+            
+                local fired = false
+                for i = 1, 5 do
+                    pcall(function()
+                        fireproximityprompt(prompt)
+                    end)
+                    task.wait(0.2)
+                    if not prompt.Parent or not prompt.Enabled then
+                        fired = true
+                        break
+                    end
+                end
+                return fired
+            end
+            
+            local function tweenTo(targetCF)
+                local hrp = getHRP()
+                if not hrp or not targetCF then return false end
+                
+                local distance = (targetCF.Position - hrp.Position).Magnitude
+                local duration = math.max(distance / RETURN_SPEED, 0.1)
+                
+                local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Linear)
+                local tween = TweenService:Create(hrp, tweenInfo, { CFrame = targetCF })
+                tween:Play()
+                
+                local done = false
+                pcall(function()
+                    tween.Completed:Wait()
+                    done = true
+                end)
+                task.wait(0.1)
+                return done
+            end
+            
+            local function getCFrameOf(inst)
+                if not inst then return nil end
+                if inst:IsA("BasePart") then return inst.CFrame end
+                if inst:IsA("Model") then
+                    if inst.PrimaryPart then return inst.PrimaryPart.CFrame end
+                    local part = inst:FindFirstChildWhichIsA("BasePart", true)
+                    if part then return part.CFrame end
+                    local ok, pivot = pcall(function() return inst:GetPivot() end)
+                    if ok and pivot then return pivot end
+                end
+                local part = inst:FindFirstChildWhichIsA("BasePart", true)
+                return part and part.CFrame or nil
+            end
+            
+            -- ====================================================
+            -- PRIORITY CHECK: AUTO COLLECT EGG
+            -- ====================================================
+            local function hasTargetEgg()
+                if not _G.AutoEggEnabled then return false end
+                if not _G.SelectedEggTargets or next(_G.SelectedEggTargets) == nil then return false end
+                
+                local renderedEggs = Workspace:FindFirstChild("RenderedEggs")
+                if not renderedEggs then return false end
+                
+                local selectedLower = {}
+                for name, _ in pairs(_G.SelectedEggTargets) do
+                    table.insert(selectedLower, name:lower())
+                end
+                
+                for _, eggModel in ipairs(renderedEggs:GetChildren()) do
+                    local eggNameLower = eggModel.Name:lower()
+                    for _, selName in ipairs(selectedLower) do
+                        if eggNameLower:find(selName, 1, true) then
+                            if eggModel:FindFirstChild("Pickup", true) then
+                                return true
+                            end
+                        end
+                    end
+                end
+                return false
+            end
+            
+            -- ====================================================
+            -- ✅ BAGONG HELPER: Check kung dapat mag-pause para sa Auto Egg
+            -- Returns true kung may target egg AT naka-ON si Auto Collect Egg
+            -- ====================================================
+            local function shouldPauseForEgg()
+    -- ✅ Check kung may target egg OR kung nag-c-collect pa si Auto Egg (Volcanic sequence, etc.)
+    if not _G.AutoEggEnabled then return false end
+    if _G.EggCollecting then return true end  -- ✅ Naka-flag na busy si Auto Egg
+    return hasTargetEgg()
+end
+            
+            -- ✅ Helper: Maghintay hanggang matapos si Auto Collect Egg
+            local function waitForEggFinish()
+                if not shouldPauseForEgg() then return end
+                
+                print("[AutoRitual] ⏸️ May target egg si Auto Collect Egg — PAUSING ritual...")
+                _G.AutoRitualRunning = false
+                _G.AutoBuyPaused = false
+                
+                -- Hintayin hanggang matapos yung egg collection
+                while _G.AutoRitualEnabled and shouldPauseForEgg() do
+                    task.wait(1)
+                end
+                
+                print("[AutoRitual] ▶️ Auto Collect Egg done — RESUME ritual...")
+                task.wait(0.5)
+            end
+            
+            -- ===== ✅ HELPER: Tween muna sa CandyDropOff bago mag-Yin/Yang =====
+            local function dropHeldCandyFirst()
+                print("[AutoRitual] 🚀 Tweening muna sa CandyDropOff (drop held candy)...")
+                tweenTo(CANDYDROPOFF_CF + Vector3.new(0, 5, 0))
+                task.wait(1)
+                print("[AutoRitual] ✅ Naka-drop na yung candy!")
+            end
+            
+            -- ===== FIRE BOTH PLACEMENTS =====
+local function fireBothPlacements(headlessRef)
+    local altar = headlessRef and headlessRef:FindFirstChild("Altar")
+    if not altar then return false end
+    
+    local altarCF = getCFrameOf(altar)
+    if not altarCF then return false end
+    
+    print("[AutoRitual] 🏛️ Teleporting sa Altar...")
+    forceTeleport(altarCF + Vector3.new(0, 5, 0))
+    task.wait(0.5)
+    
+    local yinPlacement = altar:FindFirstChild("YinPlacement")
+    if yinPlacement then
+        local prompt = yinPlacement:FindFirstChildWhichIsA("ProximityPrompt", true)
+        if prompt then
+            print("[AutoRitual] 🔥 Firing Yin Placement...")
+            firePromptSafe(prompt)
+            task.wait(0.5)
+        end
+    end
+    
+    local yangPlacement = altar:FindFirstChild("YangPlacement")
+    if yangPlacement then
+        local prompt = yangPlacement:FindFirstChildWhichIsA("ProximityPrompt", true)
+        if prompt then
+            print("[AutoRitual] 🔥 Firing Yang Placement...")
+            firePromptSafe(prompt)
+            task.wait(0.5)
+        end
+    end
+    
+    -- ====================================================
+    -- ✅ FIRE DROPCANDY EVENT (para siguradong walang hawak na candy)
+    -- ====================================================
+    local ok, dropCandyRemote = pcall(function()
+        return game:GetService("ReplicatedStorage")
+            :FindFirstChild("Remotes")
+            :FindFirstChild("Game")
+            :FindFirstChild("DropCandy")
+    end)
+    
+    if ok and dropCandyRemote then
+        pcall(function()
+            dropCandyRemote:FireServer()
+        end)
+        print("[AutoRitual] 🍬 DropCandy fired — sure nang walang hawak na candy!")
+    else
+        warn("[AutoRitual] ⚠️ Hindi mahanap ang DropCandy remote!")
+    end
+    
+    task.wait(0.3)
+    return true
+end
+            
+            -- ====================================================
+            -- MAIN LOOP (EVENT-DRIVEN)
+            -- ====================================================
+            while _G.AutoRitualEnabled do
+                task.wait(1)
+                
+                -- 🥇 PRIORITY: AUTO COLLECT EGG (unahan)
+                if shouldPauseForEgg() then
+                    _G.AutoRitualRunning = false
+                    _G.AutoBuyPaused = false
+                    print("[AutoRitual] ⏸️ May target egg — waiting for Auto Collect Egg to finish...")
+                    waitForEggFinish()
+                    continue
+                end
+                
+                local headless = Workspace:FindFirstChild("HeadlessRitual")
+                if not headless then continue end
+                local runtime = headless:FindFirstChild("Runtime")
+                if not runtime then continue end
+                local visualsFolder = Workspace:FindFirstChild("RitualSealVisuals")
+                if not visualsFolder then continue end
+                
+                local hasYinVisual = visualsFolder:FindFirstChild("Yin") ~= nil
+                local hasYangVisual = visualsFolder:FindFirstChild("Yang") ~= nil
+                
+                local yin = runtime:FindFirstChild("Yin")
+                local yang = runtime:FindFirstChild("Yang")
+                
+                local hasNewSpawn = (yin and not hasYinVisual) or (yang and not hasYangVisual)
+                local visualsComplete = hasYinVisual and hasYangVisual
+                
+                if not hasNewSpawn and not visualsComplete then
+                    _G.AutoRitualRunning = false
+                    _G.AutoBuyPaused = false
+                    continue
+                end
+                
+                -- ====================================================
+                -- ✅ CHECK MUNA BAGO MAG-START NG RITUAL
+                -- Kung may target egg si Auto Collect Egg, hintayin muna
+                -- ====================================================
+                if shouldPauseForEgg() then
+                    print("[AutoRitual] ⏸️ May target egg detected — hindi muna mag-start ng ritual")
+                    waitForEggFinish()
+                    continue
+                end
+                
+                -- ====================================================
+                -- MAY YIN O YANG → PAUSE AUTO CANDY + AUTO BUY
+                -- ====================================================
+                _G.AutoRitualRunning = true
+                _G.AutoBuyPaused = true
+                print("[AutoRitual] ⏸️ Auto Candy & Auto Buy PAUSED")
+                
+                -- Tween sa DropOff para i-drop yung hawak na candy
+                if hasNewSpawn then
+                    dropHeldCandyFirst()
+                end
+                
+                -- ====================================================
+                -- ✅ CHECK ULIT BAGO MAG-COLLECT NG YIN
+                -- ====================================================
+                if shouldPauseForEgg() then
+                    print("[AutoRitual] ⏸️ Target egg appeared! Pausing ritual...")
+                    waitForEggFinish()
+                    -- Refresh yung references
+                    runtime = headless:FindFirstChild("Runtime")
+                    visualsFolder = Workspace:FindFirstChild("RitualSealVisuals")
+                    if runtime then
+                        yin = runtime:FindFirstChild("Yin")
+                        yang = runtime:FindFirstChild("Yang")
+                    end
+                    if visualsFolder then
+                        hasYinVisual = visualsFolder:FindFirstChild("Yin") ~= nil
+                        hasYangVisual = visualsFolder:FindFirstChild("Yang") ~= nil
+                    end
+                    _G.AutoRitualRunning = true
+                    _G.AutoBuyPaused = true
+                end
+                
+                -- COLLECT YIN
+                if yin and not hasYinVisual then
+                    print("[AutoRitual] 🎭 Yin Detected! Collecting...")
+                    local yinCF = getCFrameOf(yin)
+                    if yinCF then
+                        forceTeleport(yinCF + Vector3.new(0, 5, 0))
+                        task.wait(0.5)
+                        local prompt = yin:FindFirstChildWhichIsA("ProximityPrompt", true)
+                        if prompt then 
+                            firePromptSafe(prompt) 
+                            print("[AutoRitual] ✅ Yin Collected!")
+                        end
+                        task.wait(0.5)
+                    end
+                end
+                
+                -- ✅ CHECK ULIT BAGO MAG-COLLECT NG YANG
+                if shouldPauseForEgg() then
+                    print("[AutoRitual] ⏸️ Target egg appeared! Pausing ritual...")
+                    waitForEggFinish()
+                    runtime = headless:FindFirstChild("Runtime")
+                    visualsFolder = Workspace:FindFirstChild("RitualSealVisuals")
+                    if runtime then
+                        yin = runtime:FindFirstChild("Yin")
+                        yang = runtime:FindFirstChild("Yang")
+                    end
+                    if visualsFolder then
+                        hasYinVisual = visualsFolder:FindFirstChild("Yin") ~= nil
+                        hasYangVisual = visualsFolder:FindFirstChild("Yang") ~= nil
+                    end
+                    _G.AutoRitualRunning = true
+                    _G.AutoBuyPaused = true
+                end
+                
+                -- COLLECT YANG
+                if yang and not hasYangVisual then
+                    print("[AutoRitual] 🎭 Yang Detected! Collecting...")
+                    local yangCF = getCFrameOf(yang)
+                    if yangCF then
+                        forceTeleport(yangCF + Vector3.new(0, 5, 0))
+                        task.wait(0.5)
+                        local prompt = yang:FindFirstChildWhichIsA("ProximityPrompt", true)
+                        if prompt then 
+                            firePromptSafe(prompt) 
+                            print("[AutoRitual] ✅ Yang Collected!")
+                        end
+                        task.wait(0.5)
+                    end
+                end
+                
+                -- ✅ CHECK ULIT BAGO MAG-FIRE PLACEMENTS
+                if shouldPauseForEgg() then
+                    print("[AutoRitual] ⏸️ Target egg appeared! Pausing ritual...")
+                    waitForEggFinish()
+                    _G.AutoRitualRunning = true
+                    _G.AutoBuyPaused = true
+                end
+                
+                -- FIRE BOTH PLACEMENTS
+                if hasNewSpawn then
+                    fireBothPlacements(headless)
+                    task.wait(1)
+                end
+                
+                -- CHECK RITUALSEALVISUALS ULIT
+                local newHasYin = visualsFolder:FindFirstChild("Yin") ~= nil
+                local newHasYang = visualsFolder:FindFirstChild("Yang") ~= nil
+                
+                if not (newHasYin and newHasYang) then
+                    print("[AutoRitual] ⏳ Hindi pa complete — RESUME Auto Candy & Auto Buy")
+                    _G.AutoRitualRunning = false
+                    _G.AutoBuyPaused = false
+                    task.wait(1)
+                    continue
+                end
+                
+                -- ====================================================
+                -- ✅ COMPLETE NA! CHECK MUNA KUNG MAY TARGET EGG
+                -- ====================================================
+                if shouldPauseForEgg() then
+                    print("[AutoRitual] ⏸️ May target egg — hintayin muna bago mag-collect reward")
+                    waitForEggFinish()
+                    _G.AutoRitualRunning = true
+                    _G.AutoBuyPaused = true
+                end
+                
+                -- ====================================================
+                -- WAIT 6 SECONDS FOR REWARD
+                -- ====================================================
+                print("[AutoRitual] ✅ RitualSealVisuals COMPLETE!")
+                print("[AutoRitual] ⏳ Waiting " .. REWARD_LOAD_WAIT .. "s for reward...")
+                task.wait(REWARD_LOAD_WAIT)
+                
+                -- SCAN FOR REWARDS
+                local rewardFolder = nil
+                local timeout = 0
+                while timeout < 10 and _G.AutoRitualEnabled do
+                    for _, child in ipairs(runtime:GetChildren()) do
+                        if child.Name:sub(1, 8) == "Rewards_" then
+                            rewardFolder = child
+                            break
+                        end
+                    end
+                    if rewardFolder then break end
+                    task.wait(0.5)
+                    timeout = timeout + 0.5
+                end
+                
+                if rewardFolder then
+                    local targetReward = rewardFolder:FindFirstChild("Pot1") 
+                        or rewardFolder:FindFirstChild("Pot2") 
+                        or rewardFolder:FindFirstChild("Egg")
+                    
+                    if not targetReward then
+                        for _, child in ipairs(rewardFolder:GetChildren()) do
+                            if child:FindFirstChild("Pickup", true) then
+                                targetReward = child
+                                break
+                            end
+                        end
+                    end
+                    
+                    if targetReward then
+                        print("[AutoRitual] 🎁 Collecting: " .. targetReward.Name)
+                        local rewardCF = getCFrameOf(targetReward)
+                        if rewardCF then
+                            forceTeleport(rewardCF + Vector3.new(0, 5, 0))
+                            task.wait(0.5)
+                            local pickup = targetReward:FindFirstChild("Pickup", true)
+                            if pickup and pickup:IsA("ProximityPrompt") then
+                                firePromptSafe(pickup)
+                                task.wait(0.5)
+                            else
+                                local fallbackPrompt = targetReward:FindFirstChildWhichIsA("ProximityPrompt", true)
+                                if fallbackPrompt then
+                                    firePromptSafe(fallbackPrompt)
+                                    task.wait(0.5)
+                                end
+                            end
+                        end
+                    end
+                else
+                    print("[AutoRitual] ⏰ Timeout: Walang Rewards_ folder.")
+                end
+                
+                -- TWEEN TO DROPOFF
+                print("[AutoRitual] 🚀 Tweening sa CandyDropOff...")
+                tweenTo(CANDYDROPOFF_CF + Vector3.new(0, 5, 0))
+                
+                -- ====================================================
+                -- ⏱️ WAIT 20s RESET SCANNING
+                -- ====================================================
+                print("[AutoRitual] ⏱️ Resetting scan cooldown: " .. RESET_SCAN_WAIT .. "s...")
+                
+                _G.AutoRitualRunning = false
+                _G.AutoBuyPaused = false
+                print("[AutoRitual] ▶️ Auto Candy & Auto Buy RESUMED")
+                
+                local waitTime = 0
+                while waitTime < RESET_SCAN_WAIT and _G.AutoRitualEnabled do
+                    task.wait(1)
+                    waitTime = waitTime + 1
+                    
+                    -- ✅ Kung may target egg sa gitna ng cooldown, hintayin muna
+                    if shouldPauseForEgg() then
+                        print("[AutoRitual] ⏸️ Target egg appeared during cooldown — waiting...")
+                        while _G.AutoRitualEnabled and shouldPauseForEgg() do
+                            task.wait(1)
+                        end
+                        print("[AutoRitual] ▶️ Target egg done — continuing cooldown...")
+                    end
+                end
+                
+                print("[AutoRitual] 🔄 Cooldown done. Resuming scan...")
+            end
+            
+            _G.AutoRitualRunning = false
+            _G.AutoBuyPaused = false
+            print("[AutoRitual] Stopped 🛑")
+        end)
+    end,
+})
 
 
 
