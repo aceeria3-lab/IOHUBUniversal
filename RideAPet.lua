@@ -10734,8 +10734,7 @@ Tabs.SettingTab:Toggle({
 
 
 
-    Flag = "DayTime",
-
+    
 
 
     Value = false,
