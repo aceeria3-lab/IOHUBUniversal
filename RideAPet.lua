@@ -1,4 +1,4 @@
--- fixed version 7
+-- fixed version 8
 
 
 
@@ -2991,6 +2991,137 @@ AutomaticallyTab = Window:Tab({
 
 
 
+
+
+-- =============================================
+-- AUTO EQUIP + MOUNT HIGHEST SPEED PET (GAMEOBJECTS AWARE)
+-- =============================================
+_G.AutoMountBestEnabled = false
+
+-- 1. Check GameObjects para sa nakamount na pet (via ParkedFor attribute)
+local function getMountedPet()
+    local player = game:GetService("Players").LocalPlayer
+    local gameObjects = workspace:FindFirstChild("GameObjects")
+    if not gameObjects then return nil, 0 end
+
+    for _, obj in ipairs(gameObjects:GetChildren()) do
+        local parkedFor = obj:GetAttribute("ParkedFor")
+        if parkedFor and tonumber(parkedFor) == player.UserId then
+            local data = obj:FindFirstChild("Data")
+            local spd = data and data:FindFirstChild("Speed")
+            if spd and spd:IsA("ValueBase") then
+                return obj, tonumber(spd.Value) or 0
+            end
+        end
+    end
+    return nil, 0
+end
+
+-- 2. Scan Inventory para sa pinakamalakas na speed
+local function scanInventory()
+    local player = game:GetService("Players").LocalPlayer
+    local bestTool, bestSpeed, source = nil, -1, "none"
+
+    local function checkFolder(folder, srcName)
+        if not folder then return end
+        for _, item in ipairs(folder:GetChildren()) do
+            if item:IsA("Tool") then
+                local data = item:FindFirstChild("Data")
+                local spd = data and data:FindFirstChild("Speed")
+                if spd and spd:IsA("ValueBase") then
+                    local val = tonumber(spd.Value) or 0
+                    if val > bestSpeed then
+                        bestSpeed = val
+                        bestTool = item
+                        source = srcName
+                    end
+                end
+            end
+        end
+    end
+
+    checkFolder(player:FindFirstChild("Backpack"), "Backpack")
+    checkFolder(player.Character, "Character")
+    return bestTool, bestSpeed, source
+end
+
+-- Helpers
+local function equipPet(tool)
+    local player = game:GetService("Players").LocalPlayer
+    local char = player.Character
+    if not char then return false end
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if not humanoid then return false end
+    return pcall(function() humanoid:EquipTool(tool) end)
+end
+
+local function fireMount(tool)
+    local RS = game:GetService("ReplicatedStorage")
+    local remotes = RS:FindFirstChild("Remotes")
+    local gameR = remotes and remotes:FindFirstChild("Game")
+    local mounting = gameR and gameR:FindFirstChild("Mounting")
+    if not mounting then return false end
+
+    if pcall(function() mounting:FireServer() end) then return true end
+    if pcall(function() mounting:FireServer(tool) end) then return true end
+    return pcall(function() mounting:FireServer(tool.Name) end)
+end
+
+-- Main Toggle
+Tabs.AutomaticallyTab:Toggle({
+    Title = "Auto Equip + Mount Best Pet",
+    Desc  = "Checks GameObjects for current mount, then compares to inventory.",
+    Flag  = "AutoMountBest",
+    Value = false,
+    Callback = function(state)
+        _G.AutoMountBestEnabled = state
+
+        if not state then
+            print("[AutoMount] OFF 🛑")
+            return
+        end
+
+        print("[AutoMount] ON ✅")
+
+        task.spawn(function()
+            while _G.AutoMountBestEnabled do
+                task.wait(3)
+
+                -- STEP 1: Check GameObjects kung may nakamount
+                local mountedObj, mountedSpeed = getMountedPet()
+
+                if not mountedObj then
+                    print("[AutoMount] ❌ No mounted pet detected. Scanning inventory...")
+                    local bestTool, bestSpeed, source = scanInventory()
+                    
+                    if bestTool then
+                        if source == "Backpack" then equipPet(bestTool); task.wait(0.5) end
+                        fireMount(bestTool)
+                        print(string.format("[AutoMount] 🐎 Mounted: %s (Speed: %d)", bestTool.Name, bestSpeed))
+                    else
+                        print("[AutoMount] ⚠️ No pets in inventory to mount.")
+                    end
+                    continue
+                end
+
+                -- STEP 2: May nakamount, i-scan ang inventory kung may mas malakas
+                local bestTool, bestSpeed, source = scanInventory()
+
+                if bestTool and bestSpeed > mountedSpeed then
+                    -- May mas malakas! Upgrade.
+                    print(string.format("[AutoMount] ⬆️ Upgrade: %s (%d) > %s (%d)",
+                        bestTool.Name, bestSpeed, mountedObj.Name, mountedSpeed))
+                        
+                    if source == "Backpack" then equipPet(bestTool); task.wait(0.5) end
+                    fireMount(bestTool)
+                else
+                    -- Wala nang mas malakas, steady lang (walang papalitan)
+                    print(string.format("[AutoMount] ⏸️ Mounted %s is still best (%d)", mountedObj.Name, mountedSpeed))
+                end
+            end
+        end)
+    end,
+})
 
 
 
